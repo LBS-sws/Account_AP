@@ -149,7 +149,10 @@ class RptReceiptOverview extends CReport {
 		$cstr = $user->city;
 		$city_allow .= (empty($city_allow)) ? "'$cstr'" : ",'$cstr'";
 		
-		$output = "<table border=0 style='table-layout:fixed;width:350px;'>\n";
+		$output = '';
+		$tblhdr = "<table border=0 style='table-layout:fixed;width:350px;'>\n";
+		$tbldtl = "</table>\n";
+
 		$colcnt = 0;
 		$line = '';
 		foreach ($this->result as $key=>$value) {
@@ -178,8 +181,7 @@ class RptReceiptOverview extends CReport {
 				$colcnt++;
 			}
 		}
-		if ($line!='') $output .= "<tr>$line</tr>\n";
-		$output .= "</table>\n";
+		if ($line!='') $output = $tblhdr."<tr>$line</tr>\n".$tbldtl;
 		
 		return $output;
 	}
