@@ -116,17 +116,17 @@ return array(
 			'Account Type'=>array(
 				'access'=>'XC01',
 				'url'=>'/accttype/index',
-				'tag'=>'@',
+#				'tag'=>'@',
 			),
 			'Transaction Type'=>array(
 				'access'=>'XC03',
 				'url'=>'/transtype/index',
-				'tag'=>'@',
+#				'tag'=>'@',
 			),
 			'Accounting Item'=>array(
 				'access'=>'XC06',
 				'url'=>'/acctitem/index',
-				'tag'=>'@',
+#				'tag'=>'@',
 			),
 			'Accounting Code'=>array(
 				'access'=>'XC10',
