@@ -38,11 +38,13 @@ $this->pageTitle=Yii::app()->name . ' - Approver Form';
 			<?php echo $form->hiddenField($model, 'city'); ?>
 
 <?php
+	$list = General::getEmailListboxData();
+	$list = array_merge(array(''=>Yii::t('misc','-- None --')),$list);
 	foreach ($model->dynfields as $field) {
 		echo '<div class="form-group">';
 		echo $form->labelEx($model,$field,array('class'=>"col-sm-2 control-label"));
 		echo '<div class="col-sm-6">';
-		echo $form->dropDownList($model, $field, General::getEmailListboxData(),
+		echo $form->dropDownList($model, $field, $list,
 			array('disabled'=>($model->scenario=='view')));
 		echo '</div>';
 		echo '</div>';

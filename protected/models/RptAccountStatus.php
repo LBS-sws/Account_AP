@@ -56,7 +56,7 @@ class RptAccountStatus extends CReport {
 					h.field_value as handle_staff_name,
 					i.field_value as item_code,
 					j.field_value as int_fee
-				from acc_trans a inner join acc_trans_type b on a.trans_type_code=b.trans_type_code 
+				from acc_trans a inner join acc_trans_type b on a.trans_type_code=b.trans_type_code and a.city=b.city
 					left outer join acc_account k on a.acct_id=k.id 
 					left outer join acc_trans_info c on a.id=c.trans_id and c.field_id='payer_type'
 					left outer join acc_trans_info d on a.id=d.trans_id and d.field_id='payer_name'

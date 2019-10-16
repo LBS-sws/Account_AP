@@ -45,7 +45,7 @@ class TransOutList extends CListPageModel
 				inner join security$suffix.sec_city b on a.city=b.code 
 				inner join acc_account d on a.acct_id = d.id
 				inner join acc_account_type c on d.acct_type_id=c.id 
-				inner join acc_trans_type e on a.trans_type_code=e.trans_type_code
+				inner join acc_trans_type e on a.trans_type_code=e.trans_type_code and a.city=e.city
 				left outer join acc_trans_info g on a.id=g.trans_id and g.field_id='int_fee'
 				where a.city in ($city)
 				and a.trans_type_code<>'OPEN' 
@@ -56,7 +56,7 @@ class TransOutList extends CListPageModel
 				inner join security$suffix.sec_city b on a.city=b.code 
 				inner join acc_account d on a.acct_id = d.id
 				inner join acc_account_type c on d.acct_type_id=c.id 
-				inner join acc_trans_type e on a.trans_type_code=e.trans_type_code
+				inner join acc_trans_type e on a.trans_type_code=e.trans_type_code and a.city=e.city
 				left outer join acc_trans_info g on a.id=g.trans_id and g.field_id='int_fee'
 				where a.city in ($city)
 				and a.trans_type_code<>'OPEN' 

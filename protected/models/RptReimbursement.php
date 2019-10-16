@@ -48,7 +48,7 @@ class RptReimbursement extends CReport {
 		$rows = Yii::app()->db->createCommand($sql)->queryAll();
 //		var_dump($sql);
 		if (count($rows) > 0) {
-			$transtypelist = General::getTransTypeList('OUT');
+			$transtypelist = General::getTransTypeList($city,'OUT');
 			$acctcodelist = General::getAcctCodeList();
 			$acctlist = General::getAccountList($city);
 			foreach ($rows as $row) {

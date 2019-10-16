@@ -45,7 +45,7 @@ class ConfReqList extends CListPageModel
 					docman$suffix.countdoc('payreq',a.id) as payreqcountdoc,
 					docman$suffix.countdoc('tax',a.id) as taxcountdoc
 				from acc_request a inner join security$suffix.sec_city b on a.city=b.code
-					inner join acc_trans_type e on a.trans_type_code=e.trans_type_code 
+					inner join acc_trans_type e on a.trans_type_code=e.trans_type_code and a.city=e.city
 					inner join security$suffix.sec_user c on a.req_user = c.username
 					left outer join acc_request_info f on a.id=f.req_id and f.field_id='ref_no'
 					left outer join acc_request_info g on a.id=g.req_id and g.field_id='int_fee'
@@ -59,7 +59,7 @@ class ConfReqList extends CListPageModel
 			";
 		$sql2 = "select count(a.id)
 				from acc_request a inner join security$suffix.sec_city b on a.city=b.code
-					inner join acc_trans_type e on a.trans_type_code=e.trans_type_code 
+					inner join acc_trans_type e on a.trans_type_code=e.trans_type_code and a.city=e.city 
 					inner join security$suffix.sec_user c on a.req_user = c.username
 					left outer join acc_request_info f on a.id=f.req_id and f.field_id='ref_no'
 					left outer join acc_request_info g on a.id=g.req_id and g.field_id='int_fee'

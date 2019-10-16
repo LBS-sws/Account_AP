@@ -90,7 +90,8 @@ class TransOutForm extends CFormModel
 
 	public function validateTransDate($attribute, $params) {
 		$id = $this->acct_id;
-		$sql = "select trans_dt from acc_trans where acct_id=$id and trans_type_code='OPEN' and status='A'";
+		$city = $this->city;
+		$sql = "select trans_dt from acc_trans where acct_id=$id and trans_type_code='OPEN' and status='A' and city='$city'";
 		$row = Yii::app()->db->createCommand($sql)->queryRow();
 		if ($row!==false) {
 			$dt0 = General::toDate($row['trans_dt']);
