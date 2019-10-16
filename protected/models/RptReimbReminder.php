@@ -24,11 +24,11 @@ class RptReimbReminder extends CReport {
 		$suffix = Yii::app()->params['envSuffix'];
 		
 		$sql = "SELECT a.*,f.field_value,
-				workflow$suffix.RequestStatusDesc('PAYMENT',a.id,a.req_dt) as wfstatusdesc
+				workflow$suffix.RequestStatusDesc(a.city,'PAYMENT',a.id,a.req_dt) as wfstatusdesc
 				FROM acc_request a 
 				left outer join acc_request_info f on f.req_id = a.id and f.field_id='ref_no'
-				WHERE workflow$suffix.RequestStatus('PAYMENT',a.id,a.req_dt)<>'ED' 
-				and workflow$suffix.RequestStatus('PAYMENT',a.id,a.req_dt)<>''
+				WHERE workflow$suffix.RequestStatus(a.city,'PAYMENT',a.id,a.req_dt)<>'ED' 
+				and workflow$suffix.RequestStatus(a.city,'PAYMENT',a.id,a.req_dt)<>''
 				and datediff('$start_dt', a.req_dt) > 59
 				and a.city='$city'
 				order by a.id

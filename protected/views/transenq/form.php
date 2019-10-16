@@ -72,7 +72,7 @@ $this->pageTitle=Yii::app()->name . ' - Transaction In Form';
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'trans_type_code',array('class'=>"col-sm-2 control-label")); ?>
 				<div class="col-sm-7">
-					<?php echo $form->dropDownList($model, 'trans_type_code', General::getTransTypeList('IN'),array('disabled'=>($model->isReadOnly()))); ?>
+					<?php echo $form->dropDownList($model, 'trans_type_code', General::getTransTypeList($model->city,'IN'),array('disabled'=>($model->isReadOnly()))); ?>
 				</div>
 			</div>
 

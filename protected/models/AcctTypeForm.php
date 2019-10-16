@@ -6,6 +6,7 @@ class AcctTypeForm extends CFormModel
 	public $id;
 	public $acct_type_desc;
 	public $rpt_cat;
+	public $city;
 
 	/**
 	 * Declares customized attribute labels.
@@ -34,12 +35,13 @@ class AcctTypeForm extends CFormModel
 	public function retrieveData($index)
 	{
 		$city = Yii::app()->user->city();
-		$sql = "select * from acc_account_type where id=$index and city='$city'";
+		$sql = "select * from acc_account_type where id=$index and city in ('$city','99999')";
 		$row = Yii::app()->db->createCommand($sql)->queryRow();
 		if ($row!==false) {
 			$this->id = $row['id'];
 			$this->acct_type_desc = $row['acct_type_desc'];
 			$this->rpt_cat = $row['rpt_cat'];
+			$this->city = $row['city'];
 		}
 		return true;
 	}
@@ -111,5 +113,9 @@ class AcctTypeForm extends CFormModel
 			break;
 		}
 		return $rtn;
+	}
+	
+	public function isReadOnly() {
+		return ($this->scenario=='view' || $this->city=='99999');
 	}
 }

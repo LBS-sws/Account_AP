@@ -32,7 +32,7 @@ class PayReqList extends CListPageModel
 							else '".Yii::t('misc','No')."' 
 						end) ",
 			'amount'=>'a.amount',
-			'wfstatusdesc'=>"workflow$suffix.RequestStatusDesc('PAYMENT',a.id,a.req_dt)",
+			'wfstatusdesc'=>"workflow$suffix.RequestStatusDesc(a.city,'PAYMENT',a.id,a.req_dt)",
 		);
 		if (!Yii::app()->user->isSingleCity()) $search['city_name'] = 'b.name';
 		return $search;

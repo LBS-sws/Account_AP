@@ -97,8 +97,8 @@ class ConfReqForm extends CFormModel
 		if (empty($list)) $list = '0';
 
 		$sql = "select a.*, b.disp_name as user_name,  
-				workflow$suffix.RequestStatus('PAYMENT',id,req_dt) as wfstatus,
-				workflow$suffix.RequestStatusDesc('PAYMENT',id,req_dt) as wfstatusdesc,
+				workflow$suffix.RequestStatus(a.city,'PAYMENT',id,req_dt) as wfstatus,
+				workflow$suffix.RequestStatusDesc(a.city,'PAYMENT',id,req_dt) as wfstatusdesc,
 				docman$suffix.countdoc('payreq',id) as payreqcountdoc,
 				docman$suffix.countdoc('tax',id) as taxcountdoc
 				from acc_request a, security$suffix.sec_user b where id=$index and id in ($list) 
@@ -140,8 +140,8 @@ class ConfReqForm extends CFormModel
 				}
 			}
 
-			$acctcodelist = General::getAcctCodeList();
-			$acctitemlist = General::getAcctItemList();
+			$acctcodelist = General::getAcctCodeList($this->city);
+			$acctitemlist = General::getAcctItemList($this->city);
 			if (isset($acctcodelist[$this->acct_code])) $this->acct_code_desc = $acctcodelist[$this->acct_code];
 			if (isset($acctitemlist[$this->item_code])) $this->pitem_desc = $acctitemlist[$this->item_code];
 			

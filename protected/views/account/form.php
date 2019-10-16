@@ -63,7 +63,7 @@ $this->pageTitle=Yii::app()->name . ' - Account Form';
 				<div class="col-sm-7">
 					<?php
 						if ($model->isReadOnly()) {
-							$typelist = General::getAcctTypeList(true);
+							$typelist = General::getAcctTypeList($model->city,true);
 							echo $form->hiddenField($model, 'acct_type_id');
 							echo TbHtml::textField('acct_type_id', $typelist[$model->acct_type_id], array('readonly'=>true));
 						} else {

@@ -97,10 +97,11 @@ class RptTransList extends CReport {	protected function fields() {		return arr
 			
 			$acctlist = General::getAccountList($citylist);
 			$ptypelist = General::getPayerTypeList();
-			$acctitemlist = General::getAcctItemList();
-			$acctcodelist = General::getAcctCodeList();
 			
 			foreach ($mrows as $row) {
+				$acctitemlist = General::getAcctItemList($row['city']);
+				$acctcodelist = General::getAcctCodeList($row['city']);
+
 				$temp = array();
 				$temp['trans_dt'] = General::toDate($row['trans_dt']);
 				$temp['trans_cat'] = empty($row['trans_cat']) ? '' : ($row['trans_cat']=='IN' ? Yii::t('trans','In') : Yii::t('trans','Out'));

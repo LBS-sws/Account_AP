@@ -26,18 +26,18 @@ class RptReimbursement extends CReport {
 		
 		if (empty($ref_no)) {
 			$sql = "select a.*, 
-						workflow$suffix.RequestStatusDate('PAYMENT',a.id,a.req_dt,'SI') as sts_dt,
-						workflow$suffix.ActionPerson('PAYMENT',a.id,a.req_dt,'PC') as acctstaff,
-						workflow$suffix.ActionPerson('PAYMENT',a.id,a.req_dt,'PS') as approver
+						workflow$suffix.RequestStatusDate(a.city,'PAYMENT',a.id,a.req_dt,'SI') as sts_dt,
+						workflow$suffix.ActionPerson(a.city,'PAYMENT',a.id,a.req_dt,'PC') as acctstaff,
+						workflow$suffix.ActionPerson(a.city,'PAYMENT',a.id,a.req_dt,'PS') as approver
 					from acc_request a
 					where a.city='$city' and a.status<>'V'
-					and workflow$suffix.RequestStatusDate('PAYMENT',a.id,a.req_dt,'SI')>='".General::toDate($start_dt)." 00:00:00' 
-					and workflow$suffix.RequestStatusDate('PAYMENT',a.id,a.req_dt,'SI')<='".General::toDate($end_dt)." 23:59:59'
+					and workflow$suffix.RequestStatusDate(a.city,'PAYMENT',a.id,a.req_dt,'SI')>='".General::toDate($start_dt)." 00:00:00' 
+					and workflow$suffix.RequestStatusDate(a.city,'PAYMENT',a.id,a.req_dt,'SI')<='".General::toDate($end_dt)." 23:59:59'
 				";
 		} else {
-			$sql = "select a.*, workflow$suffix.RequestStatusDate('PAYMENT',a.id,a.req_dt,'SI') as sts_dt,
-						workflow$suffix.ActionPerson('PAYMENT',a.id,a.req_dt,'PC') as acctstaff,
-						workflow$suffix.ActionPerson('PAYMENT',a.id,a.req_dt,'PS') as approver
+			$sql = "select a.*, workflow$suffix.RequestStatusDate(a.city,'PAYMENT',a.id,a.req_dt,'SI') as sts_dt,
+						workflow$suffix.ActionPerson(a.city,'PAYMENT',a.id,a.req_dt,'PC') as acctstaff,
+						workflow$suffix.ActionPerson(a.city,'PAYMENT',a.id,a.req_dt,'PS') as approver
 					from acc_request a 
 					inner join acc_request_info b on a.id=b.req_id and b.field_id='REF_NO' 
 					where a.city='$city' and a.status<>'V' 
@@ -49,7 +49,7 @@ class RptReimbursement extends CReport {
 //		var_dump($sql);
 		if (count($rows) > 0) {
 			$transtypelist = General::getTransTypeList($city,'OUT');
-			$acctcodelist = General::getAcctCodeList();
+			$acctcodelist = General::getAcctCodeList($city);
 			$acctlist = General::getAccountList($city);
 			foreach ($rows as $row) {
 				$req_id = $row['id'];

@@ -128,7 +128,7 @@ class TransTypeForm extends CFormModel
 
 	public function isOccupied($index) {
 		$city = Yii::app()->user->city();
-		$sql = "select a.trans_type_code from acc_trans_type a where a.trans_type_code='$index' and city='$city' limit 1";
+		$sql = "select a.trans_type_code from acc_trans a where a.trans_type_code='$index' and city='$city' limit 1";
 		$row = Yii::app()->db->createCommand($sql)->queryRow();
 		return ($row!==false);
 	}

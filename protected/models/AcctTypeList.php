@@ -21,11 +21,11 @@ class AcctTypeList extends CListPageModel
 		$city = Yii::app()->user->city();
 		$sql1 = "select a.* 
 				from acc_account_type a 
-				where a.id > 0 and a.city='$city'
+				where a.id > 0 and a.city in ('$city','99999')
 			";
 		$sql2 = "select count(a.id)
 				from acc_account_type a 
-				where a.id > 0 and a.city='$city' 
+				where a.id > 0 and a.city in ('$city','99999')
 			";
 		$clause = "";
 		if (!empty($this->searchField) && !empty($this->searchValue)) {

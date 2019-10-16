@@ -76,7 +76,7 @@ class General {
 	public static function getAcctTypeList($city)
 	{
 		$list = array();
-		$sql = "select id, acct_type_desc from acc_account_type where city='$city' order by acct_type_desc";
+		$sql = "select id, acct_type_desc from acc_account_type where city in ('$city','99999') order by acct_type_desc";
 		$rows = Yii::app()->db->createCommand($sql)->queryAll();
 		if (count($rows) > 0) {
 			foreach ($rows as $row) {

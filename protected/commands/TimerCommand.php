@@ -7,9 +7,9 @@ class TimerCommand extends CConsoleCommand
         $suffix = Yii::app()->params['envSuffix'];
         $firstDay = date("Y/m/d");
         $sql = "SELECT a.*,f.field_value,
-workflow$suffix.RequestStatus('PAYMENT',a.id,a.req_dt) as wfstatusdesc
+workflow$suffix.RequestStatus(a.city,'PAYMENT',a.id,a.req_dt) as wfstatusdesc
 FROM acc_request a left outer join acc_request_info f on f.req_id = a.id and f.field_id='ref_no'
-WHERE workflow$suffix.RequestStatus('PAYMENT',a.id,a.req_dt)<>'ED' and workflow$suffix.RequestStatus('PAYMENT',a.id,a.req_dt)<>''";
+WHERE workflow$suffix.RequestStatus(a.city,'PAYMENT',a.id,a.req_dt)<>'ED' and workflow$suffix.RequestStatus(a.city,'PAYMENT',a.id,a.req_dt)<>''";
         $records = Yii::app()->db->createCommand($sql)->queryAll();
         $firstDay = date("Y/m/d", strtotime("$firstDay - 30 day"));
         $firstDay1 = date("Y/m/d", strtotime("$firstDay - 60 day"));
