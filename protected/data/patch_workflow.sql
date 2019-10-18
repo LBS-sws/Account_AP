@@ -67,6 +67,7 @@ LIMIT 1
 );
 RETURN status;
 END ;;
+DELIMITER ;
 
 DROP FUNCTION IF EXISTS `RequestStatusDate`;
 DELIMITER ;;
@@ -94,6 +95,7 @@ LIMIT 1
 );
 RETURN status_dt;
 END ;;
+DELIMITER ;
 
 DROP FUNCTION IF EXISTS `RequestStatusDesc`;
 DELIMITER ;;
