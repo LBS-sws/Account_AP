@@ -64,7 +64,7 @@ return array(
 'Exceeds file upload limit.'=>'超出文件上傳限制。 ',
 'Mark read for all selected records?'=>'列表上的所有記錄標記為已讀？',
 'Mark Read Done'=>'標記已讀完成',
-'Are you sure to copy?'=>'確定複製?',
-'Setting copied'=>'設置複製完成',
+'Request Approved and Signed'=>'批准申請及簽字完成',
+'Request Confirmed'=>'確認申請完成',
 );
 ?>
