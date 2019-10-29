@@ -3,6 +3,7 @@
 class ApprReqList extends CListPageModel
 {
 	public $type;
+	public $showtaxonly = false;
 	
 	public function rules() {
 		$rtn = parent::rules();
