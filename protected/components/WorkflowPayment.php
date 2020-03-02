@@ -23,57 +23,78 @@ class WorkflowPayment extends WorkflowDMS {
 	}
 	
 	public function routeToApprover() {
+// Check Payee User ID 
+		$payee = $this->getRequestData('PAYEE_USER');
+// --
 		$value = $this->getRequestData('AMOUNT');
 		$amount = (empty($value)||!is_numeric($value)) ? 0 : $value;
 		$listappr = array();
 		if ($amount > 6000) {
-			$approver = $this->getApprover('regionHead'); //$this->seekBoss('CN');
-			if (!empty($approver)) $listappr[$approver] = 'A';
+//			$approver = $this->getApprover('regionHead'); //$this->seekBoss('CN');
+//			$listappr[$approver] = 'A';
+//			$this->assignRespUser($approver);
 		} elseif ($amount > 3000) {
-			$approver = $this->getApprover('regionHead'); //$this->seekBoss('CN');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionDirector');
-			if (!empty($approver)) $listappr[$approver] = 'A';
-		} elseif ($amount > 2000) {
-			$approver = $this->getApprover('regionHead'); //$this->seekBoss('CN');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionDirector');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionDirectorA');
-			if (!empty($approver)) $listappr[$approver] = 'A';
+			$approver1 = $this->getApprover('regionDirector');
+			$listappr[$approver1] = 'A';
+
+		} elseif ($amount > 1000) {
+			$approver1 = $this->getApprover('regionDirectorA');
+			$listappr[$approver1] = 'A';
+			$approver0 = $this->getApprover('regionDirector');
+			if (!isset($listappr[$approver0])) $listappr[$approver0] = 'S';
+
 		} elseif ($amount > 500) {
-			$approver = $this->getApprover('regionHead'); //$this->seekBoss('CN');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionDirector');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionDirectorA');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionMgr');
-			if (!empty($approver)) $listappr[$approver] = 'A';
+			$approver2 = $this->getApprover('regionMgr');
+			$listappr[$approver2] = 'A';
+			$approver1 = $this->getApprover('regionDirectorA');
+			if (!isset($listappr[$approver1])) $listappr[$approver1] = 'S';
+			$approver0 = $this->getApprover('regionDirector');
+			if (!isset($listappr[$approver0])) $listappr[$approver0] = 'S';
+
 		} else {
-			$approver = $this->getApprover('regionHead'); //$this->seekBoss('CN');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionDirector');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionDirectorA');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionMgr');
-			if (!empty($approver)) $listappr[$approver] = 'S';
-			$approver = $this->getApprover('regionMgrA');
-			if (!empty($approver)) $listappr[$approver] = 'A';
-			$approver = $this->getApprover('regionSuper');
-			if (!empty($approver)) $listappr[$approver] = 'A';
+			$approver2 = $this->getApprover('regionSuper');
+			if (!empty($approver2)) $listappr[$approver2] = 'A';
+			$approver1 = $this->getApprover('regionMgrA');
+			if (!isset($listappr[$approver1])) $listappr[$approver1] = 'A';
+			$approver0 = $this->getApprover('regionMgr');
+			if (!isset($listappr[$approver0])) $listappr[$approver0] = 'S';
+			$approver3 = $this->getApprover('regionDirectorA');
+			if (!isset($listappr[$approver3])) $listappr[$approver3] = 'S';
+			$approver4 = $this->getApprover('regionDirector');
+			if (!isset($listappr[$approver4])) $listappr[$approver4] = 'S';
 		}
-//		var_dump($listappr);
-		foreach ($listappr as $key=>$value) {
-			if ($value=='A') {
-				$this->assignRespUser($key);
-			} else {
-				$this->assignRespStandbyUser($key);
+		$listappr = $this->assignment($payee, $listappr);
+
+		$approver = $this->getApprover('regionHead'); //$this->seekBoss('CN');
+		if (empty($listappr)) {
+			$this->assignRespUser($approver);
+			$listappr[$approver] = 'A';
+		} else {
+			$this->assignRespStandbyUser($approver);
+			$listappr[$approver] = 'S';
+		}
+
+		$this->assignDelegatedUser($listappr);
+	}
+
+	protected function assignment($payee, $approvers) {
+		$rtn = array();
+
+		$bAssign = false;
+		foreach ($approvers as $user=>$type) {
+			if (empty($payee) || $user!=$payee) {
+				if (!$bAssign || $type=='A') {
+					$this->assignRespUser($user);
+					$bAssign = true;
+					$rtn[$user] = 'A';
+				} else {
+					$this->assignRespStandbyUser($user);
+					$rtn[$user] = 'S';
+				}
 			}
 		}
-		$this->assignDelegatedUser($listappr);
-//		Yii::app()->end();
+		
+		return $rtn;
 	}
 
 	public function routeToManager() {
