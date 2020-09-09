@@ -11,7 +11,7 @@ class ScheduleCommand extends CConsoleCommand {
 	public function actionRptReimbReminder($whitelist='', $blacklist='') {
 		$tdate = date("Y/m/d");
 		$this->rptId = 'RptReimbReminder';
-		$this->rptName = Yii::t('report','Summary Report - Reimbursement Not Completed Over 2 Months');
+		$this->rptName = Yii::t('report','Summary Report - Reimbursement Not Completed Over 1 Months');
 		$this->reqUser = 'admin';
 		$this->format = 'EMAIL';
 	
@@ -30,6 +30,35 @@ class ScheduleCommand extends CConsoleCommand {
 						'CITY'=>$city,
 						'TARGET_DT'=>General::toMyDate($tdate),
 						'LANGUAGE'=>'zh_cn',
+						'CITY_NAME'=>$name,
+					);
+				$this->addQueueItem();
+			}
+		}
+	}
+
+	public function actionRptReimbReminderDaily($whitelist='', $blacklist='') {
+		$tdate = date("Y/m/d");
+		$this->rptId = 'RptReimbReminderDaily';
+		$this->rptName = Yii::t('report','Reimbursement Not Completed Over 1 Months');
+		$this->reqUser = 'admin';
+		$this->format = 'EMAIL';
+	
+		$cities = General::getCityListWithNoDescendant();
+		foreach ($cities as $city=>$name) {
+			if (!empty($whitelist)) {
+				$flag = (strpos($whitelist,$city)!==false);
+			} else {
+				$flag = (empty($blacklist) || (strpos($blacklist,$city)===false));
+			}
+			
+			if ($flag) {
+				$this->data = array(
+						'RPT_ID'=>$this->rptId,
+						'RPT_NAME'=>$this->rptName,
+						'CITY'=>$city,
+						'TARGET_DT'=>General::toMyDate($tdate),
+						'LANGUAGE'=>'en',
 						'CITY_NAME'=>$name,
 					);
 				$this->addQueueItem();

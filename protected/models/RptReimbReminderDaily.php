@@ -1,5 +1,5 @@
 <?php
-class RptReimbReminder extends CReport {
+class RptReimbReminderDaily extends CReport {
 	protected $result;
 
 	public function genReport() {
@@ -48,11 +48,21 @@ class RptReimbReminder extends CReport {
 		
 		$mgr = array();
 		$sql = "select username from acc_approver where city='$city' 
-				and approver_type in ('regionHead', 'regionDirector', 'regionDirectorA')
+				and approver_type in ('regionMgr', 'regionMgrA')
 		";
 		$rows = Yii::app()->db->createCommand($sql)->queryAll();
 		foreach ($rows as $row) {
 			$mgr[] = $row['username'];
+		}
+
+		$staff = $this->getUserWithRights($city, 'XA06', true);
+		if (!empty($staff)) {
+			$mgr = array_merge($mgr, $staff);
+		}
+
+		$acct = $this->getUserWithRights($city, 'CN01');
+		if (!empty($acct)) {
+			$mgr = array_merge($mgr, $acct);
 		}
 		
 		$to = General::getEmailByUserIdArray($mgr);
@@ -66,8 +76,8 @@ class RptReimbReminder extends CReport {
 //
 		$cc = array();
 		
-		$subject = Yii::t('report','Summary Report - Reimbursement Not Completed Over 1 Months').' ('.General::getCityName($city).') - '.General::toDate($date);
-		$desc = Yii::t('report','Summary Report - Reimbursement Not Completed Over 1 Months').' ('.General::getCityName($city).') - '.General::toDate($date);
+		$subject = Yii::t('report','Reimbursement Not Completed Over 1 Months').' ('.General::getCityName($city).') - '.General::toDate($date);
+		$desc = Yii::t('report','Reimbursement Not Completed Over 1 Months').' ('.General::getCityName($city).') - '.General::toDate($date);
 		
 		$param = array(
 				'from_addr'=>Yii::app()->params['systemEmail'],

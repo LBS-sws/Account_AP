@@ -79,6 +79,7 @@ class AccountForm extends CFormModel
 				$this->coa = $row['coa'];
 				$this->city = $row['city'];
 				$this->trans_city = $row['trans_city'];
+				$this->status = isset($row['status']) ? $row['status'] : 'Y';
 				break;
 			}
 		}

@@ -55,6 +55,20 @@ class RptReimbReminder extends CReport {
 			$mgr[] = $row['username'];
 		}
 		
+		$mgr = City::model()->getAncestorInChargeList($city);
+		$usr = City::model()->findByPk($city)->incharge;
+		if (!empty($usr)) $mgr[] = $usr;
+		
+		$staff = $this->getUserWithRights($city, 'XA06', true);
+		if (!empty($staff)) {
+			$mgr = array_merge($mgr, $staff);
+		}
+
+		$acct = $this->getUserWithRights($city, 'CN01');
+		if (!empty($acct)) {
+			$mgr = array_merge($mgr, $acct);
+		}
+		
 		$to = General::getEmailByUserIdArray($mgr);
 		$to = General::dedupToEmailList($to);
 // Remove Joe Yiu from to address
