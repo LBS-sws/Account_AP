@@ -1,6 +1,6 @@
 <?php
 class Invoice {
-	public static function getData($city, $start, $end) {
+	public static function getData($city, $start, $end, $customer='') {
 		$rtn = array('message'=>'', 'data'=>array());
 		
 		$key = Yii::app()->params['unitedKey'];
@@ -12,6 +12,7 @@ class Invoice {
 			"end"=>$end,
 			"city"=>$city
 		);
+		if (!empty($customer)) $data['customer'] = $customer;
 		$data_string = json_encode($data);
 
 		$ch = curl_init($url);
