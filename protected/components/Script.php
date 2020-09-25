@@ -33,7 +33,7 @@ function lookupselect() {
 			$.each(others, function(idx, item) {
 				var field = item.split(",");
 				if (field.length > 0) {
-					var fldId = 'otherfld_'+codeval+'_'+field[0];
+					var fldId = 'otherfld_'+codeval.replace('/','')+'_'+field[0];
 					var fldVal = $('#'+fldId).val();
 					$('#'+field[1]).val(fldVal);
 				}
@@ -184,7 +184,7 @@ $('#btnLookup').on('click',function(){
 					$.each(others, function(idx, item) {
 						var field = item.split(",");
 						if (field.length > 0) {
-							var hidden = $('<input/>',{type:'hidden',id:'otherfld_'+element.id+'_'+field[0], value:element[field[0]]});
+							var hidden = $('<input/>',{type:'hidden',id:'otherfld_'+element.id.replace('/','')+'_'+field[0], value:element[field[0]]});
 							hidden.appendTo('#fieldvalue');
 						}
 					});
