@@ -155,7 +155,7 @@ return array(
 //                'url'=>'/payrollappr/index',
 //            ),
 //        ),
-    ),
+//    ),
 	'System Setting'=>array(
 		'access'=>'XC',
 		'icon'=>'fa-gear',

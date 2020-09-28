@@ -209,8 +209,8 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
             <div class="form-group">
                 <?php echo $form->labelEx($model,'disc',array('class'=>"col-sm-2 control-label")); ?>
                 <div class="col-sm-3">
-                    <?php echo $form->numberField($model, 'disc',
-                        array('size'=>40,'min'=>0,'readonly'=>'readonly')
+                    <?php echo $form->textField($model, 'disc',
+                        array('size'=>40,'maxlength'=>250,'readonly'=>'readonly')
                     ); ?>
                 </div>
             </div>
@@ -258,10 +258,16 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
 
 <?php
 $js = "
-$('#StaffForm_ctrt_period').on('change',function() {
-	showRenewDate();
+$(document).ready(function(){
+$('#all').on('click',function() {  
+              $('input[name='InvoiceList[attr][]']').prop('checked', this.checked);  
+        });     
+            
+        $('input[name='InvoiceList[attr][]']').on('click',function() {  
+              var subs = $('input[name='InvoiceList[attr][]']');  
+              $('#all').prop('checked' ,subs.length == subs.filter(':checked').length ? true :false);  
+        });
 });
-
 
 function IsNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);

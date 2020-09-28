@@ -121,7 +121,8 @@ class InvoiceForm extends CFormModel
                 $this->delivery_company = $delivery['delivery_company'];
                 $this->delivery_address = $delivery['delivery_address'];
                 $this->delivery_tel = $delivery['delivery_tel'];
-				$this->disc = $row['disc'];
+                $disc=$row['disc']*100;
+				$this->disc = $disc."%";
                 $arr=array_sum(array_map(create_function('$val', 'return $val["amount"];'), $type));
 				$this->sub_total = sprintf("%.2f",$arr);
 				$this->gst = sprintf("%.2f",($arr*$row['disc']));
@@ -258,7 +259,7 @@ class InvoiceForm extends CFormModel
 				$sql = "update acc_invoice set
                             payment_term=:payment_term,
                             customer_po_no=:customer_po_no,
-                            sales_order_no=sales_order_no,
+                            sales_order_no=:sales_order_no,
                             sales_order_date=:sales_order_date,
                             ship_via=:ship_via,
                             salesperson=:salesperson,                      
@@ -282,7 +283,8 @@ class InvoiceForm extends CFormModel
 			$command->bindParam(':payment_term',$this->payment_term,PDO::PARAM_STR);
 		if (strpos($sql,':customer_po_no')!==false)
 			$command->bindParam(':customer_po_no',$this->customer_po_no,PDO::PARAM_STR);
-		if (strpos($sql,':sales_order_no')!==false)
+		//print_r($this->sales_order_no);exit();
+        if (strpos($sql,':sales_order_no')!==false)
 			$command->bindParam(':sales_order_no',$this->sales_order_no,PDO::PARAM_STR);
 		if (strpos($sql,':sales_order_date')!==false) {
 			$sales_order_date = General::toMyDate($this->sales_order_date);
