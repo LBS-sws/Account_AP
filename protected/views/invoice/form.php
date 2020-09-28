@@ -258,17 +258,6 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
 
 <?php
 $js = "
-$(document).ready(function(){
-$('#all').on('click',function() {  
-              $('input[name='InvoiceList[attr][]']').prop('checked', this.checked);  
-        });     
-            
-        $('input[name='InvoiceList[attr][]']').on('click',function() {  
-              var subs = $('input[name='InvoiceList[attr][]']');  
-              $('#all').prop('checked' ,subs.length == subs.filter(':checked').length ? true :false);  
-        });
-});
-
 function IsNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }

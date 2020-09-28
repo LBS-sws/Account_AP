@@ -72,6 +72,11 @@ $js = "
 $('.che').on('click', function(e){
 e.stopPropagation();
 });
+
+$('body').on('click','#all',function() {
+	var val = $(this).prop('checked');
+	$('input[type=checkbox][name*=\"InvoiceList[attr][]\"]').prop('checked',val);
+});
 ";
 Yii::app()->clientScript->registerScript('selectAll',$js,CClientScript::POS_READY);
 ?>
