@@ -266,7 +266,7 @@ class InvoiceForm extends CFormModel
                             invoice_company=:invoice_company,
                             invoice_address=:invoice_address,
                             invoice_tel=:invoice_tel,
-                            disc=:disc,
+                        
                             sub_total=:sub_total,
                             gst=:gst,
                             total_amount=:total_amount,                                                                                                               
@@ -300,8 +300,8 @@ class InvoiceForm extends CFormModel
 			$command->bindParam(':invoice_address',$this->invoice_address,PDO::PARAM_STR);
 		if (strpos($sql,':invoice_tel')!==false)
 			$command->bindParam(':invoice_tel',$this->invoice_tel,PDO::PARAM_STR);
-		if (strpos($sql,':disc')!==false)
-			$command->bindParam(':disc',$this->disc,PDO::PARAM_STR);
+//		if (strpos($sql,':disc')!==false)
+//			$command->bindParam(':disc',$this->disc,PDO::PARAM_STR);
         if (strpos($sql,':sub_total')!==false)
             $command->bindParam(':sub_total',$this->sub_total,PDO::PARAM_STR);
         if (strpos($sql,':gst')!==false)
@@ -453,6 +453,7 @@ EOD;
         $date=str_replace('/','-',$model->dates);
         $result = substr($_SERVER['SCRIPT_FILENAME'],0,strrpos($_SERVER['SCRIPT_FILENAME'],"/"));
         $address=$result.'/PDF/'.$date."-".$model->invoice_company.'.pdf';
+        print_r($address);exit();
         $outstring =$pdf->Output($address, 'F');
         return $address;
     }
