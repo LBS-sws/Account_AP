@@ -55,6 +55,10 @@ return array(
 //				'access'=>'XE06',
 //				'url'=>'/baladj/index',
 //			),
+			'Bank Balance'=>array(
+				'access'=>'XE07',
+				'url'=>'/acctfile/index',
+			),
 		),
 	),
 	'Report'=>array(
@@ -109,6 +113,49 @@ return array(
 			),
 		),
 	),
+
+    'Generate Invoice'=>array(
+        'access'=>'XI',
+        'icon'=>'fa-bolt',
+        'items'=>array(
+            'Invoice'=>array(
+                'access'=>'XI01',
+                'url'=>'/invoice/index',
+            ),
+        ),
+    ),
+
+
+//    'Salary calculation'=>array(
+//        'access'=>'XS',
+//        'icon'=>'fa-money',
+//        'items'=>array(
+//            'Sales Commission'=>array(
+//                'access'=>'XS01',
+//                'url'=>'/commission/index',
+//            ),
+//            'Sales Commission history'=>array(
+//                'access'=>'XS02',
+//                'url'=>'/query/index',
+//            ),
+//            'Sales Commission ladder'=>array(
+//                'access'=>'XS03',
+//                'url'=>'/srate/index',
+//            ),
+//            'Prize Vault'=>array(
+//                'access'=>'XS04',
+//                'url'=>'/bonus/index',
+//            ),
+//            'Payroll File'=>array(
+//                'access'=>'XS05',
+//                'url'=>'/payroll/index',
+//            ),
+//            'Payroll File Approval'=>array(
+//                'access'=>'XS06',
+//                'url'=>'/payrollappr/index',
+//            ),
+//        ),
+    ),
 	'System Setting'=>array(
 		'access'=>'XC',
 		'icon'=>'fa-gear',
@@ -116,21 +163,17 @@ return array(
 			'Account Type'=>array(
 				'access'=>'XC01',
 				'url'=>'/accttype/index',
-#				'tag'=>'@',
+				'tag'=>'@',
 			),
 			'Transaction Type'=>array(
 				'access'=>'XC03',
 				'url'=>'/transtype/index',
-#				'tag'=>'@',
+				'tag'=>'@',
 			),
 			'Accounting Item'=>array(
 				'access'=>'XC06',
 				'url'=>'/acctitem/index',
-#				'tag'=>'@',
-			),
-			'Accounting Code'=>array(
-				'access'=>'XC10',
-				'url'=>'/acctcode/index',
+				'tag'=>'@',
 			),
 			'Default Account'=>array(
 				'access'=>'XC05',
@@ -152,10 +195,21 @@ return array(
 				'access'=>'XC08',
 				'url'=>'/site/notifyopt',
 			),
-			'Copy Setting'=>array(
-				'access'=>'XC09',
-				'url'=>'/site/copysetting',
-			),
 		),
 	),
+//	'Security'=>array(
+//		'access'=>'XD',
+//		'items'=>array(
+//			'User'=>array(
+//				'access'=>'XD01',
+//				'url'=>'/user/index',
+//				'tag'=>'@',
+//			),
+//			'Group'=>array(
+//				'access'=>'XD02',
+//				'url'=>'/group/index',
+//				'tag'=>'@',
+//			),
+//		),
+//	),
 );
