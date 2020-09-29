@@ -219,7 +219,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
                 <?php echo $form->labelEx($model,'sub_total',array('class'=>"col-sm-2 control-label")); ?>
                 <div class="col-sm-3">
                     <?php echo $form->numberField($model, 'sub_total',
-                        array('size'=>40,'min'=>0,'readonly'=>'readonly')
+                        array('size'=>40,'min'=>0,'readonly'=>'')
                     ); ?>
                 </div>
             </div>

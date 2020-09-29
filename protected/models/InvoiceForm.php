@@ -151,7 +151,6 @@ class InvoiceForm extends CFormModel
 //                print_r('<pre>');
 //                print_r($this->city);exit();
                 $transaction->commit();
-
             }
             catch(Exception $e) {
                 $transaction->rollback();
@@ -225,8 +224,109 @@ class InvoiceForm extends CFormModel
                         if (strpos($sql,':unit_price')!==false)
                             $command->bindParam(':unit_price',$line['unit_price'],PDO::PARAM_STR);
                         if (strpos($sql,':amount')!==false)
-                            $command->bindParam(':amount',$line['invoice_amt'],PDO::PARAM_STR);
+                            $amount=$line['unit_price']*$line['qty'];
+                            $command->bindParam(':amount',$amount,PDO::PARAM_STR);
                         $command->execute();
+                        if(isset($line['product_name2'])){
+                            $sql1="insert into acc_invoice_type (
+                            invoice_id,description,quantity,unit_price,amount
+                          ) value (
+                           :invoice_id,:description,:quantity,:unit_price,:amount
+                          )";
+                            $command=$connection->createCommand($sql1);
+                            if (strpos($sql,':invoice_id')!==false)
+                                $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':description')!==false)
+                                $command->bindParam(':description',$line['product_name2'],PDO::PARAM_STR);
+                            if (strpos($sql,':quantity')!==false)
+                                $command->bindParam(':quantity',$line['qty2'],PDO::PARAM_STR);
+                            if (strpos($sql,':unit_price')!==false)
+                                $command->bindParam(':unit_price',$line['unit_price2'],PDO::PARAM_STR);
+                            if (strpos($sql,':amount')!==false)
+                                $amount=$line['unit_price2']*$line['qty2'];
+                            $command->bindParam(':amount',$amount,PDO::PARAM_STR);
+                            $command->execute();
+                        }
+                        if(isset($line['product_name3'])){
+                            $sql1="insert into acc_invoice_type (
+                            invoice_id,description,quantity,unit_price,amount
+                          ) value (
+                           :invoice_id,:description,:quantity,:unit_price,:amount
+                          )";
+                            $command=$connection->createCommand($sql1);
+                            if (strpos($sql,':invoice_id')!==false)
+                                $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':description')!==false)
+                                $command->bindParam(':description',$line['product_name3'],PDO::PARAM_STR);
+                            if (strpos($sql,':quantity')!==false)
+                                $command->bindParam(':quantity',$line['qty3'],PDO::PARAM_STR);
+                            if (strpos($sql,':unit_price')!==false)
+                                $command->bindParam(':unit_price',$line['unit_price3'],PDO::PARAM_STR);
+                            if (strpos($sql,':amount')!==false)
+                                $amount=$line['unit_price3']*$line['qty3'];
+                            $command->bindParam(':amount',$amount,PDO::PARAM_STR);
+                            $command->execute();
+                        }
+                        if(isset($line['product_name4'])){
+                            $sql1="insert into acc_invoice_type (
+                            invoice_id,description,quantity,unit_price,amount
+                          ) value (
+                           :invoice_id,:description,:quantity,:unit_price,:amount
+                          )";
+                            $command=$connection->createCommand($sql1);
+                            if (strpos($sql,':invoice_id')!==false)
+                                $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':description')!==false)
+                                $command->bindParam(':description',$line['product_name4'],PDO::PARAM_STR);
+                            if (strpos($sql,':quantity')!==false)
+                                $command->bindParam(':quantity',$line['qty4'],PDO::PARAM_STR);
+                            if (strpos($sql,':unit_price')!==false)
+                                $command->bindParam(':unit_price',$line['unit_price4'],PDO::PARAM_STR);
+                            if (strpos($sql,':amount')!==false)
+                                $amount=$line['unit_price4']*$line['qty4'];
+                            $command->bindParam(':amount',$amount,PDO::PARAM_STR);
+                            $command->execute();
+                        }
+                        if(isset($line['product_name5'])){
+                            $sql1="insert into acc_invoice_type (
+                            invoice_id,description,quantity,unit_price,amount
+                          ) value (
+                           :invoice_id,:description,:quantity,:unit_price,:amount
+                          )";
+                            $command=$connection->createCommand($sql1);
+                            if (strpos($sql,':invoice_id')!==false)
+                                $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':description')!==false)
+                                $command->bindParam(':description',$line['product_name5'],PDO::PARAM_STR);
+                            if (strpos($sql,':quantity')!==false)
+                                $command->bindParam(':quantity',$line['qty5'],PDO::PARAM_STR);
+                            if (strpos($sql,':unit_price')!==false)
+                                $command->bindParam(':unit_price',$line['unit_price5'],PDO::PARAM_STR);
+                            if (strpos($sql,':amount')!==false)
+                                $amount=$line['unit_price5']*$line['qty5'];
+                            $command->bindParam(':amount',$amount,PDO::PARAM_STR);
+                            $command->execute();
+                        }
+                        if(isset($line['product_name6'])){
+                            $sql1="insert into acc_invoice_type (
+                            invoice_id,description,quantity,unit_price,amount
+                          ) value (
+                           :invoice_id,:description,:quantity,:unit_price,:amount
+                          )";
+                            $command=$connection->createCommand($sql1);
+                            if (strpos($sql,':invoice_id')!==false)
+                                $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':description')!==false)
+                                $command->bindParam(':description',$line['product_name6'],PDO::PARAM_STR);
+                            if (strpos($sql,':quantity')!==false)
+                                $command->bindParam(':quantity',$line['qty6'],PDO::PARAM_STR);
+                            if (strpos($sql,':unit_price')!==false)
+                                $command->bindParam(':unit_price',$line['unit_price6'],PDO::PARAM_STR);
+                            if (strpos($sql,':amount')!==false)
+                                $amount=$line['unit_price6']*$line['qty6'];
+                            $command->bindParam(':amount',$amount,PDO::PARAM_STR);
+                            $command->execute();
+                        }
                     }
                 }
             }
@@ -451,9 +551,10 @@ EOD;
         $pdf->writeHTML($tbl, true, false, false, false, '');
         ob_clean();
         $date=str_replace('/','-',$model->dates);
-        $result = substr($_SERVER['SCRIPT_FILENAME'],0,strrpos($_SERVER['SCRIPT_FILENAME'],"/"));
-        $address=$result.'/PDF/'.$date."-".$model->invoice_company.'.pdf';
-        print_r($address);exit();
+        $a=__FILE__;
+        $result = substr($a,0,strrpos($a,"/"));
+        $address=getcwd().'/PDF/'.$date."-".$model->invoice_company.'.pdf';
+      //  print_r($address);exit();
         $outstring =$pdf->Output($address, 'F');
         return $address;
     }
