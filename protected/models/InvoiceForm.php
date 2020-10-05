@@ -552,7 +552,7 @@ EOD;
         ob_clean();
         $date=str_replace('/','-',$model->dates);
        // $a=Yii::app()->basePath;
-        $address="/temp/".$date."-".$model->invoice_company.'.pdf';
+        $address="/tmp/".$date."-".$model->invoice_company.'.pdf';
         //print_r( $tem_dir);exit();
         $outstring =$pdf->Output($address, 'F');
         return $address;
