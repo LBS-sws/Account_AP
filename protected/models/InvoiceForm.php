@@ -551,9 +551,9 @@ EOD;
         $pdf->writeHTML($tbl, true, false, false, false, '');
         ob_clean();
         $date=str_replace('/','-',$model->dates);
-       // $a=Yii::app()->basePath;
         $address="/tmp/".$date."-".$model->invoice_company.'.pdf';
-        //print_r( $tem_dir);exit();
+//        $tem_dir = $_SERVER['SystemRoot'].'/temp';
+//        $address=$tem_dir.$date."-".$model->invoice_company.'.pdf';
         $outstring =$pdf->Output($address, 'F');
         return $address;
     }
@@ -580,8 +580,8 @@ EOD;
 
 ///Then download the zipped file.
         header('Content-Type: application/zip');
-        header('Content-disposition: attachment; filename='.$zipname);
-        header('Content-Length: ' . filesize($zipname));
+     //   header('Content-disposition: attachment; filename='.$zipname);
+       // header('Content-Length: '.filesize($zipname));
         readfile($zipname);
         unlink($zipname);
         foreach ($files as $a){
