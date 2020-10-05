@@ -132,6 +132,7 @@ class InvoiceController extends Controller
                 $model->retrieveData($a);
                 $address[]=$model->allDowns($model);
             }
+            print_r($address);exit();
             $model->zip($address);
         }else{
             Dialog::message(Yii::t('dialog','Warning'), Yii::t('dialog','No Record Found'));
