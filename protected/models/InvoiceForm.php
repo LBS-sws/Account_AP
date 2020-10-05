@@ -551,10 +551,9 @@ EOD;
         $pdf->writeHTML($tbl, true, false, false, false, '');
         ob_clean();
         $date=str_replace('/','-',$model->dates);
-        $a=__FILE__;
-        $result = substr($a,0,strrpos($a,"/"));
-        $address=getcwd().'/PDF/'.$date."-".$model->invoice_company.'.pdf';
-      //  print_r($address);exit();
+        $a=Yii::app()->basePath;
+        $address=$a.'/PDF/'.$date."-".$model->invoice_company.'.pdf';
+       // print_r( $address);exit();
         $outstring =$pdf->Output($address, 'F');
         return $address;
     }
