@@ -551,9 +551,10 @@ EOD;
         $pdf->writeHTML($tbl, true, false, false, false, '');
         ob_clean();
         $date=str_replace('/','-',$model->dates);
-        $a=Yii::app()->basePath;
-        $address=$a.'/commands/'.$date."-".$model->invoice_company.'.pdf';
-     //   print_r( $address);exit();
+       // $a=Yii::app()->basePath;
+        $tem_dir = $_SERVER['SystemRoot'].'/temp';
+        $address=$tem_dir.$date."-".$model->invoice_company.'.pdf';
+        //print_r( $tem_dir);exit();
         $outstring =$pdf->Output($address, 'F');
         return $address;
     }
