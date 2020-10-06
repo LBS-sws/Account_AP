@@ -573,7 +573,6 @@ EOD;
 //            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 //            $fileContent = curl_exec($ch);
 //            curl_close($ch);
-//            $result = strrchr($file,"/");
             $result = basename($file);
             $zip->addFile(sys_get_temp_dir().$file,$result);
         }
@@ -581,8 +580,8 @@ EOD;
 
 ///Then download the zipped file.
         header('Content-Type: application/zip');
-     //   header('Content-disposition: attachment; filename='.$zipname);
-       // header('Content-Length: '.filesize($zipname));
+        header('Content-disposition: attachment; filename='.$zipname);
+        header('Content-Length: '.filesize($zipname));
         readfile($zipname);
         unlink($zipname);
         foreach ($files as $a){
