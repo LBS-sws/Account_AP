@@ -563,7 +563,7 @@ EOD;
 
     public function zip($files){
 //        $files = array('image.jpeg','text.txt','music.wav');
-        $zipname = 'zipped_file.zip';
+        $zipname = sys_get_temp_dir().'/'.'zipped_file.zip';
         $zip = new ZipArchive;
         $zip->open($zipname, ZipArchive::CREATE);
         foreach ($files as $file) {
@@ -573,7 +573,8 @@ EOD;
 //            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 //            $fileContent = curl_exec($ch);
 //            curl_close($ch);
-            $result = strrchr($file,"/");
+//            $result = strrchr($file,"/");
+            $result = basename($file);
             $zip->addFile(sys_get_temp_dir().$file,$result);
         }
         $zip->close();
