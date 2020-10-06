@@ -551,10 +551,10 @@ EOD;
         $pdf->writeHTML($tbl, true, false, false, false, '');
         ob_clean();
         $date=str_replace('/','-',$model->dates);
-        $address="/tmp/".$date."-".$model->invoice_company.'.pdf';
+        $address="/".$date."-".$model->invoice_company.'.pdf';
 //        $tem_dir = $_SERVER['SystemRoot'].'/temp';
 //        $address=$tem_dir.$date."-".$model->invoice_company.'.pdf';
-        $outstring =$pdf->Output($address, 'F');
+        $outstring =$pdf->Output(sys_get_temp_dir().$address, 'F');
         return $address;
     }
 
@@ -574,7 +574,7 @@ EOD;
 //            $fileContent = curl_exec($ch);
 //            curl_close($ch);
             $result = strrchr($file,"/");
-            $zip->addFile($file,$result);
+            $zip->addFile(sys_get_temp_dir().$file,$result);
         }
         $zip->close();
 
