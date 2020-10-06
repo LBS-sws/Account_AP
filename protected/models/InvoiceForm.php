@@ -567,12 +567,12 @@ EOD;
         $zip = new ZipArchive;
         $zip->open($zipname, ZipArchive::CREATE);
         foreach ($files as $file) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_POST, 0);
-            curl_setopt($ch, CURLOPT_URL, $file);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $fileContent = curl_exec($ch);
-            curl_close($ch);
+//            $ch = curl_init();
+//            curl_setopt($ch, CURLOPT_POST, 0);
+//            curl_setopt($ch, CURLOPT_URL, $file);
+//            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//            $fileContent = curl_exec($ch);
+//            curl_close($ch);
             $result = strrchr($file,"/");
             $zip->addFile($file,$result);
         }
