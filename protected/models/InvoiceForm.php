@@ -486,7 +486,7 @@ class InvoiceForm extends CFormModel
                     <td colspan="10" width="180px;">LBS SERVICES (SINGAPORE) PTE LTD</td><td width="100px;"></td><td width="100px;"></td><td width="20px;"></td><td width="70px;"></td><td width="100px;" rowspan="3"><img  src="images/biao.png" ></td>
                 </tr>
                 <tr>
-                    <td colspan="10" width="180px;">No.5 Penjuru Close #03-00 Singapore 608600</td><td></td><td></td><td></td><td></td>
+                    <td colspan="12" width="200px;">No.5 Penjuru Close #03-00 Singapore 608600</td><td></td><td></td>
                 </tr>
                 <tr>
                     <td colspan="10" width="180px;">Tel (65) 6862 3777 Fax (65) 6862 8628</td><td> </td><td></td><td></td><td></td>
@@ -513,9 +513,9 @@ class InvoiceForm extends CFormModel
                  <tr><td width="20px;"> </td><td height="20px;">Sales Order Date:</td><td>$model->sales_order_date</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Ship Via:</td><td>$model->ship_via</td></tr>
             </table>           
-             <table border="1"  cellspacing="0" cellpadding="0" style="width: 570px;line-height: 20px;text-align: center;">
-                  <tr><td></td></tr>
-                  <tr><td width="30px;">No</td><td width="320px;">Stock Code/Description</td><td width="50px;">Quantity</td><td width="70px;">Unit Price</td><td width="30px;">Disc %</td><td width="70px;">Amount</td></tr>   
+             <table  cellspacing="0" cellpadding="0" style="width: 570px;line-height: 20px;text-align: center;">
+                  <tr ><td></td></tr>
+                  <tr ><td width="30px;" border="1">No</td><td width="320px;" border="1">Stock Code/Description</td><td width="50px;" border="1">Quantity</td><td width="70px;" border="1">Unit Price</td><td width="30px;" border="1">Disc %</td><td width="70px;" border="1">Amount</td></tr>   
 EOD;
         $a='';
         foreach ($model->type as $value){
@@ -527,7 +527,7 @@ EOD;
             $a.=$disc."<br/>";
         }
         $tbl.=<<<EOD
-        <tr ><td  rowspan="9" height="270px;"></td><td rowspan="9" height="270px;">$model->description</td><td rowspan="9" height="270px;">$model->quantity</td><td rowspan="9" height="270px;">$model->unit_price</td><td rowspan="9" height="270px;">$a</td><td rowspan="9" height="270px;">$model->amount</td></tr>   
+        <tr ><td  rowspan="9" height="270px;" border="1"></td><td rowspan="9" height="270px;" border="1">$model->description</td><td rowspan="9" height="270px;" border="1">$model->quantity</td><td rowspan="9" height="270px;" border="1">$model->unit_price</td><td rowspan="9" height="270px;" border="1">$a</td><td rowspan="9" height="270px;" border="1">$model->amount</td></tr>   
 EOD;
 
 
