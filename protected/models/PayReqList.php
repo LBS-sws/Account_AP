@@ -21,6 +21,8 @@ class PayReqList extends CListPageModel
 	
 	public function searchColumns() {
 		$suffix = Yii::app()->params['envSuffix'];
+		$version = Yii::app()->params['version'];
+		$cityarg = ($version=='intl' ? 'a.city,' : '');
 		$search = array(
 			'req_dt'=>"date_format(a.req_dt,'%Y/%m/%d')",
 			'trans_type_desc'=>'e.trans_type_desc',
@@ -32,7 +34,7 @@ class PayReqList extends CListPageModel
 							else '".Yii::t('misc','No')."' 
 						end) ",
 			'amount'=>'a.amount',
-			'wfstatusdesc'=>"workflow$suffix.RequestStatusDesc(a.city,'PAYMENT',a.id,a.req_dt)",
+			'wfstatusdesc'=>"workflow$suffix.RequestStatusDesc($cityarg 'PAYMENT',a.id,a.req_dt)",
 		);
 		if (!Yii::app()->user->isSingleCity()) $search['city_name'] = 'b.name';
 		return $search;
@@ -41,12 +43,15 @@ class PayReqList extends CListPageModel
 	public function retrieveDataByPage($pageNum=1)
 	{
 		$suffix = Yii::app()->params['envSuffix'];
+		$version = Yii::app()->params['version'];
+		$citystr = ($version=='intl' ? ' and a.city=e.city ' : '');
+		$cityarg = ($version=='intl' ? 'a.city,' : '');
 		$city = Yii::app()->user->city_allow();
 		$user = Yii::app()->user->id;
 		$sql1 = "select a.id, a.req_dt, e.trans_type_desc, a.item_desc, a.payee_name,
 					b.name as city_name, a.amount, a.status, f.field_value as ref_no, a.req_user, 
 					g.field_value as int_fee, j.acct_type_desc, k.field_value as trans_id,
-					(select case workflow$suffix.RequestStatus(a.city,'PAYMENT',a.id,a.req_dt)
+					(select case workflow$suffix.RequestStatus($cityarg 'PAYMENT',a.id,a.req_dt)
 							when '' then '0DF' 
 							when 'PC' then '1PC' 
 							when 'PB' then '2PB' 
@@ -56,28 +61,28 @@ class PayReqList extends CListPageModel
 							when 'PS' then '6PS' 
 							when 'ED' then '7ED' 
 					end) as wfstatus,
-					workflow$suffix.RequestStatusDesc(a.city,'PAYMENT',a.id,a.req_dt) as wfstatusdesc
+					workflow$suffix.RequestStatusDesc($cityarg 'PAYMENT',a.id,a.req_dt) as wfstatusdesc
 				from acc_request a inner join security$suffix.sec_city b on a.city=b.code
-					inner join acc_trans_type e on a.trans_type_code=e.trans_type_code and a.city=e.city
+					inner join acc_trans_type e on a.trans_type_code=e.trans_type_code $citystr
 					left outer join acc_request_info f on a.id=f.req_id and f.field_id='ref_no'
 					left outer join acc_request_info g on a.id=g.req_id and g.field_id='int_fee'
 					left outer join acc_request_info h on a.id=h.req_id and h.field_id='acct_id'
 					left outer join acc_account i on i.id=h.field_value
 					left outer join acc_account_type j on j.id=i.acct_type_id
 					left outer join acc_request_info k on a.id=k.req_id and k.field_id='trans_id'
-				where ((a.city in ($city) and workflow$suffix.RequestStatus(a.city,'PAYMENT',a.id,a.req_dt)<>'') or a.req_user='$user')
+				where ((a.city in ($city) and workflow$suffix.RequestStatus($cityarg 'PAYMENT',a.id,a.req_dt)<>'') or a.req_user='$user')
 				and e.trans_cat='OUT' 
 			";
 		$sql2 = "select count(a.id)
 				from acc_request a inner join security$suffix.sec_city b on a.city=b.code
-					inner join acc_trans_type e on a.trans_type_code=e.trans_type_code and a.city=e.city 
+					inner join acc_trans_type e on a.trans_type_code=e.trans_type_code $citystr 
 					left outer join acc_request_info f on a.id=f.req_id and f.field_id='ref_no'
 					left outer join acc_request_info g on a.id=g.req_id and g.field_id='int_fee'
 					left outer join acc_request_info h on a.id=h.req_id and h.field_id='acct_id'
 					left outer join acc_account i on i.id=h.field_value
 					left outer join acc_account_type j on j.id=i.acct_type_id
 					left outer join acc_request_info k on a.id=k.req_id and k.field_id='trans_id'
-				where ((a.city in ($city) and workflow$suffix.RequestStatus(a.city,'PAYMENT',a.id,a.req_dt)<>'') or a.req_user='$user')
+				where ((a.city in ($city) and workflow$suffix.RequestStatus($cityarg 'PAYMENT',a.id,a.req_dt)<>'') or a.req_user='$user')
 				and e.trans_cat='OUT' 
 			";
 		$clause = "";
@@ -90,6 +95,7 @@ class PayReqList extends CListPageModel
 				$clause .= General::getSqlConditionClause($columns[$this->searchField],$svalue);
 			}
 		}
+		$clause .= $this->getDateRangeCondition('a.req_dt');
 		
 		$order = "";
 		if (!empty($this->orderField)) {
