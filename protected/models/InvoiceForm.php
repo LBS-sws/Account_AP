@@ -143,7 +143,7 @@ class InvoiceForm extends CFormModel
         $end=$date['end'];
         $model=new Invoice;
         $arr=$model->getData($this->city,$start,$end);
-        if(isset($arr)){
+        if(isset($arr['data'])){
             $connection = Yii::app()->db;
             $transaction=$connection->beginTransaction();
             try {
