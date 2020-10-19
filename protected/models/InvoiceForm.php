@@ -143,13 +143,13 @@ class InvoiceForm extends CFormModel
         $end=$date['end'];
         $model=new Invoice;
         $arr=$model->getData($this->city,$start,$end);
+        print_r('<pre>');
+        print_r($arr);exit();
         if(isset($arr['data'])){
             $connection = Yii::app()->db;
             $transaction=$connection->beginTransaction();
             try {
                 $this->saveU($connection,$arr);
-//                print_r('<pre>');
-//                print_r($this->city);exit();
                 $transaction->commit();
             }
             catch(Exception $e) {
