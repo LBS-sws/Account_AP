@@ -227,7 +227,7 @@ class InvoiceForm extends CFormModel
                             $amount=$line['unit_price']*$line['qty'];
                             $command->bindParam(':amount',$amount,PDO::PARAM_STR);
                         $command->execute();
-                        if(isset($line['product_name2'])){
+                        if($line['unit_price2']!=0){
                             $sql1="insert into acc_invoice_type (
                             invoice_id,description,quantity,unit_price,amount
                           ) value (
@@ -247,7 +247,7 @@ class InvoiceForm extends CFormModel
                             $command->bindParam(':amount',$amount,PDO::PARAM_STR);
                             $command->execute();
                         }
-                        if(isset($line['product_name3'])){
+                        if($line['unit_price3']!=0){
                             $sql1="insert into acc_invoice_type (
                             invoice_id,description,quantity,unit_price,amount
                           ) value (
@@ -267,7 +267,7 @@ class InvoiceForm extends CFormModel
                             $command->bindParam(':amount',$amount,PDO::PARAM_STR);
                             $command->execute();
                         }
-                        if(isset($line['product_name4'])){
+                        if($line['unit_price4']!=0){
                             $sql1="insert into acc_invoice_type (
                             invoice_id,description,quantity,unit_price,amount
                           ) value (
@@ -287,7 +287,7 @@ class InvoiceForm extends CFormModel
                             $command->bindParam(':amount',$amount,PDO::PARAM_STR);
                             $command->execute();
                         }
-                        if(isset($line['product_name5'])){
+                        if($line['unit_price5']!=0){
                             $sql1="insert into acc_invoice_type (
                             invoice_id,description,quantity,unit_price,amount
                           ) value (
@@ -307,7 +307,7 @@ class InvoiceForm extends CFormModel
                             $command->bindParam(':amount',$amount,PDO::PARAM_STR);
                             $command->execute();
                         }
-                        if(isset($line['product_name6'])){
+                        if($line['unit_price6']!=0){
                             $sql1="insert into acc_invoice_type (
                             invoice_id,description,quantity,unit_price,amount
                           ) value (
