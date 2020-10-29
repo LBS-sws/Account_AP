@@ -159,7 +159,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
                 <?php echo $form->labelEx($model,'delivery_company',array('class'=>"col-sm-2 control-label")); ?>
                 <div class="col-sm-7">
                     <?php echo $form->textField($model, 'delivery_company',
-                        array('size'=>40,'maxlength'=>250,'readonly'=>'readonly')
+                        array('size'=>40,'maxlength'=>250,'readonly'=>'')
                     ); ?>
                 </div>
             </div>
@@ -168,7 +168,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
                 <?php echo $form->labelEx($model,'delivery_address',array('class'=>"col-sm-2 control-label")); ?>
                 <div class="col-sm-7">
                     <?php echo $form->textField($model, 'delivery_address',
-                        array('size'=>40,'maxlength'=>250,'readonly'=>'readonly')
+                        array('size'=>40,'maxlength'=>250,'readonly'=>'')
                     ); ?>
                 </div>
             </div>
@@ -177,7 +177,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
                 <?php echo $form->labelEx($model,'delivery_tel',array('class'=>"col-sm-2 control-label")); ?>
                 <div class="col-sm-7">
                     <?php echo $form->textField($model, 'delivery_tel',
-                        array('size'=>40,'maxlength'=>250,'readonly'=>'readonly')
+                        array('size'=>40,'maxlength'=>250,'readonly'=>'')
                     ); ?>
                 </div>
             </div>

@@ -18,9 +18,9 @@ class InvoiceForm extends CFormModel
 	public $sales_order_no;//客户订货订单编号
 	public $sales_order_date;//送货日期
 	public $ship_via;//运输方式
-	public $invoice_company;//交付公司
-	public $invoice_address;//交付地址
-	public $invoice_tel;//交付电话
+	public $invoice_company;//服务公司
+	public $invoice_address;//服务地址
+	public $invoice_tel;//服务电话
     public $delivery_company;//发票公司
     public $delivery_address;//发票地址
     public $delivery_tel;//联系电话
@@ -98,8 +98,8 @@ class InvoiceForm extends CFormModel
 			{
 			    $sql1="select * from acc_invoice_type where invoice_id='".$row['id']."'";
                 $type = Yii::app()->db->createCommand($sql1)->queryAll();
-                $sql2="select * from swoper$suffix.swo_company where code='".$row['customer_account']."'";
-                $delivery = Yii::app()->db->createCommand($sql2)->queryRow();
+//                $sql2="select * from swoper$suffix.swo_company where code='".$row['customer_account']."'";
+//                $delivery = Yii::app()->db->createCommand($sql2)->queryRow();
                 $dates = General::toMyDate($row['dates']);
                 $timestrap=strtotime($dates);
                 $number=date('ym',$timestrap);
@@ -118,9 +118,9 @@ class InvoiceForm extends CFormModel
 				$this->invoice_company = $row['invoice_company'];
 				$this->invoice_address = $row['invoice_address'];
 				$this->invoice_tel = $row['invoice_tel'];
-                $this->delivery_company = $delivery['delivery_company'];
-                $this->delivery_address = $delivery['delivery_address'];
-                $this->delivery_tel = $delivery['delivery_tel'];
+                $this->delivery_company = $row['delivery_company'];
+                $this->delivery_address = $row['delivery_address'];
+                $this->delivery_tel = $row['delivery_tel'];
                 $disc=$row['disc']*100;
 				$this->disc = $disc."%";
                 $arr=array_sum(array_map(create_function('$val', 'return $val["amount"];'), $type));
@@ -171,9 +171,9 @@ class InvoiceForm extends CFormModel
             $records = Yii::app()->db->createCommand($sql_s)->queryAll();
             if(empty($records)){
                 $sql="insert into acc_invoice (
-                    dates,payment_term,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc
+                    dates,payment_term,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc,delivery_company,delivery_address,delivery_tel
                   ) value (
-                   :dates,:payment_term,:customer_account,:salesperson,:sales_order_date,:invoice_company,:invoice_address,:invoice_tel,:lcu,:luu,:city,:disc
+                   :dates,:payment_term,:customer_account,:salesperson,:sales_order_date,:invoice_company,:invoice_address,:invoice_tel,:lcu,:luu,:city,:disc,:delivery_company,:delivery_address,:delivery_tel
                   )";
 
 //        $sql="insert into acc_invoice (dates,payment_term,customer_po_no,customer_account,salesperson,sales_order_no,sales_order_date,ship_via,invoice_company,invoice_address,invoice_tel,delivery_company,delivery_address,delivery_tel,description,quantity,unit_price,disc,amount,sub_total,gst,total_amount,generated_by,lcu,luu) value ()";
@@ -197,6 +197,12 @@ class InvoiceForm extends CFormModel
                     $command->bindParam(':invoice_address',$a['invoice_to_addr'],PDO::PARAM_STR);
                 if (strpos($sql,':invoice_tel')!==false)
                     $command->bindParam(':invoice_tel',$a['invoice_to_tel'],PDO::PARAM_STR);
+                if (strpos($sql,':delivery_company')!==false)
+                    $command->bindParam(':delivery_company',$a['delivery_company'],PDO::PARAM_STR);
+                if (strpos($sql,':delivery_address')!==false)
+                    $command->bindParam(':delivery_address',$a['delivery_address'],PDO::PARAM_STR);
+                if (strpos($sql,':delivery_tel')!==false)
+                    $command->bindParam(':delivery_tel',$a['delivery_tel'],PDO::PARAM_STR);
                 if (strpos($sql,':city')!==false)
                     $command->bindParam(':city', $this->city,PDO::PARAM_STR);
                 if (strpos($sql,':disc')!==false)
