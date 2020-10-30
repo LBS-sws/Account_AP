@@ -198,11 +198,11 @@ class InvoiceForm extends CFormModel
                 if (strpos($sql,':invoice_tel')!==false)
                     $command->bindParam(':invoice_tel',$a['invoice_to_tel'],PDO::PARAM_STR);
                 if (strpos($sql,':delivery_company')!==false)
-                    $command->bindParam(':delivery_company',$a['delivery_company'],PDO::PARAM_STR);
+                    $command->bindParam(':delivery_company',$a['name_zh'],PDO::PARAM_STR);
                 if (strpos($sql,':delivery_address')!==false)
-                    $command->bindParam(':delivery_address',$a['delivery_address'],PDO::PARAM_STR);
+                    $command->bindParam(':delivery_address',$a['addr'],PDO::PARAM_STR);
                 if (strpos($sql,':delivery_tel')!==false)
-                    $command->bindParam(':delivery_tel',$a['delivery_tel'],PDO::PARAM_STR);
+                    $command->bindParam(':delivery_tel',$a['tel'],PDO::PARAM_STR);
                 if (strpos($sql,':city')!==false)
                     $command->bindParam(':city', $this->city,PDO::PARAM_STR);
                 if (strpos($sql,':disc')!==false)
@@ -372,7 +372,9 @@ class InvoiceForm extends CFormModel
                             invoice_company=:invoice_company,
                             invoice_address=:invoice_address,
                             invoice_tel=:invoice_tel,
-                        
+                           delivery_company=:delivery_company,
+                            delivery_address=:delivery_address,
+                            delivery_tel=:delivery_tel,
                             sub_total=:sub_total,
                             gst=:gst,
                             total_amount=:total_amount,                                                                                                               
@@ -406,6 +408,12 @@ class InvoiceForm extends CFormModel
 			$command->bindParam(':invoice_address',$this->invoice_address,PDO::PARAM_STR);
 		if (strpos($sql,':invoice_tel')!==false)
 			$command->bindParam(':invoice_tel',$this->invoice_tel,PDO::PARAM_STR);
+        if (strpos($sql,':delivery_company')!==false)
+            $command->bindParam(':delivery_company',$this->delivery_company,PDO::PARAM_STR);
+        if (strpos($sql,':delivery_address')!==false)
+            $command->bindParam(':delivery_address',$this->delivery_address,PDO::PARAM_STR);
+        if (strpos($sql,':delivery_tel')!==false)
+            $command->bindParam(':delivery_tel',$this->delivery_tel,PDO::PARAM_STR);
 //		if (strpos($sql,':disc')!==false)
 //			$command->bindParam(':disc',$this->disc,PDO::PARAM_STR);
         if (strpos($sql,':sub_total')!==false)
