@@ -497,7 +497,7 @@ class InvoiceForm extends CFormModel
         $tbl=<<<EOD
             <table style="width: 570px;">
                 <tr>
-                    <td colspan="10" width="180px;">LBS SERVICES (SINGAPORE) PTE LTD</td><td width="100px;"></td><td width="100px;"></td><td width="20px;"></td><td width="70px;"></td><td width="100px;" rowspan="3"><img  src="images/biao.png" ></td>
+                    <td colspan="10" width="180px;">LBS SERVICES (SINGAPORE) PTE LTD</td><td width="100px;"></td><td width="100px;"></td><td width="20px;"></td><td width="30px;"></td><td width="140px;" rowspan="4" ><img  src="images/biao.png" ></td>
                 </tr>
                 <tr>
                     <td colspan="12" width="200px;">No.5 Penjuru Close #03-00 Singapore 608600</td><td></td><td></td>
