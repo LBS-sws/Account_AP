@@ -46,8 +46,12 @@ class LookupController extends Controller
 		$suffix = $suffix=='dev' ? '_w' : $suffix;
 		$city = empty($incity) ? Yii::app()->user->city() : $incity;
 		$searchx = str_replace("'","\'",$search);
+/*
 		$sql = "select id, concat(left(concat(code,space(8)),8),if(full_name is null or full_name='',name,full_name)) as value from swoper$suffix.swo_company
 				where (code like '%$searchx%' or name like '$searchx%') and city='$city'";
+*/
+                $sql = "select id, concat(code,' ',name,'/',full_name) as value from swoper$suffix.swo_company
+                                where (code like '%$searchx%' or name like '$searchx%' or full_name like '%$searchx%') and city='$city'";
 		$result = Yii::app()->db->createCommand($sql)->queryAll();
 		$data = TbHtml::listData($result, 'id', 'value');
 		echo TbHtml::listBox('lstlookup', '', $data, array('size'=>'15', 'multiple'=>true));
@@ -60,13 +64,14 @@ class LookupController extends Controller
 		$result = array();
 		$searchx = str_replace("'","\'",$search);
 		$sql = "select id, code, name, full_name, cont_name, cont_phone, address from swoper$suffix.swo_company
-				where (code like '%$searchx%' or name like '%$searchx%') and city='$city'";
+				where (code like '%$searchx%' or name like '%$searchx%' or full_name like '%$searchx%') and city='$city'";
 		$records = Yii::app()->db->createCommand($sql)->queryAll();
 		if (count($records) > 0) {
 			foreach ($records as $k=>$record) {
 				$result[] = array(
 						'id'=>$record['id'],
-						'value'=>substr($record['code'].str_repeat(' ',8),0,8).(empty($record['full_name'])?$record['name']:$record['full_name']),
+					//	'value'=>substr($record['code'].str_repeat(' ',8),0,8).(empty($record['full_name'])?$record['name']:$record['full_name']),
+						'value'=>$record['code'].' '.$record['name'].'/'.$record['full_name'],
 						'contact'=>trim($record['cont_name']).'/'.trim($record['cont_phone']),
 						'address'=>$record['address'],
 					);
@@ -81,8 +86,12 @@ class LookupController extends Controller
 		$suffix = $suffix=='dev' ? '_w' : $suffix;
 		$city = empty($incity) ? Yii::app()->user->city() : $incity;
 		$searchx = str_replace("'","\'",$search);
+/*
 		$sql = "select id, concat(left(concat(code,space(8)),8),if(full_name is null or full_name='',name,full_name)) as value from swoper$suffix.swo_supplier
 				where (code like '%$searchx%' or name like '$searchx%') and city='$city'";
+*/
+                $sql = "select id, concat(code,' ',name,'/',full_name) as value from swoper$suffix.swo_supplier
+                                where (code like '%$searchx%' or name like '$searchx%' or full_name like '%$searchx%') and city='$city'";
 		$result = Yii::app()->db->createCommand($sql)->queryAll();
 		$data = TbHtml::listData($result, 'id', 'value');
 		echo TbHtml::listBox('lstlookup', '', $data, array('size'=>'15', 'multiple'=>true));
@@ -95,13 +104,14 @@ class LookupController extends Controller
 		$result = array();
 		$searchx = str_replace("'","\'",$search);
 		$sql = "select id, code, name, full_name, cont_name, cont_phone, address from swoper$suffix.swo_supplier
-				where (code like '%$searchx%' or name like '%$searchx%') and city='$city'";
+				where (code like '%$searchx%' or name like '%$searchx%' or full_name like '%$searchx%') and city='$city'";
 		$records = Yii::app()->db->createCommand($sql)->queryAll();
 		if (count($records) > 0) {
 			foreach ($records as $k=>$record) {
 				$result[] = array(
 						'id'=>$record['id'],
-						'value'=>substr($record['code'].str_repeat(' ',8),0,8).(empty($record['full_name'])?$record['name']:$record['full_name']),
+//						'value'=>substr($record['code'].str_repeat(' ',8),0,8).(empty($record['full_name'])?$record['name']:$record['full_name']),
+						'value'=>$record['code'].' '.$record['name'].'/'.$record['full_name'],
 						'contact'=>trim($record['cont_name']).'/'.trim($record['cont_phone']),
 						'address'=>$record['address'],
 					);
@@ -122,12 +132,20 @@ class LookupController extends Controller
 				and leave_dt is null or leave_dt=0 or leave_dt > now() ";
 		$result1 = Yii::app()->db->createCommand($sql)->queryAll();
 
+                $sql = "select a.id, concat(a.name, ' (', a.code, ')') as value from swoper$suffix.swo_staff_v a, hr$suffix.hr_plus_city b
+                                where (a.code like '%".$searchx."%' or a.name like '%".$searchx."%')
+                                and b.city='$city'
+                                and (a.leave_dt is null or a.leave_dt=0 or a.leave_dt > now())
+                                and a.id=b.employee_id
+                        ";
+                $result3 = Yii::app()->db->createCommand($sql)->queryAll();
+
 		$sql = "select id, concat(name, ' (', code, ')',' ".Yii::t('app','(Resign)')."') as value from swoper$suffix.swo_staff_v
 				where (code like '%$searchx%' or name like '%$searchx%') and city='$city'
 				and  leave_dt is not null and leave_dt<>0 and leave_dt <= now() ";
 		$result2 = Yii::app()->db->createCommand($sql)->queryAll();
 		
-		$result = array_merge($result1, $result2);
+		$result = array_merge($result1, $result3, $result2);
 		$data = TbHtml::listData($result, 'id', 'value');
 		echo TbHtml::listBox('lstlookup', '', $data, array('size'=>'15',));
 	}
@@ -145,12 +163,20 @@ class LookupController extends Controller
 				and (leave_dt is null or leave_dt=0 or leave_dt > now()) ";
 		$result1 = Yii::app()->db->createCommand($sql)->queryAll();
 
+                $sql = "select a.id, concat(a.name, ' (', a.code, ')') as value from swoper$suffix.swo_staff_v a, hr$suffix.hr_plus_city b
+                                where (a.code like '%".$searchx."%' or a.name like '%".$searchx."%')
+                                and b.city='$city'
+                                and (a.leave_dt is null or a.leave_dt=0 or a.leave_dt > now())
+                                and a.id=b.employee_id
+                        ";
+                $result3 = Yii::app()->db->createCommand($sql)->queryAll();
+
 		$sql = "select id, concat(name, ' (', code, ')',' ".Yii::t('app','(Resign)')."') as value from swoper$suffix.swo_staff_v
 				where (code like '%$searchx%' or name like '%$searchx%') and city='$city'
 				and  leave_dt is not null and leave_dt<>0 and leave_dt <= now() ";
 		$result2 = Yii::app()->db->createCommand($sql)->queryAll();
 		
-		$records = array_merge($result1, $result2);
+		$records = array_merge($result1, $result3, $result2);
 		if (count($records) > 0) {
 			foreach ($records as $k=>$record) {
 				$result[] = array(
@@ -214,6 +240,26 @@ class LookupController extends Controller
 		return TbHtml::listBox('lstlookup', '', $data, array('size'=>'15',));
 	}
 	
+    public function actionProductEx($search)
+    {
+        $city = '99999';        //Yii::app()->user->city();
+        $suffix = Yii::app()->params['envSuffix'];
+        $result = array();
+        $searchx = str_replace("'","\'",$search);
+        $sql = "select id, concat(left(concat(code,space(8)),8),description) as value from swoper$suffix.swo_product
+                                where (code like '%".$searchx."%' or description like '%".$searchx."%') and city='".$city."'";
+        $records = Yii::app()->db->createCommand($sql)->queryAll();
+        if (count($records) > 0) {
+            foreach ($records as $k=>$record) {
+                $result[] = array(
+                    'id'=>$record['id'],
+                    'value'=>$record['value'],
+                );
+            }
+        }
+        print json_encode($result);
+    }
+
 	public function actionAccountItemInEx($search, $acctid=0, $incity='') {
 		$type = 'ZZZ';
 		$city = empty($incity) ? Yii::app()->user->city() : $incity;

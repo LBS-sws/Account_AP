@@ -26,6 +26,7 @@ return array(
 'Login' => '登錄',
 'Logout' => '退出',
 'Save' => '保存',
+'Save1' => '計算',
 'Active' => '啟用',
 'Inactive' => '停用',
 'On'=>'開啟',
@@ -75,14 +76,26 @@ return array(
 'less or equal'=>'小過或等於',
 'less than'=>'小過',
 '-- Advanced --'=>'-- 進階 --',
-'<< Advanced >>'=>'<< 進階搜尋 >>',
+'<< Advanced >>'=>'<< 高級搜尋 >>',
 'Advanced'=>'進階',
 'Clear'=>'清除',
+'Down'=>'下載報表',
 
 'Misc'=>'其他',
 'Status'=>'狀態',
 'Mark Read'=>'標記已讀',
 'Go Top'=>'往頁頂',
+'Announcement'=>'公告',
+
+'none'=>'無',
+'group business'=>'商業組',
+'group repast'=>'餐飲組',
+
+'Latest month'=>'1個月內',
+'3 months'=>'3個月內',
+'6 months'=>'6個月內',
+'1 year'=>'1年內',
+'Rollback'=>'退回',
 );
 
 ?>

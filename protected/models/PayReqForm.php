@@ -224,6 +224,8 @@ class PayReqForm extends CFormModel
 				$wf->saveRequestData('REQ_USER',Yii::app()->user->id);
 				$wf->saveRequestData('REF_NO',$this->ref_no);
 				$wf->saveRequestData('AMOUNT',$this->amount);
+				$payee = $this->getPayeeUserId();
+				$wf->saveRequestData('PAYEE_USER',$payee);
 				$wf->takeAction('SUBMIT');
 			}
 			$wf->transaction->commit();
@@ -249,6 +251,8 @@ class PayReqForm extends CFormModel
 				$wf->saveRequestData('REQ_USER',Yii::app()->user->id);
 				$wf->saveRequestData('REF_NO',$this->ref_no);
 				$wf->saveRequestData('AMOUNT',$this->amount);
+                                $payee = $this->getPayeeUserId();
+                                $wf->saveRequestData('PAYEE_USER',$payee);
 				$wf->takeAction('REQUEST');
 			}
 			$wf->transaction->commit();
@@ -269,7 +273,10 @@ class PayReqForm extends CFormModel
 			$this->updateDocman($connection,'PAYREQ');
 			$this->updateDocman($connection,'TAX');
 			if ($wf->startProcess('PAYMENT',$this->id,$this->req_dt,$this->city)) {
+                                $wf->saveRequestData('REF_NO',$this->ref_no);
 				$wf->saveRequestData('AMOUNT',$this->amount);
+                                $payee = $this->getPayeeUserId();
+                                $wf->saveRequestData('PAYEE_USER',$payee);
 				$wf->takeAction('CHECK');
 			}
 			$wf->transaction->commit();
@@ -464,4 +471,15 @@ class PayReqForm extends CFormModel
 	public function allowVoid() {
 		return Yii::app()->user->validFunction('CN06');
 	}
+
+        protected function getPayeeUserId() {
+                $rtn = '';
+                if ($this->payee_type=='F') {
+                        $suffix = Yii::app()->params['envSuffix'];
+                        $sql = "select user_id from hr$suffix.hr_binding where employee_id=".$this->payee_id;
+                        $user = Yii::app()->db->createCommand($sql)->queryRow();
+                        if ($user!==false) $rtn = $user['user_id'];
+                }
+                return $rtn;
+        }
 }

@@ -15,6 +15,8 @@ class ListPageWidget extends CWidget
 	
 	public $advancedSearch = false;
 	
+	public $hasDateButton = false;
+	
 	public $record;
 	public $recordptr;
 	
@@ -24,6 +26,7 @@ class ListPageWidget extends CWidget
 		
 		$layout = '<div class="box">';
 		$layout .= '<div class="box-header"><h3 class="box-title"><strong>'.$this->title.'</strong></h3>';
+		$layout .= $this->renderDateButton();
 		$layout .= '</div>';
 		$layout .= '<div class="box-body table-responsive">';
 		if ($this->hasSearchBar || $this->hasNavBar) {
@@ -61,7 +64,7 @@ class ListPageWidget extends CWidget
 		$layout .= '</div>';
 		
 		$layout .= '<div class="box-footer clearfix">';
-		if ($this->hasSearchBar) {
+		if ($this->hasPageBar) {
 			$layout .= '<div class="box-tools">'.$this->pageBar().'</div>';
 		}
 		$layout .= '<span class="pull-right">'.Yii::t('misc','Rec').': '.$this->model->totalRow.'&nbsp;&nbsp;<a href="#" id="goTableTop">'.Yii::t('misc','Go Top').'</a>'.'</span>';
@@ -96,8 +99,12 @@ $('#$fldid').on('change', function(){Loading.show();jQuery.yii.submitForm(this,'
 		if ($this->hasSearchBar) {
 			$droplistid = $modelName.'_searchField';
 			$textid = $modelName.'_searchValue';
-			
-			$param = array('pageNum'=>1);
+
+			if(empty($_GET['index'])){
+                $param = array('pageNum'=>1);
+            }else{
+                $param = array('index'=>$_GET['index'],'pageNum'=>1);
+            }
 			if (!empty($this->searchlinkparam)) $param = array_merge($param, $this->searchlinkparam);
 			$path = Yii::app()->createAbsoluteUrl($link, $param);
 			
@@ -126,6 +133,55 @@ EOF;
 				Yii::app()->clientScript->registerScript('ListPageAdvancedSrch',$js,CClientScript::POS_READY);
 			}
 		}
+	}
+
+	protected function renderDateButton() {
+		$modelName = get_class($this->model);
+		$rtn = TbHtml::hiddenField($modelName.'[dateRangeValue]', $this->model->dateRangeValue, array('id'=>$modelName.'_dateRangeValue'));
+		
+		if ($this->hasDateButton) {
+
+			$rtn .= '<div class="box-tools">';
+			$rtn .= '<span class="pull-right">';
+			$rtn .= TbHtml::button(Yii::t('misc','Latest month'), array('id'=>'btnDateM1','class'=>'btn-default'));
+			$rtn .= TbHtml::button(Yii::t('misc','3 months'), array('id'=>'btnDateM3','class'=>'btn-default'));
+			$rtn .= TbHtml::button(Yii::t('misc','6 months'), array('id'=>'btnDateM6','class'=>'btn-default'));
+			$rtn .= TbHtml::button(Yii::t('misc','1 year'), array('id'=>'btnDateY1','class'=>'btn-default'));
+			$rtn .= TbHtml::button(Yii::t('misc','All'), array('id'=>'btnDateAll','class'=>'btn-default'));
+			$rtn .= '</span>';
+			$rtn .= '</div>';
+			
+			$fldname = $modelName.'_dateRangeValue';
+
+			$link = '/'.$this->controller->uniqueId.'/'.$this->controller->action->id;
+			$url = Yii::app()->createUrl($link);
+			
+			$js = <<<EOF
+function setDateRange(v){
+	var obj = $('#$fldname'); 
+	obj.val(v);
+	Loading.show();
+	jQuery.yii.submitForm(obj,'$url',{});
+}
+
+$('#btnDateAll').on('click',function(){setDateRange('0');});
+$('#btnDateM1').on('click',function(){setDateRange('1');});
+$('#btnDateM3').on('click',function(){setDateRange('3');});
+$('#btnDateM6').on('click',function(){setDateRange('6');});
+$('#btnDateY1').on('click',function(){setDateRange('12');});
+
+var dv = $('#$fldname').val();
+switch (dv) {
+	case '0': $('#btnDateAll').removeClass('btn-default').addClass('btn-info'); break;
+	case '1': $('#btnDateM1').removeClass('btn-default').addClass('btn-info'); break;
+	case '3': $('#btnDateM3').removeClass('btn-default').addClass('btn-info'); break;
+	case '6': $('#btnDateM6').removeClass('btn-default').addClass('btn-info'); break;
+	case '12': $('#btnDateY1').removeClass('btn-default').addClass('btn-info'); break;
+}
+EOF;
+			Yii::app()->clientScript->registerScript('selectDateRange',$js,CClientScript::POS_READY);
+		}
+		return $rtn;
 	}
 
 	protected function navBar() 

@@ -7,7 +7,6 @@ class Workflow {
 	public $request_id;
 	public $current_state;
 	public $transit_log_id;
-	public $proc_code;
 	
 	public function openConnection() {
 		$this->connection = Yii::app()->db;
@@ -15,13 +14,10 @@ class Workflow {
 		return $this->connection;
 	}
 	
-	public function startProcess($procCode, $docId, $reqDate, $city='') {
+	public function startProcess($procCode, $docId, $reqDate) {
 		$rtn = true;
 		$suffix = Yii::app()->params['envSuffix'];
-		$city = empty($city) ? Yii::app()->user->city() : $city;
-		$proc = $this->getProcessInfo($procCode, $reqDate, $city);
-		$this->proc_id = $proc['proc_id'];
-		$this->proc_code = $proc['proc_code'];
+		$this->proc_id = $this->getProcessId($procCode, $reqDate);
 		$procId = $this->proc_id;
 		$sql = "select id, current_state from workflow$suffix.wf_request
 				where proc_ver_id=$procId and doc_id=$docId
@@ -48,13 +44,10 @@ class Workflow {
 		return $rtn;
 	}
 	
-	public function initReadOnlyProcess($procCode, $docId, $reqDate, $city='') {
+	public function initReadOnlyProcess($procCode, $docId, $reqDate) {
 		$rtn = true;
 		$suffix = Yii::app()->params['envSuffix'];
-		$city = empty($city) ? Yii::app()->user->city() : $city;
-		$proc = $this->getProcessInfo($procCode, $reqDate, $city);
-		$this->proc_id = $proc['proc_id'];
-		$this->proc_code = $proc['proc_code'];
+		$this->proc_id = $this->getProcessId($procCode, $reqDate);
 		$procId = $this->proc_id;
 		$sql = "select id, current_state from workflow$suffix.wf_request
 				where proc_ver_id=$procId and doc_id=$docId
@@ -361,23 +354,20 @@ class Workflow {
 	public function getPendingRequestIdListByType($procCode, $state, $user, $type) {
 		$rtn = '';
 		$suffix = Yii::app()->params['envSuffix'];
-		$city = empty($city) ? Yii::app()->user->city() : $city;
-		$sql = "select distinct e.doc_id 
+		$sql = "select e.doc_id 
 				from workflow$suffix.wf_request_resp_user a,
 					workflow$suffix.wf_state b,
 					workflow$suffix.wf_process_version c,
 					workflow$suffix.wf_process d,
-					workflow$suffix.wf_request e,
-					workflow$suffix.wf_process_city f
+					workflow$suffix.wf_request e
 				where a.current_state = b.id
 				and b.proc_ver_id = c.id
 				and c.process_id = d.id
-				and d.code = f.process_code
+				and d.code = '$procCode'
 				and b.code = '$state'
 				and a.username = '$user'
 				and a.status = '$type'
 				and a.request_id = e.id
-				and f.code='$procCode'
 			";
 		$rows = $this->connection->createCommand($sql)->queryAll();
 		if (!empty($rows)) {
@@ -388,11 +378,11 @@ class Workflow {
 		return $rtn;
 	}
 
-	protected function getCurrentStateRespUser() {
+	public function getCurrentStateRespUser() {
 		return $this->getCurrentStateRespUserByType('P');
 	}
 	
-	protected function getCurrentStateRespStandbyUser() {
+	public function getCurrentStateRespStandbyUser() {
 		return $this->getCurrentStateRespUserByType('Q');
 	}
 	
@@ -578,7 +568,7 @@ class Workflow {
 				from workflow$suffix.wf_request_resp_user b, 
 					workflow$suffix.wf_action c
 				where b.request_id=$reqId
-				and b.current_state<>$logId   
+				and b.log_id<>$logId   
 				and b.status='C'
 				and b.action_id=c.id
 				and c.code='$action'
@@ -596,6 +586,26 @@ class Workflow {
 				$rtn[$row['username']] = $row['remarks'];
 			}
 			return $rtn;
+		}
+	}
+
+	protected function getCurrentStateRemarks($userid) {
+		$suffix = Yii::app()->params['envSuffix'];
+		$reqId = $this->request_id;
+		$state = $this->current_state;
+		$logId = $this->transit_log_id;
+		$sql = "select a.remarks
+				from workflow$suffix.wf_request_resp_user a
+				where a.request_id=$reqId
+				and a.status='C'
+				and a.username='$userid'
+				order by id desc limit 1
+			";
+		$row = $this->connection->createCommand($sql)->queryRow();
+		if ($row===false) {
+			return '';
+		} else {
+			return $row['remarks'];
 		}
 	}
 
@@ -627,21 +637,16 @@ class Workflow {
 		return (($row===false) ? 0 : $row['doc_id']);
 	}
 	
-	protected function getProcessInfo($code, $date, $city) {
+	protected function getProcessId($code, $date) {
 		$suffix = Yii::app()->params['envSuffix'];
 		$d = General::toMyDate($date);
-		$sql = "select b.id, a.code  
-				from workflow$suffix.wf_process a, 
-					workflow$suffix.wf_process_version b,
-					workflow$suffix.wf_process_city c
-				where a.code=c.process_code and a.id = b.process_id
+		$sql = "select b.id from workflow$suffix.wf_process a, workflow$suffix.wf_process_version b 
+				where a.code='$code' and a.id = b.process_id
 				and b.start_dt <= '$d' and b.end_dt >= '$d' 
-				and c.code='$code' and (c.city='$city' or c.city='~DEF~')
-				and c.start_dt <= '$d' and c.end_dt >= '$d' 
-				order by c.city, b.id desc limit 1
+				order by b.id desc limit 1
 			";
 		$row = $this->connection->createCommand($sql)->queryRow();
-		return (($row===false) ? array('proc_id'=>0,'proc_code'=>'') : array('proc_id'=>$row['id'],'proc_code'=>$row['code']));
+		return (($row===false) ? 0 : $row['id']);
 	}
 	
 	protected function getActionId($procId, $code) {

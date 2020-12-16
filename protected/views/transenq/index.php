@@ -40,6 +40,12 @@ $this->pageTitle=Yii::app()->name . ' - Transaction Enquiry';
 		));
 	?>
 </section>
+
+<?php
+// Dummy Button for include jQuery.yii.submitForm
+echo TbHtml::button('dummyButton', array('style'=>'display:none','disabled'=>true,'submit'=>'#',));
+?>
+
 <?php
 	echo $form->hiddenField($model,'pageNum');
 	echo $form->hiddenField($model,'totalRow');

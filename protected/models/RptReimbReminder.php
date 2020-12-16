@@ -46,15 +46,20 @@ class RptReimbReminder extends CReport {
 		$city = $this->criteria['CITY'];
 		$date = $this->criteria['TARGET_DT'];
 		
-		$mgr = array();
-		$sql = "select username from acc_approver where city='$city' 
-				and approver_type in ('regionHead', 'regionDirector', 'regionDirectorA')
-		";
-		$rows = Yii::app()->db->createCommand($sql)->queryAll();
-		foreach ($rows as $row) {
-			$mgr[] = $row['username'];
-		}
-		
+                $mgr = City::model()->getAncestorInChargeList($city);
+                $usr = City::model()->findByPk($city)->incharge;
+                if (!empty($usr)) $mgr[] = $usr;
+
+                $staff = $this->getUserWithRights($city, 'XA06', true);
+                if (!empty($staff)) {
+                        $mgr = array_merge($mgr, $staff);
+                }
+
+                $acct = $this->getUserWithRights($city, 'CN01');
+                if (!empty($acct)) {
+                        $mgr = array_merge($mgr, $acct);
+                }
+
 		$to = General::getEmailByUserIdArray($mgr);
 		$to = General::dedupToEmailList($to);
 // Remove Joe Yiu from to address

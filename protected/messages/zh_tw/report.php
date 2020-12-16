@@ -23,7 +23,9 @@ return array(
 'Payee'=>'領款人',
 'Request Date'=>'申請日期',
 'Status' => '狀態',
-
+'Sales Commission All'=>'銷售提成總頁',
+'Sales Commission' => '銷售提成計算',
+    'Sales Query' => '銷售提成查詢',
 'Item'=>'項目',
 'Last Balance'=>'上日金額',
 'Curr. Paid'=>'今日付款',
@@ -50,6 +52,7 @@ return array(
 'Daily Receipt Overview Report'=>'每天收款總覽',
 'Daily Reimbursement Approval Summary'=>'每日報銷審核匯總',
 'Daily Request Approval Summary'=>'每日費用申請審核匯總',
+'Summary Report - Reimbursement Not Completed Over 2 Months'=>'超過2個月未完成報銷明細匯總',
 'Summary Report - Reimbursement Not Completed Over 1 Months'=>'超過1個月未完成報銷明細匯總',
 'Reimbursement Not Completed Over 1 Months'=>'超過1個月未完成報銷',
 

@@ -173,7 +173,11 @@ return array(
 			'Accounting Item'=>array(
 				'access'=>'XC06',
 				'url'=>'/acctitem/index',
-				'tag'=>'@',
+//				'tag'=>'@',
+			),
+			'Accounting Code'=>array(
+				'access'=>'XC10',
+				'url'=>'/acctcode/index',
 			),
 			'Default Account'=>array(
 				'access'=>'XC05',

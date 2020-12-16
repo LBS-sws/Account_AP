@@ -16,7 +16,8 @@ class WorkflowPayment extends WorkflowDMS {
 	public function routeToManagerOrApprover() {
 		$amount = $this->getRequestData('AMOUNT');
 		if ($amount > 1000) {
-			$this->routeToManager();
+			$this->routeToConfirmor();
+//			$this->routeToManager();
 		} else {
 			$this->routeToApprover();
 		}
@@ -96,7 +97,7 @@ class WorkflowPayment extends WorkflowDMS {
 		
 		return $rtn;
 	}
-
+	
 	public function routeToManager() {
 		$approver = $this->getApprover('regionMgr');
 		$listappr[$approver] = 'A';
@@ -104,6 +105,43 @@ class WorkflowPayment extends WorkflowDMS {
 		$this->assignDelegatedUser($listappr);
 	}
 	
+	public function routeToConfirmor() {
+		$listappr = array();
+/*
+		$approver = $this->getApprover('regionHead'); //$this->seekBoss('CN');
+		if ($this->hasRight($approver,'XA08') && !in_array($approver, $listappr)) {
+			$listappr[$approver] = 'A';
+			$this->assignRespUser($approver);
+		}
+		$approver = $this->getApprover('regionDirector');
+		if ($this->hasRight($approver,'XA08') && !in_array($approver, $listappr)) {
+			$listappr[$approver] = 'A';
+			$this->assignRespUser($approver);
+		}
+		$approver = $this->getApprover('regionDirectorA');
+		if ($this->hasRight($approver,'XA08') && !in_array($approver, $listappr)) {
+			$listappr[$approver] = 'A';
+			$this->assignRespUser($approver);
+		}
+*/
+		$approver = $this->getApprover('regionMgr');
+		if (!empty($approver) && $this->hasRight($approver,'XA08') && !array_key_exists($approver, $listappr)) {
+			$listappr[$approver] = 'A';
+			$this->assignRespUser($approver);
+		}
+		$approver = $this->getApprover('regionMgrA');
+		if (!empty($approver) && $this->hasRight($approver,'XA08') && !array_key_exists($approver, $listappr)) {
+			$listappr[$approver] = 'A';
+			$this->assignRespUser($approver);
+		}
+		$approver = $this->getApprover('regionSuper');
+		if (!empty($approver) && $this->hasRight($approver,'XA08') && !array_key_exists($approver, $listappr)) {
+			$listappr[$approver] = 'A';
+			$this->assignRespUser($approver);
+		}
+		$this->assignDelegatedUser($listappr);
+	}
+
 	public function routeToSigner() {
 		$listappr = array();
 		$signer = $this->getRequestData('APPROVER');
@@ -148,7 +186,7 @@ class WorkflowPayment extends WorkflowDMS {
 		}
 		return $rtn;
 	}
-	
+
 	protected function assignDelegatedUser($list) {
 		if (!empty($list)) {
 			$appr = array();
@@ -233,7 +271,9 @@ class WorkflowPayment extends WorkflowDMS {
 		if ($row===false) {
 			$rtn = '&nbsp;';
 		} else {
-			$codelist = General::getAcctCodeList($row['city']);
+			$codelist = Yii::app()->params['version']=='intl'
+				? General::getAcctCodeList($row['city'])
+				: General::getAcctCodeList();
 			$citylist = General::getCityList();
 			$rtn = Yii::t('trans','Ref. No.').': '.$row['ref_no'].'<br>';
 			$rtn .= Yii::t('misc','City').': '.$citylist[$row['city']].'<br>';
@@ -868,7 +908,9 @@ class WorkflowPayment extends WorkflowDMS {
 			$command->bindParam(':trans_dt',$tdate,PDO::PARAM_STR);
 		}
 		if (strpos($sql,':trans_type_code')!==false) {
-			$countertype = General::getCounterTransType($req['trans_type_code'],$req['city']);
+			$countertype = Yii::app()->params['version']=='intl'
+				? General::getCounterTransType($req['trans_type_code'],$req['city'])
+				: General::getCounterTransType($req['trans_type_code']);
 			$countertype = empty($countertype) ? $req['trans_type_code'] : $countertype;
 			$command->bindParam(':trans_type_code',$countertype,PDO::PARAM_STR);
 		}
@@ -989,6 +1031,19 @@ class WorkflowPayment extends WorkflowDMS {
 		$command->execute();
 
 		return true;
+	}
+
+	protected function hasRight($username, $right) {
+		$city = Yii::app()->user->city();
+		$sysid = Yii::app()->user->system();
+		$suffix = Yii::app()->params['envSuffix'];
+		$sql = "select a.username
+				from security$suffix.sec_user a, security$suffix.sec_user_access b
+				where a.username=b.username and a.username='$username'
+				and (b.a_read_write like '%$right%') and a.status='A' and b.system_id='$sysid' limit 1
+			";
+		$row = $this->connection->createCommand($sql)->queryRow();
+		return ($row!==false);
 	}
 }
 ?>

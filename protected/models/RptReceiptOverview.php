@@ -65,7 +65,9 @@ class RptReceiptOverview extends CReport {
 		$end_dt = $this->criteria['TARGET_DT'].' 23:59:59';
 		$month_start_dt = date("Y", strtotime($start_dt)).'/'.date("m", strtotime($start_dt)).'/01 00:00:00';
 		$year_start_dt = date("Y", strtotime($start_dt)).'/01/01 00:00:00';
-		$wk = date("Y", strtotime($start_dt))."W".date("W", strtotime($start_dt));
+		$wkno = date("W", strtotime($start_dt));
+		$mthno = date("n", strtotime($start_dt));
+		$wk = (($wkno=='01' && $mthno==12) ? date("Y", strtotime($start_dt.' +1 years')) : date("Y", strtotime($start_dt)))."W".$wkno;
 		$week_start_dt = date("Y-m-d",strtotime($wk)).' 00:00:00';
 		$this->day_no = date("d", strtotime($start_dt));
 
@@ -149,10 +151,7 @@ class RptReceiptOverview extends CReport {
 		$cstr = $user->city;
 		$city_allow .= (empty($city_allow)) ? "'$cstr'" : ",'$cstr'";
 		
-		$output = '';
-		$tblhdr = "<table border=0 style='table-layout:fixed;width:350px;'>\n";
-		$tbldtl = "</table>\n";
-
+		$output = "<table border=0 style='table-layout:fixed;width:350px;'>\n";
 		$colcnt = 0;
 		$line = '';
 		foreach ($this->result as $key=>$value) {
@@ -181,7 +180,8 @@ class RptReceiptOverview extends CReport {
 				$colcnt++;
 			}
 		}
-		if ($line!='') $output = $tblhdr."<tr>$line</tr>\n".$tbldtl;
+		if ($line!='') $output .= "<tr>$line</tr>\n";
+		$output .= "</table>\n";
 		
 		return $output;
 	}

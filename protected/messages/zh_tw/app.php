@@ -8,7 +8,7 @@ return array(
 'LBS DMS'=>'LBS 日常管理',
 'MAIN NAVIGATION'=>'系統菜單',
 'Region'=>'地區',
-'Last Update Date '=>'更新日期 ',
+'Last Update Date'=>'更新日期',
 
 'System Change'=>'系統切換',
 'Daily Report'=>'日報表系統',
@@ -16,6 +16,7 @@ return array(
 'Operation'=>'營運系統',
 'Personnel'=>'人事系統',
 'Sales'=>'銷售系統',
+'Sale Query'=>'銷售查詢區域顯示',
 
 'Quiz'=>'測驗系統',
 'Academic Credit'=>'學分系統',
@@ -24,6 +25,23 @@ return array(
 
 'Data Entry'=>'數據輸入',
 'Misc'=>'其他',
+'Number'=>'總次數',
+'Surplus'=>'剩餘次數',
+'Sales New Commission'=>'銷售新生意額計算',
+'Sales Edit Commission'=>'銷售更改生意額計算',
+'Sales End Commission'=>'銷售終止生意額計算',
+'Spanning Sales New Commission'=>'跨區新生意額計算',
+'Spanning Sales Edit Commission'=>'跨區更改生意額計算',
+'Spanning Sales End Commission'=>'跨區終止生意額計算',
+'Sales Renewal Commission'=>'續約生意額計算',
+'Sales RenewalEnd Commission'=>'續約終止生意額計算',
+
+'Sales New Query'=>'銷售新生意額查詢',
+'Sales Edit Query'=>'銷售更改生意額查詢',
+'Sales End Query'=>'銷售終止生意額查詢',
+'Spanning Sales New Query'=>'跨區新生意額查詢',
+'Spanning Sales Edit Query'=>'跨區更改生意額查詢',
+'Spanning Sales End Query'=>'跨區終止生意額查詢',
 
 'Import'=>'數據導入',
 'Import Manager'=>'數據導入管理員',
@@ -33,6 +51,12 @@ return array(
 'Request Approval'=>'申請審核',
 'Reimbursement'=>'報銷單申請',
 'Reimbursement Approval'=>'報銷單簽字',
+
+'Salary calculation'=>'薪資計算',
+'Sales Commission'=>'銷售提成計算',
+'Sales Commission history'=>'銷售提成查詢',
+'Sales Commission ladder'=>'銷售提成階梯',
+'Prize Vault'=>'獎金庫',
 
 'Transaction'=>'交易記錄',
 'Transaction(In)'=>'收款記錄',
@@ -45,7 +69,7 @@ return array(
 'Accounting Item'=>'會計項目',
 'T3 Balance Checking'=>'T3餘額對賬',
 'Balance Adjustment'=>'餘額差異調整表',
-'Accounting Code'=>'T3科目',
+'Bank Balance'=>'網銀餘額查詢',
 
 'Report'=>'報表',
 'Reimbursement Form'=>'費用報銷單',
@@ -58,10 +82,10 @@ return array(
 
 'System Setting'=>'系統設置',
 'Security'=>'保安',
-'Tools' => '工具',
+'Tools' =>'工具',
 
-'Change Password' => '更改密碼',
-'Languages' => '語言',
+'Change Password' =>'更改密碼',
+'Languages' =>'語言',
 
 'Checker Right'=>'會計對賬權限',
 'Transaction Adjustment'=>'交易調整權限',
@@ -71,6 +95,7 @@ return array(
 'Void Reimbursement'=>'撤消報銷單',
 'Batch Approve'=>'批量批准',
 'T3 Checker Right'=>'T3對賬權限',
+'Import Customer/Supplier'=>'導入客戶/供應商權限',
 
 'User'=>'帳戶',
 'Group'=>'群組',
@@ -84,8 +109,8 @@ return array(
 'Terminate'=>'終止',
 '(Resign)'=>'（離職）',
 
-'Active' => '啟用',
-'Inactive' => '停用',
+'Active' =>'啟用',
+'Inactive' =>'停用',
 'already used'=>'已被取用',
 'Void'=>'撤消',
 'Normal'=>'正常',
@@ -105,6 +130,35 @@ return array(
 'Delegation'=>'授權',
 'Notification Option'=>'通知選項',
 'System Use'=>'系統使用',
-'Copy Setting'=>'複製設置',
+
+'employee_code'=>'員工編號',
+'employee_name'=>'員工名字',
+'city'=>'地區',
+'user_name'=>'員工職位',
+'comm_total_amount'=>'提成金額',
+'sale commission man'=>'銷售提成人員列表',
+'sale commission'=>'銷售提成列表',
+'first_dt'=>'服務時間',
+'sign_dt'=>'簽約時間',
+'company_name'=>'客戶名稱',
+'type_desc'=>'類別',
+'service'=>'服務頻次',
+'amt_paid'=>'服務年金額',
+'amt_install'=>'安裝金額',
+'cust_type'=>'類別',
+'Othersalesman'=>'被跨區業務員',
+'Salesman'=>'業務員',
+'Ctrt_period'=>'合同年限（月）',
+
+'Bonus'=>'獎金庫',
+'Bonus List'=>'獎金庫列表',
+'City'=>'城市',
+'Year'=>'年',
+'Month'=>'月',
+'Money'=>'總金額',
+
+'Payroll File'=>'工資表',
+'Payroll File Approval'=>'工資審核',
+'Payroll File Rollback'=>'工資表退回',
 );
 ?>

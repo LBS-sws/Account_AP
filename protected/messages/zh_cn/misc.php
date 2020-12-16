@@ -26,6 +26,7 @@ return array(
 	'Login' => '登录',
 	'Logout' => '退出',
 	'Save' => '保存',
+    'Save1' => '计算',
 	'Active' => '启用',
 	'Inactive' => '停用',
 	'On'=>'开启',
@@ -75,14 +76,26 @@ return array(
 	'less or equal'=>'小过或等于',
 	'less than'=>'小过',
 	'-- Advanced --'=>'-- 进阶 --',
-	'<< Advanced >>'=>'<< 进阶搜寻 >>',
+	'<< Advanced >>'=>'<< 高级搜寻 >>',
 	'Advanced'=>'进阶',
 	'Clear'=>'清除',
-	
+    'Down'=>'下载报表',
+
 	'Misc'=>'其他',
 	'Status'=>'状态',
 	'Mark Read'=>'标记已读',
 	'Go Top'=>'往页顶',
+	'Announcement'=>'公告',
+
+    'none'=>'无',
+    'group business'=>'商业组',
+    'group repast'=>'餐饮组',
+
+	'Latest month'=>'1个月內',
+	'3 months'=>'3个月內',
+	'6 months'=>'6个月內',
+	'1 year'=>'1年內',
+	'Rollback'=>'退回',
 );
 
 ?>

@@ -37,6 +37,14 @@ return array(
 
 'In'=>'收款',
 'Out'=>'付款',
+'City'=>'城市',
+'Date'=>'日期',
+'Sale ladder'=>'銷售提成階梯',
+'Sale ladder list'=>'銷售提成階梯列表',
+
+'Sales Amount'=>'營業額（年銷額）',
+'Hy Pc Rate'=>'HY/PC',
+'Inv Rate'=>'INV (除化學劑）',
 
 'Approver Form'=>'審核人員表單',
 'Region Supervisor'=>'地區主管',
@@ -51,8 +59,5 @@ return array(
 
 'Delegated User'=>'授權帳戶',
 'Delegation Form'=>'授權表單',
-'Accounting Code'=>'T3科目',
-'Accounting Code List'=>'T3科目列表',
-'Accounting Code Form'=>'T3科目表單',
 );
 ?>

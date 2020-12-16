@@ -67,5 +67,9 @@ return array(
 	'Mark Read Done'=>'标记已读完成',
 	'Request Approved and Signed'=>'批准申请及签字完成',
 	'Request Confirmed'=>'确认申请完成',
+    'Data is filled in incorrectly, please check and modify before proceeding'=>'数据填写有误，请检查修改后再进行',
+    'Some records cannot be calculated'=>'部分记录无法计算',
+'Are you sure to copy?'=>'確定複製?',
+'Setting copied'=>'設置複製完成',
 );
 ?>
