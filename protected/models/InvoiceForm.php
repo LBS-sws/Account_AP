@@ -500,10 +500,10 @@ class InvoiceForm extends CFormModel
                     <td colspan="10" width="180px;">LBS SERVICES (SINGAPORE) PTE LTD</td><td width="100px;"></td><td width="100px;"></td><td width="20px;"></td><td width="30px;"></td><td width="140px;" rowspan="4" ><img  src="images/biao.png" ></td>
                 </tr>
                 <tr>
-                    <td colspan="12" width="200px;">No.5 Penjuru Close #03-00 Singapore 608600</td><td></td><td></td>
+                    <td colspan="12" width="200px;">61 Ubi Ave 1#06-09 UB Point Singapore 408941</td><td></td><td></td>
                 </tr>
                 <tr>
-                    <td colspan="10" width="180px;">Tel (65) 6862 3777 Fax (65) 6862 8628</td><td> </td><td></td><td></td><td></td>
+                    <td colspan="10" width="180px;">Tel (65) 6513 3289, (65) 6513 3668</td><td> </td><td></td><td></td><td></td>
                 </tr>
                 <tr>
                     <td colspan="10" width="180px;">www.lbshygiene.com.sg</td><td colspan="3" rowspan="3" width="220px"><span style="font-size: 30px;text-align: center;line-height: 40px;">Tax Invoice</span></td><td></td><td></td>
