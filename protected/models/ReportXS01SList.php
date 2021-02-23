@@ -118,12 +118,10 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
-        $name['name']=str_replace(' ',' (',$name['name']);
-        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -214,12 +212,10 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
-        $name['name']=str_replace(' ',' (',$name['name']);
-        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -310,12 +306,10 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
-        $name['name']=str_replace(' ',' (',$name['name']);
-        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -440,12 +434,10 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
-        $name['name']=str_replace(' ',' (',$name['name']);
-        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -536,12 +528,10 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
-        $name['name']=str_replace(' ',' (',$name['name']);
-        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -632,12 +622,10 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
-        $name['name']=str_replace(' ',' (',$name['name']);
-        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
