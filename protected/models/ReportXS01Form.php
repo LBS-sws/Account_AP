@@ -41,6 +41,7 @@ class ReportXS01Form extends CReportForm
     public $renewal_amount;
     public $renewalend_amount;
     public $renewal_money;
+    public $product_amount;
 
     protected function labelsEx() {
         return array(
@@ -139,7 +140,7 @@ class ReportXS01Form extends CReportForm
             $date1='2020/07/01';
             $employee=$this->getEmployee($records['employee_code'],$records['year_no'],$records['month_no']);
            // print_r($a);print_r($employee);
-            if($records['city']=='CD'||$records['city']=='FS'||$records['city']=='NJ'||$records['city']=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1){
+            if($records['city']=='CD'||$records['city']=='NJ'||$records['city']=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1||($records['city']=='FS'&&strtotime($date)<strtotime('2021/02/01'))){
                 $month=$records['month_no'];
                 $year=$records['year_no'];
             }else{
@@ -172,6 +173,12 @@ class ReportXS01Form extends CReportForm
             }
             $sql_point="select * from sales$suffix.sal_integral where year='$years' and month='$months' and username='".$arr['user_id']."' and city='".$records['city']."'";
             $point = Yii::app()->db->createCommand($sql_point)->queryRow();
+            if(empty($point)){
+                $point['point']=0;
+                $point['id']=0;
+            }
+            $sql_points="update sales$suffix.sal_integral set hdr_id='$index' where id='".$point['id']."'";
+            $record = Yii::app()->db->createCommand($sql_points)->execute();
             $this->city=$records['city_name'];
             $this->employee_name=$records['employee_name'];
             $this->saleyear=$records['year_no']."/".$records['month_no'];
@@ -183,7 +190,7 @@ class ReportXS01Form extends CReportForm
             $this->new_amount=$records['new_amount'];
             $this->edit_amount=$records['edit_amount'];
             $this->end_amount=$records['end_amount'];
-            $num=$records['new_amount']+$records['edit_amount']+$records['end_amount']+$records['performance_amount']+$records['performanceedit_amount']+$records['performanceend_amount']+$records['renewal_amount']+$records['renewalend_amount'];
+            $num=$records['new_amount']+$records['edit_amount']+$records['end_amount']+$records['performance_amount']+$records['performanceedit_amount']+$records['performanceend_amount']+$records['renewal_amount']+$records['renewalend_amount']+$records['product_amount'];
             $this->all_amount=number_format($num,2);
             $this->performance_amount=$records['performance_amount'];
             $this->year=$records['year_no'];
@@ -191,9 +198,6 @@ class ReportXS01Form extends CReportForm
             $this->new_money=$records['new_money'];
             $this->edit_money=$records['edit_money'];
             $this->out_money=$records['out_money'];
-            if(empty($point)){
-                $point['point']=0;
-            }
             $point=$point['point']*100;
             $this->point=$point."%";
             $this->performanceedit_amount=$records['performanceedit_amount'];
@@ -202,6 +206,7 @@ class ReportXS01Form extends CReportForm
             $this->renewal_amount=$records['renewal_amount'];
             $this->renewalend_amount=$records['renewalend_amount'];
             $this->renewal_money=$records['renewal_money'];
+            $this->product_amount=$records['product_amount'];
             $this->group_type=$this->getGroupType($records['group_type']);
             if($records['performance']==1){
                 $a='是';
@@ -261,7 +266,7 @@ class ReportXS01Form extends CReportForm
             $timestrap=strtotime($record['visit_dt']);
             $years=date('Y',$timestrap);
             $months=date('m',$timestrap);
-            if($years==$year&&$months==$month){
+            if($years==$year&&$months==$month&&date('d',$timestrap)>1){
                 $a=1;
             }else{
                 $a=2;

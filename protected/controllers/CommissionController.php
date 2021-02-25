@@ -24,8 +24,8 @@ class CommissionController extends Controller
     {
         return array(
             array('allow',
-                'actions'=>array('save','new','add','newsave','performance','performanceedit','performanceend','editsave','endsave','performancesave','position',
-                    'performanceeditsave','performanceendsave','renewal','renewalend','renewalsave','renewalendsave'),
+                'actions'=>array('save','new','add','newsave','performance','performanceedit','performanceend','editsave','endsave','performancesave','position','product','productsave',
+                    'performanceeditsave','performanceendsave','renewal','renewalend','renewalsave','renewalendsave','clear'),
                 'expression'=>array('CommissionController','allowReadWrite'),
             ),
             array('allow',
@@ -239,6 +239,23 @@ class CommissionController extends Controller
         $this->render('renewalend',array('model'=>$model,'index'=>$index,'year'=>$year,'month'=>$month,));
     }
 
+    public function actionProduct($pageNum=0,$year,$month,$index)
+    {
+        $model = new ReportXS01List;
+        if (isset($_POST['ReportXS01List'])) {
+            $model->attributes = $_POST['ReportXS01List'];
+        } else {
+            $session = Yii::app()->session;
+            if (isset($session[$model->criteriaName()]) && !empty($session[$model->criteriaName()])) {
+                $criteria = $session[$model->criteriaName()];
+                $model->setCriteria($criteria);
+            }
+        }
+        $model->determinePageNum($pageNum);
+        $model->productDataByPage($model->pageNum,$year,$month,$index);
+        $this->render('product',array('model'=>$model,'index'=>$index,'year'=>$year,'month'=>$month,));
+    }
+
     public function actionAdd($year,$month,$index)
     {
         $model = new ReportXS01Form('add');
@@ -273,7 +290,7 @@ class CommissionController extends Controller
         $date=$year."/".$month.'/'."01";
         $date1='2020/07/01';
         $employee=$this->getEmployee($index,$year,$month);
-        if($city=='CD'||$city=='FS'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1){
+        if($city=='CD'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1||($city=='FS'&&strtotime($date)<strtotime('2021/02/01'))){
           $model = new ReportXS01SList;
         }else{
             $model = new ReportXS01List;
@@ -311,7 +328,7 @@ class CommissionController extends Controller
         $date=$year."/".$month.'/'."01";
         $date1='2020/07/01';
         $employee=$this->getEmployee($index,$year,$month);
-        if($city=='CD'||$city=='FS'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1){
+        if($city=='CD'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1||($city=='FS'&&strtotime($date)<strtotime('2021/02/01'))){
             $model = new ReportXS01SList;
         }else{
             $model = new ReportXS01List;
@@ -346,7 +363,7 @@ class CommissionController extends Controller
         $date=$year."/".$month.'/'."01";
         $date1='2020/07/01';
         $employee=$this->getEmployee($index,$year,$month);
-        if($city=='CD'||$city=='FS'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1){
+        if($city=='CD'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1||($city=='FS'&&strtotime($date)<strtotime('2021/02/01'))){
             $model = new ReportXS01SList;
         }else{
             $model = new ReportXS01List;
@@ -381,7 +398,7 @@ class CommissionController extends Controller
         $date=$year."/".$month.'/'."01";
         $date1='2020/07/01';
         $employee=$this->getEmployee($index,$year,$month);
-        if($city=='CD'||$city=='FS'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1){
+        if($city=='CD'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1||($city=='FS'&&strtotime($date)<strtotime('2021/02/01'))){
             $model = new ReportXS01SList;
         }else{
             $model = new ReportXS01List;
@@ -416,7 +433,7 @@ class CommissionController extends Controller
         $date=$year."/".$month.'/'."01";
         $date1='2020/07/01';
         $employee=$this->getEmployee($index,$year,$month);
-        if($city=='CD'||$city=='FS'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1){
+        if($city=='CD'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1||($city=='FS'&&strtotime($date)<strtotime('2021/02/01'))){
             $model = new ReportXS01SList;
         }else{
             $model = new ReportXS01List;
@@ -451,7 +468,7 @@ class CommissionController extends Controller
         $date=$year."/".$month.'/'."01";
         $date1='2020/07/01';
         $employee=$this->getEmployee($index,$year,$month);
-        if($city=='CD'||$city=='FS'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1){
+        if($city=='CD'||$city=='NJ'||$city=='TJ'||$a==1||strtotime($date)<strtotime($date1)||$employee==1||($city=='FS'&&strtotime($date)<strtotime('2021/02/01'))){
             $model = new ReportXS01SList;
         }else{
             $model = new ReportXS01List;
@@ -533,6 +550,59 @@ class CommissionController extends Controller
         }
     }
 
+    public function actionProductSave($year,$month,$index)
+    {
+        $city=Yii::app()->user->city();
+        $model = new ReportXS01List;
+        //print_r($_POST['ReportXS01List']['id']);
+        if (isset($_POST['ReportXS01List']['id'])) {
+            $model->productSale($_POST['ReportXS01List']['id'],$index,$year,$month);
+            Dialog::message(Yii::t('dialog','Validation Message'),Yii::t('dialog','Save Done') );
+            $this->redirect(Yii::app()->createUrl('commission/product',array('year'=>$year,'month'=>$month,'index'=>$index)));
+        }else{
+            $sql="select * from acc_service_comm_dtl where hdr_id='$index'";
+            $records = Yii::app()->db->createCommand($sql)->queryRow();
+            if(empty($records)){
+                $sql1 = "insert into acc_service_comm_dtl(
+					hdr_id, product_amount
+				) values (
+					'".$index."','0'
+				)";
+            }else{
+                $sql1="update acc_service_comm_dtl set product_amount='0'  where hdr_id='$index'";
+            }
+            $model = Yii::app()->db->createCommand($sql1)->execute();
+            Dialog::message(Yii::t('dialog','Validation Message'),Yii::t('dialog','Save Done') );
+            $this->redirect(Yii::app()->createUrl('commission/product',array('year'=>$year,'month'=>$month,'index'=>$index)));
+        }
+    }
+
+    public function actionClear($year,$month,$index,$clear)
+    {
+        $city=Yii::app()->user->city();
+        $model = new ReportXS01List;
+        if(empty($_POST['ReportXS01List']['id'])){
+            if(!empty($_POST['ReportXS01From']['id'])){
+                $id=$_POST['ReportXS01From']['id'];
+            }
+        }else{
+            if(!empty($_POST['ReportXS01List']['id'])){
+                $id=$_POST['ReportXS01List']['id'];
+            }
+        }
+     //   print_r($id);exit();
+        if (isset($id)) {
+            $model->clearn($id);
+            Dialog::message(Yii::t('dialog','Validation Message'),Yii::t('dialog','Save Done') );
+            $this->redirect(Yii::app()->createUrl('commission/'.$clear,array('year'=>$year,'month'=>$month,'index'=>$index)));
+        }else{
+            Dialog::message(Yii::t('dialog','Validation Message'),Yii::t('dialog','Save Done') );
+            $this->redirect(Yii::app()->createUrl('commission/'.$clear,array('year'=>$year,'month'=>$month,'index'=>$index)));
+        }
+    }
+
+
+
     public static function allowReadWrite() {
         return Yii::app()->user->validRWFunction('XS01');
     }
@@ -578,7 +648,7 @@ class CommissionController extends Controller
             $years=date('Y',$timestrap);
             $months=date('m',$timestrap);
 //        print_r($record);exit();
-            if($years==$year&&$months==$month){
+            if($years==$year&&$months==$month&&date('d',$timestrap)>1){
                 $a=1;
             }else{
                 $a=2;

@@ -118,10 +118,12 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
+        $name['name']=str_replace(' ',' (',$name['name']);
+        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -212,10 +214,12 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
+        $name['name']=str_replace(' ',' (',$name['name']);
+        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -306,10 +310,12 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
+        $name['name']=str_replace(' ',' (',$name['name']);
+        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -434,10 +440,12 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
+        $name['name']=str_replace(' ',' (',$name['name']);
+        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -528,10 +536,12 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
+        $name['name']=str_replace(' ',' (',$name['name']);
+        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -622,10 +632,12 @@ class ReportXS01SList extends CListPageModel
     {
         $suffix = Yii::app()->params['envSuffix'];
         $city = Yii::app()->user->city_allow();
-        $sqlm="select concat(a.name, ' (', a.code, ')') as name from acc_service_comm_hdr where id='$index'";
+        $sqlm="select concat_ws(' ',employee_name,employee_code) as name from acc_service_comm_hdr where id='$index'";
         $name = Yii::app()->db->createCommand($sqlm)->queryRow();
         $start=$year."-".$month."-01";
         $end=$year."-".$month."-31";
+        $name['name']=str_replace(' ',' (',$name['name']);
+        $name['name'].=")";
         $sql1 = "select a.*,  c.description as type_desc, d.name as city_name					
 				from swoper$suffix.swo_service a inner join security$suffix.sec_city d on a.city=d.code 			  
 				left outer join swoper$suffix.swo_customer_type c on a.cust_type=c.id 
@@ -785,10 +797,14 @@ class ReportXS01SList extends CListPageModel
                     $money+=$a;
                     $cust_type='fw';
                     if(!empty($records['othersalesman'])){
-                        $moneys+=$a*$spanning;
+                        $commission=$a*$spanning;
+                        $moneys+=$commission;
                     }else{
-                        $moneys+=$a;
+                        $commission=$a;
+                        $moneys+=$commission;
                     }
+                    $sqlct="update acc_service_comm_copy set commission='".$commission."'  where id='$ai'";
+                    $model = Yii::app()->db->createCommand($sqlct)->execute();
                 }elseif ($records['cust_type']=='4'){
                     $money1+=$a;
                     $cust_type1='inv';
@@ -1282,9 +1298,12 @@ class ReportXS01SList extends CListPageModel
                     $otherspanning=$this->getOtherRoyalty($index,$city,$year,$month,$records['salesman']);
                     if (!empty($a)) {
                         $moneys += $a * $otherspanning;
-                        $a = $a * $fuwu_last;
                         if ($records['cust_type'] == '1' || $records['cust_type'] == '2' || $records['cust_type'] == '3' || $records['cust_type'] == '5' || $records['cust_type'] == '6' || $records['cust_type'] == '7') {
-                            $money += $a * $otherspanning;
+                            $commission=$a * $otherspanning;
+                            $comm= $commission* $fuwu_last;
+                            $money += $comm;
+                            $sqlct="update acc_service_comm_copy set  other_commission='".$commission."',royaltys='$fuwu_last'  where id='$ai'";
+                            $model = Yii::app()->db->createCommand($sqlct)->execute();
                         }
                     }
                    // $zhuangji += $records['amt_install'];
@@ -1318,7 +1337,7 @@ class ReportXS01SList extends CListPageModel
                             $commission=$a * $otherspanning;
                             $comm= $commission* $fuwu_last;
                             $money += $comm;
-                            $sqlct="update swoper$suffix.swo_service set commission='".$commission."',royaltys='$fuwu_last'  where id='$ai'";
+                            $sqlct="update swoper$suffix.swo_service set  other_commission='".$commission."',royaltys='$fuwu_last'  where id='$ai'";
                             $model = Yii::app()->db->createCommand($sqlct)->execute();
                         }
                     }
@@ -1394,7 +1413,7 @@ class ReportXS01SList extends CListPageModel
                         $money+=$fuwumoney*$otherspanning;
                         $commission=$c*$otherspanning;
                         $moneys+=$c*$otherspanning;
-                        $sqlct="update swoper$suffix.swo_service set commission='".$commission."',royaltys='$fuwu_last'  where id='$ai'";
+                        $sqlct="update swoper$suffix.swo_service set  other_commission='".$commission."',royaltys='$fuwu_last'  where id='$ai'";
                         $model = Yii::app()->db->createCommand($sqlct)->execute();
                     }
                 }else{
@@ -1440,7 +1459,7 @@ class ReportXS01SList extends CListPageModel
                                 $money1+=$m*$otherspanning;
                                 $commission=$m*$otherspanning;
                             }
-                            $sqlct="update swoper$suffix.swo_service set royaltys='".$fuwu_last."',commission='".$commission."'  where id='$ai'";
+                            $sqlct="update swoper$suffix.swo_service set royaltys='".$fuwu_last."', other_commission='".$commission."'  where id='$ai'";
                             $model = Yii::app()->db->createCommand($sqlct)->execute();
                         }else{
                             $m=$m*$royalty[$ai];
@@ -1448,7 +1467,7 @@ class ReportXS01SList extends CListPageModel
                                 $money1+=$m*$otherspanning;
                                 $commission=$m*$otherspanning;
                             }
-                            $sqlct="update swoper$suffix.swo_service set royaltys='".$royalty[$ai]."',commission='".$commission."'  where id='$ai'";
+                            $sqlct="update swoper$suffix.swo_service set royaltys='".$royalty[$ai]."', other_commission='".$commission."'  where id='$ai'";
                             $model = Yii::app()->db->createCommand($sqlct)->execute();
                         }
 
@@ -1539,7 +1558,7 @@ class ReportXS01SList extends CListPageModel
                                 $money[]=$m*$otherspanning;
                                 $commission=$m*$otherspanning;
                             }
-                            $sqlct="update swoper$suffix.swo_service set royaltys='".$fuwu_last."',commission='".$commission."'  where id='$ai'";
+                            $sqlct="update swoper$suffix.swo_service set royaltys='".$fuwu_last."', other_commission='-".$commission."'  where id='$ai'";
                             $model = Yii::app()->db->createCommand($sqlct)->execute();
                         }else{
                             $m=$m*$royalty[$ai];
@@ -1547,7 +1566,7 @@ class ReportXS01SList extends CListPageModel
                                 $money[]=$m*$otherspanning;
                                 $commission=$m*$otherspanning;
                             }
-                            $sqlct="update swoper$suffix.swo_service set royaltys='".$royalty[$ai]."',commission='".$commission."'  where id='$ai'";
+                            $sqlct="update swoper$suffix.swo_service set royaltys='".$royalty[$ai]."', other_commission='-".$commission."'  where id='$ai'";
                             $model = Yii::app()->db->createCommand($sqlct)->execute();
                         }
                     }
@@ -1668,7 +1687,7 @@ class ReportXS01SList extends CListPageModel
 //                exit();
                 $money[]=$mons_sum*$royaltyes;
                 $commission=$mons_sum*$royaltyes;
-                $sqlct="update swoper$suffix.swo_service set royaltys='".$royaltyes."',commission='".$commission."'  where id='$ai'";
+                $sqlct="update swoper$suffix.swo_service set royaltys='".$royaltyes."', other_commission='-".$commission."'  where id='$ai'";
                 $model = Yii::app()->db->createCommand($sqlct)->execute();
             }
         }
@@ -1849,7 +1868,7 @@ class ReportXS01SList extends CListPageModel
             $timestrap=strtotime($record['visit_dt']);
             $years=date('Y',$timestrap);
             $months=date('m',$timestrap);
-            if($years==$year&&$months==$month){
+            if($years==$year&&$months==$month&&date('d',$timestrap)>1){
                 $a=1;
             }else{
                 $a=2;

@@ -30,6 +30,9 @@ $this->pageTitle=Yii::app()->name . ' - commission Report';
             <?php echo TbHtml::button('<span class="fa fa-upload"></span> '.Yii::t('misc','Save1'), array(
                     'submit'=>Yii::app()->createUrl('commission/editsave',array('year'=>$year,'month'=>$month,'index'=>$index)))
             ); ?>
+            <?php echo TbHtml::button('<span class="fa fa-upload"></span> '.Yii::t('misc','Clear'), array(
+                    'submit'=>Yii::app()->createUrl('commission/clear',array('year'=>$year,'month'=>$month,'index'=>$index,'clear'=>'edit')))
+            ); ?>
         </div>
     </div>
 </div>
@@ -63,6 +66,9 @@ $this->pageTitle=Yii::app()->name . ' - commission Report';
             </li>
             <li  class="">
                 <a  tabindex="-1" href="<?php echo Yii::app()->createUrl('commission/renewalend',array('year'=>$year,'month'=>$month,'index'=>$index));?>" ><?php echo Yii::t('commission','RenewalEnd'); ?></a>
+            </li>
+            <li  class="">
+                <a  tabindex="-1" href="<?php echo Yii::app()->createUrl('commission/product',array('year'=>$year,'month'=>$month,'index'=>$index));?>" ><?php echo Yii::t('commission','Prodcct'); ?></a>
             </li>
         </ul>
         <div class="box-info" >
