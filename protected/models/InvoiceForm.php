@@ -531,6 +531,10 @@ class InvoiceForm extends CFormModel
                   <tr ><td></td></tr>
                   <tr ><td width="30px;" border="1">No</td><td width="320px;" border="1">Stock Code/Description</td><td width="50px;" border="1">Quantity</td><td width="70px;" border="1">Unit Price</td><td width="30px;" border="1">Disc %</td><td width="70px;" border="1">Amount</td></tr>   
 EOD;
+        $model['description']='';
+        $model['quantity']='';
+        $model['unit_price']='';
+        $model['amount']='';
         $a='';
         foreach ($model->type as $value){
             $model['description'].=$value['description']."<br/>";
@@ -538,7 +542,7 @@ EOD;
             $model['unit_price'].=$value['unit_price']."<br/>";
             $model['amount'].=$value['amount']."<br/>";
             $disc=$model['disc'];
-            $a=$disc."<br/>";
+            $a.=$disc."<br/>";
         }
         $tbl.=<<<EOD
         <tr ><td  rowspan="9" height="270px;" border="1"></td><td rowspan="9" height="270px;" border="1">$model->description</td><td rowspan="9" height="270px;" border="1">$model->quantity</td><td rowspan="9" height="270px;" border="1">$model->unit_price</td><td rowspan="9" height="270px;" border="1">$a</td><td rowspan="9" height="270px;" border="1">$model->amount</td></tr>   
