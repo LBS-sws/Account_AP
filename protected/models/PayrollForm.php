@@ -18,6 +18,7 @@ class PayrollForm extends CFormModel
 	public $wfactionuser;
 	
 	public $remarks;
+
 	public $amt_sales;
 	public $amt_tech;
 	public $amt_office;

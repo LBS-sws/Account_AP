@@ -1,5 +1,4 @@
 <?php
-
 class PayrollList extends CListPageModel
 {
 	public function attributeLabels()
