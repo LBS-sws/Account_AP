@@ -230,7 +230,11 @@ class InvoiceForm extends CFormModel
                         if (strpos($sql,':unit_price')!==false)
                             $command->bindParam(':unit_price',$line['unit_price'],PDO::PARAM_STR);
                         if (strpos($sql,':amount')!==false)
-                            $amount=$line['unit_price']*$line['qty'];
+                            if($line['is_service']=='Y'){
+                                $amount=$line['invoice_amt'];
+                            }else{
+                                $amount=$line['unit_price']*$line['qty'];
+                            }
                             $command->bindParam(':amount',$amount,PDO::PARAM_STR);
                         $command->execute();
                         if(isset($line['unit_price2'])&&$line['unit_price2']!=0){
@@ -474,6 +478,13 @@ class InvoiceForm extends CFormModel
         $sql = "select name from hr$suffix.hr_employee where id=(SELECT employee_id from hr$suffix.hr_binding WHERE user_id='".$id."')";
         $row = Yii::app()->db->createCommand($sql)->queryScalar();
         return  $row;
+    }
+
+    public function deleteData($a){
+        $sql = "delete from acc_invoice where id = '$a'";
+        Yii::app()->db->createCommand($sql)->execute();
+        $sql1 = "delete from acc_invoice_type where invoice_id = '$a'";
+        Yii::app()->db->createCommand($sql1)->execute();
     }
 
     public function allDowns($model){

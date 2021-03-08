@@ -35,6 +35,10 @@ $this->pageTitle=Yii::app()->name . ' - Invoice';
         <?php echo TbHtml::button('<span class="fa fa-download"></span> '.Yii::t('misc','Down'), array(
             'submit'=>Yii::app()->createUrl('invoice/down')));
         ?>
+        <?php echo TbHtml::button('<span class="fa fa-remove"></span> '.Yii::t('misc','Delete'), array(
+                'name'=>'btnDelete','id'=>'btnDelete','data-toggle'=>'modal','data-target'=>'#removedialog',)
+        );
+        ?>
 	</div>
 	</div></div>
 	<?php 
@@ -56,7 +60,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice';
 		));
 	?>
 </section>
-
+<?php $this->renderPartial('//site/removedialog'); ?>
 <?php
 	echo $form->hiddenField($model,'pageNum');
 	echo $form->hiddenField($model,'totalRow');
@@ -79,6 +83,8 @@ $('body').on('click','#all',function() {
 });
 ";
 Yii::app()->clientScript->registerScript('selectAll',$js,CClientScript::POS_READY);
+$js = Script::genDeleteData(Yii::app()->createUrl('invoice/alldelete'));
+Yii::app()->clientScript->registerScript('deleteRecord',$js,CClientScript::POS_READY);
 ?>
 
 
