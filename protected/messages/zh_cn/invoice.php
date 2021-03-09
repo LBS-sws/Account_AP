@@ -25,7 +25,7 @@ return array(
     'Quantity' => '数量',
     'Unit Price' => '单价',
     'Amount' => '总价',
-
+    'Batch deletion of invoices'=>'发票批量删除',
 
 );
 ?>

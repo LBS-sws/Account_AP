@@ -35,9 +35,11 @@ $this->pageTitle=Yii::app()->name . ' - Invoice';
         <?php echo TbHtml::button('<span class="fa fa-download"></span> '.Yii::t('misc','Down'), array(
             'submit'=>Yii::app()->createUrl('invoice/down')));
         ?>
-        <?php echo TbHtml::button('<span class="fa fa-remove"></span> '.Yii::t('misc','Delete'), array(
-                'name'=>'btnDelete','id'=>'btnDelete','data-toggle'=>'modal','data-target'=>'#removedialog',)
-        );
+        <?php  if(Yii::app()->user->validFunction('CN12')){
+            echo TbHtml::button('<span class="fa fa-remove"></span> '.Yii::t('misc','Delete'), array(
+                    'name'=>'btnDelete','id'=>'btnDelete','data-toggle'=>'modal','data-target'=>'#removedialog',)
+            );
+        }
         ?>
 	</div>
 	</div></div>
