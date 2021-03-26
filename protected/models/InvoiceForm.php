@@ -553,6 +553,9 @@ EOD;
             $model['unit_price'].=$value['unit_price']."<br/>";
             $model['amount'].=$value['amount']."<br/>";
             $disc=$model['disc'];
+            if(empty($value['description'])){
+                $disc='';
+            }
             $a.=$disc."<br/>";
         }
         $tbl.=<<<EOD
