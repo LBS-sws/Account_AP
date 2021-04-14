@@ -58,7 +58,8 @@ return array(
 	'Confirm'=>'确认',
 	'OK'=>'确认',
 	'Void'=>'撤消',
-	
+    'Approval'=>'申请审核',
+    'Audit'=>'审核通过',
 	'Invalid Station. Please register first.'=>'工作站无效。请先登记。',
 	'User ID has been logged in more than one station.'=>'帐户已被登录到另一工作站。',
 	'Session expired.'=>'系统连接已经过期。请重新登录。',
@@ -96,6 +97,7 @@ return array(
 	'6 months'=>'6个月內',
 	'1 year'=>'1年內',
 	'Rollback'=>'退回',
+	'Your ranking is:'=>'你当前的段位为:',
 );
 
 ?>

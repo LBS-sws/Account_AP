@@ -21,7 +21,7 @@ return array(
 	'Quiz'=>'测验系统',
     'Academic Credit'=>'学分系统',
 	'Online Library'=>'网上文库',
-        'Charitable Credit'=>'慈善分系统',
+	'Charitable Credit'=>'慈善分系统',
 
 	'Data Entry'=>'数据输入',
 	'Misc'=>'其他',
@@ -35,6 +35,7 @@ return array(
     'Spanning Sales End Commission'=>'跨区终止生意额计算',
     'Sales Renewal Commission'=>'续约生意额计算',
     'Sales RenewalEnd Commission'=>'续约终止生意额计算',
+    'Sales Product Commission'=>'产品生意额计算',
 
     'Sales New Query'=>'销售新生意额查询',
     'Sales Edit Query'=>'销售更改生意额查询',
@@ -42,6 +43,7 @@ return array(
     'Spanning Sales New Query'=>'跨区新生意额查询',
     'Spanning Sales Edit Query'=>'跨区更改生意额查询',
     'Spanning Sales End Query'=>'跨区终止生意额查询',
+	'Sales Product Query'=>'产品生意额查询',
 
 	'Import'=>'数据导入',
 	'Import Manager'=>'数据导入管理员',
@@ -55,8 +57,10 @@ return array(
 	'Salary calculation'=>'薪资计算',
 	'Sales Commission'=>'销售提成计算',
     'Sales Commission history'=>'销售提成查询',
-    'Sales Commission ladder'=>'销售提成阶梯',
+    'Sales Commission ladder'=>'服务提成阶梯',
     'Prize Vault'=>'奖金库',
+    'Product royalty ladder'=>'产品提成阶梯',
+
 
 	'Transaction'=>'交易记录',
 	'Transaction(In)'=>'收款记录',
@@ -160,5 +164,14 @@ return array(
 	'Payroll File'=>'工资表',
 	'Payroll File Approval'=>'工资审核',
 	'Payroll File Rollback'=>'工資表退回',
+    'Sales commission table Approval'=>'销售提成表审核',
+
+	'Sales commission table'=>'销售提成表',
+    'Time'=>'日期',
+	'Log Dt'=>'出单日期',
+	'Description'=>'产品名称',
+	'Qty'=>'数量',
+	'Qty Money'=>'单价',
+
 );
 ?>
