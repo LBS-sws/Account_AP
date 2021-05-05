@@ -586,7 +586,7 @@ EOD;
         ob_clean();
         $date=str_replace('/','-',$model->dates);
         $name=str_replace('/',' ',$model->invoice_company);
-        $address="/".$date."-".$name.'.pdf';
+        $address="/".$date."-".$name.'_'.$model->number.'.pdf';
 //        $tem_dir = $_SERVER['SystemRoot'].'/temp';
 //        $address=$tem_dir.$date."-".$model->invoice_company.'.pdf';
         $outstring =$pdf->Output(sys_get_temp_dir().$address, 'F');
