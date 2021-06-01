@@ -168,7 +168,7 @@ class InvoiceForm extends CFormModel
         //数据整合同公司同日期
         $res = $arr['data']; //想要的结果
         for($i=0;$i<sizeof($res);$i++){
-            for($j=1;j<sizeof($res);$j++){
+            for($j=1;$j<sizeof($res);$j++){
                 if ($res[$i]['invoice_dt']==$res[$j]['invoice_dt'] && $res[$i]['customer_code']==$res[$j]['customer_code']){
                     $res[$i]['line'] = array_merge($res[$i]['line'],$res[$j]['line']);
                     unset($res[$j]);
