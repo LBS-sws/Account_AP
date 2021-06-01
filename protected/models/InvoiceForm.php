@@ -167,7 +167,8 @@ class InvoiceForm extends CFormModel
     public function saveU(&$connection, $arr){
 	    foreach ($arr['data'] as $a){
             $invoice_dt = General::toMyDate($a['invoice_dt']);
-	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
+//	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
+            $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."'";
             $records = Yii::app()->db->createCommand($sql_s)->queryAll();
             if(empty($records)){
                 $sql="insert into acc_invoice (
@@ -586,7 +587,7 @@ EOD;
         ob_clean();
         $date=str_replace('/','-',$model->dates);
         $name=str_replace('/',' ',$model->invoice_company);
-        $address="/".$date."-".$name.'_'.$model->number.'.pdf';
+        $address="/".$date."-".$name.'.pdf';
 //        $tem_dir = $_SERVER['SystemRoot'].'/temp';
 //        $address=$tem_dir.$date."-".$model->invoice_company.'.pdf';
         $outstring =$pdf->Output(sys_get_temp_dir().$address, 'F');
