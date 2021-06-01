@@ -170,9 +170,9 @@ class InvoiceForm extends CFormModel
         for($i=0;$i<sizeof($res);$i++){
             for($j=1;$j<sizeof($res);$j++){
                 if ($res[$i]['invoice_dt']==$res[$j]['invoice_dt'] && $res[$i]['customer_code']==$res[$j]['customer_code']){
-                    $res[$i]['line'] = array_merge($res[$i]['line'],$res[$j]['line']);
+                    $res[$i]['line'] = array_push($res[$i]['line'],$res[$j]['line']);
                     unset($res[$j]);
-                    $res = array_merge($res);
+                    $res = array_values($res);
                 }
             }
         }
