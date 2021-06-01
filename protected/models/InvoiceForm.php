@@ -170,6 +170,7 @@ class InvoiceForm extends CFormModel
 //	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
             $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."'";
             $records = Yii::app()->db->createCommand($sql_s)->queryAll();
+            var_dump($records);die();
             if(empty($records)){
                 $sql="insert into acc_invoice (
                     dates,payment_term,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc,delivery_company,delivery_address,delivery_tel,invoice_no
