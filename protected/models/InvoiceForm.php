@@ -166,22 +166,22 @@ class InvoiceForm extends CFormModel
      */
     public function saveU(&$connection, $arr){
         //数据整合同公司同日期
-        $res = $arr['data']; //想要的结果
-        for($i=0;$i<sizeof($res);$i++){
-            for($j=1;$j<sizeof($res);$j++){
-                if ($res[$i]['invoice_dt']==$res[$j]['invoice_dt'] && $res[$i]['customer_code']==$res[$j]['customer_code']){
-                    var_dump('============================');
-                    var_dump($res[$i]['line']);
-                    var_dump($res[$j]['line']);
-                    $res[$i]['line'] = array_push($res[$i]['line'],$res[$j]['line']);
-                    unset($res[$j]);
-                    var_dump(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
-                    var_dump($res);
-                    $res = array_values($res);
-                }
-            }
-        }
-        var_dump($res);die();
+//        $res = $arr['data']; //想要的结果
+//        for($i=0;$i<sizeof($res);$i++){
+//            for($j=1;$j<sizeof($res);$j++){
+//                if ($res[$i]['invoice_dt']==$res[$j]['invoice_dt'] && $res[$i]['customer_code']==$res[$j]['customer_code']){
+//                    var_dump('============================');
+//                    var_dump($res[$i]['line']);
+//                    var_dump($res[$j]['line']);
+//                    $res[$i]['line'] = array_push($res[$i]['line'],$res[$j]['line']);
+//                    unset($res[$j]);
+//                    var_dump(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+//                    var_dump($res);
+//                    $res = array_values($res);
+//                }
+//            }
+//        }
+        var_dump(['data']);die();
 	    foreach ($arr['data'] as $a){
             $invoice_dt = General::toMyDate($a['invoice_dt']);
 //	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
