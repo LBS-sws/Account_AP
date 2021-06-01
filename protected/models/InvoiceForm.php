@@ -181,7 +181,7 @@ class InvoiceForm extends CFormModel
 //                }
 //            }
 //        }
-        var_dump(['data']);die();
+        var_dump($arr['data']);die();
 	    foreach ($arr['data'] as $a){
             $invoice_dt = General::toMyDate($a['invoice_dt']);
 //	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
