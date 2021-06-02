@@ -167,19 +167,26 @@ class InvoiceForm extends CFormModel
     public function saveU(&$connection, $arr){
         //数据整合同公司同日期
         $res = $arr['data']; //想要的结果
-        $jsize = sizeof($res);
-        for($i=0;$i<sizeof($res);$i++){
-            for($j=1;$j<$jsize;$j++){
-                if ($res[$i]['invoice_dt']==$res[$j]['invoice_dt'] && $res[$i]['customer_code']==$res[$j]['customer_code']){
-                    $res[$i]['line'] = array_merge($res[$i]['line'],$res[$j]['line']);
-                    var_dump('start---------------------------');
-                    var_dump($res);
-                    unset($res[$j]);
-                    $res = array_values($res);
-                    var_dump('end---------------------------');
-                    var_dump($res);
-                    $jsize--;
-                }
+        var_dump($res);die();
+//        $jsize = sizeof($res);
+//        for($i=0;$i<sizeof($res);$i++){
+//            for($j=1;$j<$jsize;$j++){
+//                if ($res[$i]['invoice_dt']==$res[$j]['invoice_dt'] && $res[$i]['customer_code']==$res[$j]['customer_code']){
+//                    $res[$i]['line'] = array_merge($res[$i]['line'],$res[$j]['line']);
+//                    unset($res[$j]);
+//                    $res = array_values($res);
+//                    var_dump('end---------------------------');
+//                    var_dump($res);
+//                    $jsize--;
+//                }
+//            }
+//        }
+        $newdata = [];
+        foreach($res as $k=>$v) {
+            if (!isset($newdata[$v['invoice_dt']]) && !isset($newdata[$v['customer_code']])) {
+                $newdata[$v] = $v;
+            } else {
+                $newdata[$v]['line'] = array_merge($res[$v]['line'],$res[$v]['line']);;
             }
         }
         var_dump('zzzzzzzz---------------------------');
