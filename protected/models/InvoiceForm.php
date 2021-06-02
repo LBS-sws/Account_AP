@@ -170,17 +170,19 @@ class InvoiceForm extends CFormModel
         for($i=0;$i<sizeof($res);$i++){
             for($j=1;$j<sizeof($res);$j++){
                 if ($res[$i]['invoice_dt']==$res[$j]['invoice_dt'] && $res[$i]['customer_code']==$res[$j]['customer_code']){
-                    var_dump('============================');
-                    var_dump($res[$i]['line']);
-                    var_dump($res[$j]['line']);
                     $res[$i]['line'] = array_push($res[$i]['line'],$res[$j]['line']);
+                    var_dump('start---------------------------');
+                    var_dump($res);
                     unset($res[$j]);
-                    var_dump(']]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]');
+                    var_dump('cdd---------------------------');
                     var_dump($res);
                     $res = array_values($res);
+                    var_dump('end---------------------------');
+                    var_dump($res);
                 }
             }
         }
+        var_dump('zzzzzzzz---------------------------');
         var_dump($arr['data']);die();
 	    foreach ($arr['data'] as $a){
             $invoice_dt = General::toMyDate($a['invoice_dt']);
