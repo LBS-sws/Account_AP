@@ -167,23 +167,28 @@ class InvoiceForm extends CFormModel
     public function saveU(&$connection, $arr){
         //数据整合同公司同日期
         $res = $arr['data']; //想要的结果
-        for($i=0;$i<sizeof($res);$i++){
-            for($j=1;$j<sizeof($res);$j++){
-                if ($res[$i]['invoice_dt']==$res[$j]['invoice_dt'] && $res[$i]['customer_code']==$res[$j]['customer_code']){
-                    $res[$i]['line'] = array_push($res[$i]['line'],$res[$j]['line']);
-                    var_dump('start---------------------------');
-                    var_dump($res);
-                    unset($res[$j]);
-                    var_dump('cdd---------------------------');
-                    var_dump($res);
-                    $res = array_values($res);
-                    var_dump('end---------------------------');
-                    var_dump($res);
-                }
-            }
+//        $jsize = sizeof($res);
+//        for($i=0;$i<sizeof($res);$i++){
+//            for($j=1;$j<$jsize;$j++){
+//                if ($res[$i]['invoice_dt']==$res[$j]['invoice_dt'] && $res[$i]['customer_code']==$res[$j]['customer_code']){
+//                    $res[$i]['line'] = array_merge($res[$i]['line'],$res[$j]['line']);
+//                    var_dump('start---------------------------');
+//                    var_dump($res);
+//                    unset($res[$j]);
+//                    $res = array_values($res);
+//                    var_dump('end---------------------------');
+//                    var_dump($res);
+//                    $jsize--;
+//                }
+//            }
+//        }
+        $res_r = array(); //想要的结果
+        foreach ($res as $k => $v) {
+            $res_r[$v['invoice_dt']][] = $v;
+            $res_r[$v['customer_code']][] = $v;
         }
         var_dump('zzzzzzzz---------------------------');
-        var_dump($arr['data']);die();
+        var_dump($res_r);die();
 	    foreach ($arr['data'] as $a){
             $invoice_dt = General::toMyDate($a['invoice_dt']);
 //	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
