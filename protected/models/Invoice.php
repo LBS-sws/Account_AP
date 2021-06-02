@@ -5,7 +5,7 @@ class Invoice {
 		
 		$key = Yii::app()->params['unitedKey'];
 		$root = Yii::app()->params['unitedRootURL'];
-		$url = $root.'/remote/getInvoice.new.php';
+		$url = $root.'/remote/getInvoice.php';
 		$data = array(
 			"key"=>$key,
 			"begin"=>$start,
