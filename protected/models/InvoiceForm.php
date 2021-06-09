@@ -127,7 +127,7 @@ class InvoiceForm extends CFormModel
 				$this->sub_total = sprintf("%.2f",$arr);
 				$this->gst = sprintf("%.2f",($arr*$row['disc']));
                 $total_amount=($arr*$row['disc'])+$arr;
-				$this->total_amount = sprintf("%.2f",$total_amount);
+				$this->total_amount = round($total_amount,2);//sprintf("%.2f",$total_amount)
 				$this->city = $row['city'];
 				$this->generated_by = $this->getNames($row['lcu']);
 				break;
