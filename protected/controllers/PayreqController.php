@@ -309,6 +309,13 @@ class PayreqController extends Controller
 	protected function checkT3Audit() {
 		$city = Yii::app()->user->city();
 		$day = date('d');
+		$sqlx = "select min(trans_dt) as min_dt from acc_trans where city='$city'";
+		$rowx = Yii::app()->db->createCommand($sqlx)->queryRow();
+		if ($rowx===false || is_null($rowx['min_dt'])) return true;
+		$min_dt = strtotime($rowx['min_dt']);
+		$end_dt = strtotime("last day of previous month");
+		if ($min_dt > $end_dt) return true;
+
 		if ($day > 10) {
 			$end_dt = strtotime("last day of previous month");
 			$year = date('Y',$end_dt);
