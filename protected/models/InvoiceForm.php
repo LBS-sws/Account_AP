@@ -167,8 +167,13 @@ class InvoiceForm extends CFormModel
     public function saveU(&$connection, $arr){
 	    foreach ($arr['data'] as $a){
             $invoice_dt = General::toMyDate($a['invoice_dt']);
-//	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
             $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."'";
+            if(strstr($a['invoice_no'],"INV")!==false){ //INV服務只能合併INV
+                $sql_s.=" and invoice_no like '%INV%'";
+            }else{
+                $sql_s.=" and invoice_no not like '%INV%'";
+            }
+//	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
             $records = Yii::app()->db->createCommand($sql_s)->queryAll();
             if(empty($records)){
                 $sql="insert into acc_invoice (
