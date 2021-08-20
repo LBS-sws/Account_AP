@@ -168,14 +168,14 @@ class InvoiceForm extends CFormModel
 	    foreach ($arr['data'] as $a){
             $invoice_dt = General::toMyDate($a['invoice_dt']);
             $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."'";
-            if(strstr($a['invoice_no'],"INV")!==false){ //INV服務只能合併INV
-                $sql_s.=" and invoice_no like '%INV%'";
-            }else{
+            if(strstr($a['invoice_no'],"INV")!==false){ //INV服務不需要合併
+                $sql_s.=" and invoice_no = '{$a['invoice_no']}'";
+            }else{ //其它服務因為合併所以invoice_no不能確定是不是唯一值
                 $sql_s.=" and invoice_no not like '%INV%'";
             }
 //	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
             $records = Yii::app()->db->createCommand($sql_s)->queryAll();
-            if(empty($records)){
+            if(empty($records)){ //這個if是判斷數據庫是否已經錄入過該賬單了
                 $sql="insert into acc_invoice (
                     dates,payment_term,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc,delivery_company,delivery_address,delivery_tel,invoice_no
                   ) value (
