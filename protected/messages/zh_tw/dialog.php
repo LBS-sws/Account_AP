@@ -70,5 +70,6 @@ return array(
 'Some records cannot be calculated'=>'部分記錄無法計算',
 'Are you sure to copy?'=>'確定複製?',
 'Setting copied'=>'設置複製完成',
+'Advice'=>'温馨提示',
 );
 ?>

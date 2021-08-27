@@ -73,5 +73,6 @@ return array(
     'Please complete the sales commission form audit first'=>'请先完成销售提成表审核',
     'Are you sure to copy?'=>'確定複製?',
     'Setting copied'=>'設置複製完成',
+	'Advice'=>'温馨提示',
 );
 ?>
