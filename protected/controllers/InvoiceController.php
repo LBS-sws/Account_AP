@@ -30,7 +30,7 @@ class InvoiceController extends Controller
 			),
 */
 			array('allow', 
-				'actions'=>array('new','edit','delete','save','add','down','AllDelete'),
+				'actions'=>array('new','edit','delete','save','add','down','AllDelete','PreviewPDF'),
 				'expression'=>array('InvoiceController','allowReadWrite'),
 			),
 			array('allow', 
@@ -153,6 +153,14 @@ class InvoiceController extends Controller
             Dialog::message(Yii::t('dialog','Warning'), Yii::t('dialog','No Record Found'));
             $this->redirect(Yii::app()->createUrl('invoice/index'));
         }
+    }
+
+    public function actionPreviewPDF($index)
+    {
+        $model = new InvoiceForm;
+        $model->retrieveData($index);
+        $model->allDowns($model,"I");
+        Yii::app()->end();
     }
 	
 
