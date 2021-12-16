@@ -516,7 +516,7 @@ class InvoiceForm extends CFormModel
         $tbl=<<<EOD
             <table style="width: 570px;">
                 <tr>
-                    <td colspan="10" width="180px;">LBS SERVICES (SINGAPORE) PTE LTD</td><td width="100px;"></td><td width="100px;"></td><td width="20px;"></td><td width="30px;"></td><td width="140px;" rowspan="4" ><img  src="images/footer.png" ></td>
+                    <td colspan="10" width="180px;">LBS SERVICES (SINGAPORE) PTE LTD</td><td width="100px;"></td><td width="100px;"></td><td width="20px;"></td><td width="30px;"></td><td width="140px;" rowspan="4" ><img  src="images/biao.png" ></td>
                 </tr>
                 <tr>
                     <td colspan="12" width="200px;">61 Ubi Ave 1#06-09 UB Point Singapore 408941</td><td></td><td></td>
@@ -570,7 +570,7 @@ EOD;
         <tr ><td  rowspan="9" height="270px;" border="1"></td><td rowspan="9" height="270px;" border="1">$model->description</td><td rowspan="9" height="270px;" border="1">$model->quantity</td><td rowspan="9" height="270px;" border="1">$model->unit_price</td><td rowspan="9" height="270px;" border="1">$a</td><td rowspan="9" height="270px;" border="1">$model->amount</td></tr>   
 EOD;
 
-
+        $logo_path =  $_SERVER['DOCUMENT_ROOT'].'images/footer.png';
         $tbl.=<<<EOD
              </table>
              <table  cellspacing="0" cellpadding="0" style="width: 700px;line-height: 20px;">
@@ -580,7 +580,7 @@ EOD;
              </table>
              <table cellspacing="0" cellpadding="0" style="line-height: 20px;text-align: center;">
                   <tr><td width="110px;"></td><td width="10px;"></td><td rowspan="3" width="250px;"><img src="images/footer.png" ></td><td width="200px;" rowspan="2" border="1"><b>LBS SERVICES (SINGAPORE) PTE LTD</b><br/>***This is computer generated invoice,<br/>no signature is required.***</td></tr>
-                  <tr><td></td><td></td></tr>
+                  <tr><td>$logo_path</td><td><img src="$logo_path"/></td></tr>
                   <tr><td align="left">Customer's Copy</td><td></td><td>     Authorised Signature  &nbsp; &nbsp; &nbsp; &nbsp;<b>End</b></td></tr>
              </table>
 EOD;
