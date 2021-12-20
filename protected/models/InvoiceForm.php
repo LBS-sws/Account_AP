@@ -582,8 +582,8 @@ EOD;
     <tr><td width="110px;"></td><td width="110px;"></td><td  width="150px;"></td><td width="200px;" rowspan="2" border="1"><b>LBS SERVICES (SINGAPORE) PTE LTD</b><br/>***This is computer generated invoice,<br/>no signature is required.***</td></tr>
     <tr><td></td><td></td><td></td></tr>
     <tr><td align="left">Customer's Copy</td><td></td><td></td><td>     Authorised Signature  &nbsp; &nbsp; &nbsp; &nbsp;<b>End</b></td></tr>
-    <tr><td colspan="4" height="10px">&nbsp;</td></tr>
-    <tr><td colspan="3">&nbsp;</td><td style="text-align: right;"><img width="120px" height="57px" src="images/biao2.png" /></td></tr>
+    <tr><td colspan="4" height="20px">&nbsp;</td></tr>
+    <tr><td colspan="3">&nbsp;</td><td style="text-align: right;"><img width="86px" height="40px" src="images/biao2.png" /></td></tr>
 </table>
 EOD;
 
