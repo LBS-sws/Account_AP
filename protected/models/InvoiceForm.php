@@ -548,7 +548,7 @@ class InvoiceForm extends CFormModel
             </table>           
              <table  cellspacing="0" cellpadding="0" style="width: 570px;line-height: 20px;text-align: center;">
                   <tr ><td></td></tr>
-                  <tr ><td width="30px;" border="1">No</td><td width="320px;" border="1">Stock Code/Description</td><td width="50px;" border="1">Quantity</td><td width="70px;" border="1">Unit Price</td><td width="70px;" border="1">Amount</td></tr>   
+                  <tr ><td width="30px;" border="1">No</td><td width="320px;" border="1">Stock Code/Description</td><td width="60px;" border="1">Quantity</td><td width="80px;" border="1">Unit Price</td><td width="80px;" border="1">Amount</td></tr>   
 EOD;
         $model['description']='';
         $model['quantity']='';
