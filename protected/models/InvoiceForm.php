@@ -548,7 +548,7 @@ class InvoiceForm extends CFormModel
             </table>           
              <table  cellspacing="0" cellpadding="0" style="width: 570px;line-height: 20px;text-align: center;">
                   <tr ><td></td></tr>
-                  <tr ><td width="30px;" border="1">No</td><td width="320px;" border="1">Stock Code/Description</td><td width="50px;" border="1">Quantity</td><td width="70px;" border="1">Unit Price</td><td width="30px;" border="1">Disc %</td><td width="70px;" border="1">Amount</td></tr>   
+                  <tr ><td width="30px;" border="1">No</td><td width="320px;" border="1">Stock Code/Description</td><td width="50px;" border="1">Quantity</td><td width="70px;" border="1">Unit Price</td><td width="70px;" border="1">Amount</td></tr>   
 EOD;
         $model['description']='';
         $model['quantity']='';
@@ -567,7 +567,7 @@ EOD;
             $a.=$disc."<br/>";
         }
         $tbl.=<<<EOD
-        <tr ><td  rowspan="9" height="260px;" border="1"></td><td rowspan="9" height="260px;" border="1">$model->description</td><td rowspan="9" height="260px;" border="1">$model->quantity</td><td rowspan="9" height="260px;" border="1">$model->unit_price</td><td rowspan="9" height="260px;" border="1">$a</td><td rowspan="9" height="260px;" border="1">$model->amount</td></tr>   
+        <tr ><td  rowspan="9" height="260px;" border="1"></td><td rowspan="9" height="260px;" border="1">$model->description</td><td rowspan="9" height="260px;" border="1">$model->quantity</td><td rowspan="9" height="260px;" border="1">$model->unit_price</td><td rowspan="9" height="260px;" border="1">$model->amount</td></tr>   
 EOD;
 
         //$logo_path =  dirname(__FILE__).'/../../images/footer.png';
