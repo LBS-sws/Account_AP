@@ -27,20 +27,16 @@ class InvoiceList extends CListPageModel
 		$sql2 = "select count(id) from acc_invoice where city in ($city) 
 			";
 		$clause = "";
-		if (!empty($this->searchField) && !empty($this->searchValue)) {
-			$svalue = str_replace("'","\'",$this->searchValue);
-			switch ($this->searchField) {
-				case 'dates':
-					$clause .= General::getSqlConditionClause('dates',$svalue);
-					break;
-				case 'customer_account':
-					$clause .= General::getSqlConditionClause('customer_account',$svalue);
-					break;
-				case 'invoice_company':
-					$clause .= General::getSqlConditionClause('invoice_company',$svalue);
-					break;
-			}
-		}
+        if (!empty($this->searchField) && (!empty($this->searchValue) || $this->isAdvancedSearch())) {
+            if ($this->isAdvancedSearch()) {
+                $clause = $this->buildSQLCriteria();
+            } else {
+                $svalue = str_replace("'","\'",$this->searchValue);
+                $columns = $this->searchColumns();
+                $clause .= General::getSqlConditionClause($columns[$this->searchField],$svalue);
+            }
+        }
+        $clause .= $this->getDateRangeCondition('a.dates');
 
 		$order = "";
 		if (!empty($this->orderField)) {
@@ -78,6 +74,17 @@ class InvoiceList extends CListPageModel
 		return true;
 	}
 
+    public function searchColumns() {
+        $search = array(
+            'dates'=>"date_format(a.dates,'%Y/%m/%d')",
+            'customer_account'=>"a.customer_account",
+            'invoice_company'=>"a.invoice_company",
+
+        );
+        //if (!Yii::app()->user->isSingleCity()) $search['city_name'] = 'b.name';
+        return $search;
+    }
+
 	public function retrieveExportData()
 	{
 		$suffix = Yii::app()->params['envSuffix'];
@@ -93,20 +100,16 @@ class InvoiceList extends CListPageModel
             where a.city in ($city) 
 		";
 		$clause = "";
-		if (!empty($this->searchField) && !empty($this->searchValue)) {
-			$svalue = str_replace("'","\'",$this->searchValue);
-			switch ($this->searchField) {
-				case 'dates':
-					$clause .= General::getSqlConditionClause('a.dates',$svalue);
-					break;
-				case 'customer_account':
-					$clause .= General::getSqlConditionClause('a.customer_account',$svalue);
-					break;
-				case 'invoice_company':
-					$clause .= General::getSqlConditionClause('a.invoice_company',$svalue);
-					break;
-			}
-		}
+        if (!empty($this->searchField) && (!empty($this->searchValue) || $this->isAdvancedSearch())) {
+            if ($this->isAdvancedSearch()) {
+                $clause = $this->buildSQLCriteria();
+            } else {
+                $svalue = str_replace("'","\'",$this->searchValue);
+                $columns = $this->searchColumns();
+                $clause .= General::getSqlConditionClause($columns[$this->searchField],$svalue);
+            }
+        }
+        $clause .= $this->getDateRangeCondition('a.dates');
 
 	    $order ="order by a.dates desc, c.id";
 

@@ -66,7 +66,8 @@ $this->pageTitle=Yii::app()->name . ' - Invoice';
 				'viewdtl'=>'//invoice/_listdtl',
 				'gridsize'=>'24',
 				'height'=>'600',
-				'search'=>$search,
+            'advancedSearch'=>true,
+            'hasDateButton'=>true,
 		));
 	?>
 </section>
