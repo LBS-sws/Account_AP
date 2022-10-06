@@ -70,6 +70,7 @@ class CReport {
 		$subtitle = empty($this->subtitle) ? '' : $this->subtitle;
 
 		$fields = $this->fields();
+		var_dump(fields);die();
 		
 		$this->excel->writeReportTitle($title, $subtitle);
 		if (!empty($fields)) {		
