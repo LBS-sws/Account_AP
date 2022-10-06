@@ -53,6 +53,9 @@ class InvoiceList extends CListPageModel
 				case 'invoice_company':
 					$order .= " order by a.invoice_company ";
 					break;
+                default:
+					$order .= " order by a.dates ";
+			}
 			if ($this->orderType=='D') $order .= "desc ";
 		}else{
 		    $order ="order by a.dates desc";
