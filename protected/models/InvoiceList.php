@@ -142,7 +142,7 @@ class InvoiceList extends CListPageModel
 				//$record["generated_by"]=self::getNames($record['lcu']);//生成账单人员
                 $timestrap=strtotime($record['dates']);
                 $number=date('ym',$timestrap);
-                $number=($number*10000000)+$row['id'];
+                $number=($number*10000000)+$record['id'];
 				$this->attr[] = array(
 					'number'=>$number,
 					'dates'=>date('Y/m/d',strtotime($record['dates'])),
