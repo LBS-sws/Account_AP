@@ -22,9 +22,9 @@ class InvoiceList extends CListPageModel
 	{
 		$suffix = Yii::app()->params['envSuffix'];
 		$city = Yii::app()->user->city_allow();
-		$sql1 = "select *  from acc_invoice where city in ($city) 
+		$sql1 = "select a.*  from acc_invoice a where a.city in ($city) 
 			";
-		$sql2 = "select count(id) from acc_invoice where city in ($city) 
+		$sql2 = "select count(a.id) from acc_invoice a where a.city in ($city) 
 			";
 		$clause = "";
         if (!empty($this->searchField) && (!empty($this->searchValue) || $this->isAdvancedSearch())) {
@@ -40,10 +40,22 @@ class InvoiceList extends CListPageModel
 
 		$order = "";
 		if (!empty($this->orderField)) {
-			$order .= " order by ".$this->orderField." ";
+			switch ($this->searchField) {
+				case 'number':
+					$order .= " order by a.dates ";
+					break;
+				case 'dates':
+					$order .= " order by a.dates ";
+					break;
+				case 'customer_account':
+					$order .= " order by a.customer_account ";
+					break;
+				case 'invoice_company':
+					$order .= " order by a.invoice_company ";
+					break;
 			if ($this->orderType=='D') $order .= "desc ";
 		}else{
-		    $order ="order by dates desc";
+		    $order ="order by a.dates desc";
         }
 		$sql = $sql2.$clause;
 		$this->totalRow = Yii::app()->db->createCommand($sql)->queryScalar();
