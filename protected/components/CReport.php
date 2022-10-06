@@ -50,10 +50,10 @@ class CReport {
 	
 	protected function exportExcel() {
 		$this->excel = new ExcelTool();
-		var_dump(1);die();
 		$this->excel->start();
 		
 		$this->excel->newFile();
+		var_dump(2);die();
 		if (!empty($this->sheetname)) $this->excel->getActiveSheet()->setTitle($this->sheetname);
 		$this->excel->setReportDefaultFormat();
 		$this->printHeader();
