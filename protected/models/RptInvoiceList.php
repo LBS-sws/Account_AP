@@ -35,7 +35,7 @@ class RptInvoiceList extends CReport {
 		);
 		*/
 		
-		$arr = array(1);
+		$arr = array(Yii::t('invoice','Disc'));
 		var_dump($arr);die();
 		return $arr;
 	}
