@@ -41,7 +41,6 @@ class RptInvoiceList extends CReport {
 			$tmp[] = $row;
 		}
 		$this->data = $tmp;
-		var_dump($tmp);die();
 		return $this->exportExcel();
 	}
 }
