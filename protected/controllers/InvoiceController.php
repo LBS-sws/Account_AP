@@ -45,6 +45,7 @@ class InvoiceController extends Controller
 
 	public function actionIndex($pageNum=0) 
 	{
+		ini_set("display_errors",true);
 		$model = new InvoiceList;
 		if (isset($_POST['InvoiceList'])) {
 			$model->attributes = $_POST['InvoiceList'];
