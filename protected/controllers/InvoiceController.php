@@ -166,10 +166,14 @@ class InvoiceController extends Controller
 	
 	public function actionExport() {
 		$model = new InvoiceList;
-		$session = Yii::app()->session;
-		if (isset($session[$model->criteriaName()]) && !empty($session[$model->criteriaName()])) {
-			$criteria = $session[$model->criteriaName()];
-			$model->setCriteria($criteria);
+		if (isset($_POST['InvoiceList'])) {
+			$model->attributes = $_POST['InvoiceList'];
+		} else {
+			$session = Yii::app()->session;
+			if (isset($session['criteria_xi01']) && !empty($session['criteria_xi01'])) {
+				$criteria = $session['criteria_xi01'];
+				$model->setCriteria($criteria);
+			}
 		}
         $model->retrieveExportData();
 		

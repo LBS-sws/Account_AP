@@ -150,6 +150,8 @@ class InvoiceList extends CListPageModel
 				);
 			}
 		}
+		$session = Yii::app()->session;
+		$session['criteria_xi01'] = $this->getCriteria();
 		return true;
 	}
 
