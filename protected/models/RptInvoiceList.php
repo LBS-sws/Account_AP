@@ -3,7 +3,7 @@ class RptInvoiceList extends CReport {
 	public $show_report_title = false;
 
 	protected function fields() {
-		return array();
+		var_dump(2);die();
 		return array(
             'number'=>array('label'=>Yii::t('invoice','Number'),'width'=>20,'align'=>'L'),
             'dates'=>array('label'=>Yii::t('invoice','Date'),'width'=>15,'align'=>'C'),
