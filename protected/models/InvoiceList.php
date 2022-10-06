@@ -83,10 +83,13 @@ class InvoiceList extends CListPageModel
 		$suffix = Yii::app()->params['envSuffix'];
 		$city = Yii::app()->user->city_allow();
 		$sql1 = "
-			SELECT a.*, b.name as city_name, c.product_code, c.description, c.quantity, c.unit_price, c.amount 
+			SELECT a.*, b.name as city_name, c.product_code, c.description, c.quantity, c.unit_price, c.amount,
+			e.name as generated_by			
 			FROM acc_invoice_type c 
 			LEFT JOIN acc_invoice a ON a.id = c.invoice_id
             LEFT JOIN security$suffix.sec_city b ON a.city = b.code
+			LEFT JOIN hr$suffix.hr_binding d ON a.lcu = d.user_id
+			LEFT JOIN hr$suffix.hr_employee e ON e.id = d.employee_id
             where a.city in ($city) 
 		";
 		$clause = "";
@@ -118,8 +121,12 @@ class InvoiceList extends CListPageModel
 				$record["disc"]=($disc*100)."%";//税率
 				$record["gst"]=$disc*$record["sub_total"];//税
 				$record["total_amount"]=$record["gst"]+$record["sub_total"];//合计
+				//$record["generated_by"]=self::getNames($record['lcu']);//生成账单人员
+                $timestrap=strtotime($record['dates']);
+                $number=date('ym',$timestrap);
+                $number=($number*10000000)+$row['id'];
 				$this->attr[] = array(
-					'number'=>$record['number'],
+					'number'=>$number,
 					'dates'=>date('Y/m/d',strtotime($record['dates'])),
 					'payment_term'=>$record['payment_term'],
 					'customer_po_no'=>$record['customer_po_no'],
@@ -154,5 +161,4 @@ class InvoiceList extends CListPageModel
 		$session['criteria_xi01'] = $this->getCriteria();
 		return true;
 	}
-
 }
