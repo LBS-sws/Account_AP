@@ -165,7 +165,8 @@ class InvoiceController extends Controller
 	
 	
 	public function actionExport() {
-		set_time_limit(0) 
+		ini_set("display_errors",true);
+		set_time_limit(0);
 		$model = new InvoiceList;
 		if (isset($_POST['InvoiceList'])) {
 			$model->attributes = $_POST['InvoiceList'];
@@ -177,7 +178,6 @@ class InvoiceController extends Controller
 			}
 		}
         $model->retrieveExportData();
-		
 		$objData = new RptInvoiceList;
 		$objData->data = $model->attr;
 		$objExport = new Export;
