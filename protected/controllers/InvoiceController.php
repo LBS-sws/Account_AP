@@ -166,7 +166,6 @@ class InvoiceController extends Controller
 	
 	public function actionExport() {
 		set_time_limit(0) 
-        ini_set('memory_limit','500M');
 		$model = new InvoiceList;
 		if (isset($_POST['InvoiceList'])) {
 			$model->attributes = $_POST['InvoiceList'];
