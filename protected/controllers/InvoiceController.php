@@ -177,7 +177,6 @@ class InvoiceController extends Controller
 		$objData->data = $model->attr;
 		$objExport = new Export;
 		$objExport->dataModel = $objData;
-		var_dump(2);die();
 		
 		$filename = 'invoice.xlsx';
 		$objExport->exportExcel($filename);
