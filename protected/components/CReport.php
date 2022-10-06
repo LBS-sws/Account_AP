@@ -53,9 +53,9 @@ class CReport {
 		$this->excel->start();
 		
 		$this->excel->newFile();
-		var_dump(2);die();
 		if (!empty($this->sheetname)) $this->excel->getActiveSheet()->setTitle($this->sheetname);
 		$this->excel->setReportDefaultFormat();
+		var_dump(3);die();
 		$this->printHeader();
 		$this->printDetail();
 		$outstring = $this->excel->getOutput();
