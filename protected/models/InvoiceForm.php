@@ -31,6 +31,7 @@ class InvoiceForm extends CFormModel
     public $city;//
     public $generated_by;//生成账单人员
     public $type=array();//详细记录
+    public $product_code;
     public $description;
     public $quantity;
     public $unit_price;
@@ -224,13 +225,15 @@ class InvoiceForm extends CFormModel
                 if(!empty($id)){
                     foreach ($a['line'] as $line){
                         $sql="insert into acc_invoice_type (
-                            invoice_id,description,quantity,unit_price,amount
+                            invoice_id,product_code,description,quantity,unit_price,amount
                           ) value (
-                           :invoice_id,:description,:quantity,:unit_price,:amount
+                           :invoice_id,:product_code,:description,:quantity,:unit_price,:amount
                           )";
                         $command=$connection->createCommand($sql);
                         if (strpos($sql,':invoice_id')!==false)
                             $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                        if (strpos($sql,':product_code')!==false)
+                            $command->bindParam(':product_code',$line['product_code'],PDO::PARAM_STR);
                         if (strpos($sql,':description')!==false)
                             $command->bindParam(':description',$line['product_name'],PDO::PARAM_STR);
                         if (strpos($sql,':quantity')!==false)
@@ -247,13 +250,15 @@ class InvoiceForm extends CFormModel
                         $command->execute();
                         if(isset($line['unit_price2'])&&$line['unit_price2']!=0){
                             $sql1="insert into acc_invoice_type (
-                            invoice_id,description,quantity,unit_price,amount
+                            invoice_id,product_code,description,quantity,unit_price,amount
                           ) value (
-                           :invoice_id,:description,:quantity,:unit_price,:amount
+                           :invoice_id,:product_code,:description,:quantity,:unit_price,:amount
                           )";
                             $command=$connection->createCommand($sql1);
                             if (strpos($sql,':invoice_id')!==false)
                                 $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':product_code')!==false)
+                                $command->bindParam(':product_code',$line['product_code2'],PDO::PARAM_STR);
                             if (strpos($sql,':description')!==false)
                                 $command->bindParam(':description',$line['product_name2'],PDO::PARAM_STR);
                             if (strpos($sql,':quantity')!==false)
@@ -267,13 +272,15 @@ class InvoiceForm extends CFormModel
                         }
                         if(isset($line['unit_price3'])&&$line['unit_price3']!=0){
                             $sql1="insert into acc_invoice_type (
-                            invoice_id,description,quantity,unit_price,amount
+                            invoice_id,product_code,description,quantity,unit_price,amount
                           ) value (
-                           :invoice_id,:description,:quantity,:unit_price,:amount
+                           :invoice_id,:product_code,:description,:quantity,:unit_price,:amount
                           )";
                             $command=$connection->createCommand($sql1);
                             if (strpos($sql,':invoice_id')!==false)
                                 $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':product_code')!==false)
+                                $command->bindParam(':product_code',$line['product_code3'],PDO::PARAM_STR);
                             if (strpos($sql,':description')!==false)
                                 $command->bindParam(':description',$line['product_name3'],PDO::PARAM_STR);
                             if (strpos($sql,':quantity')!==false)
@@ -287,13 +294,15 @@ class InvoiceForm extends CFormModel
                         }
                         if(isset($line['unit_price4'])&&$line['unit_price4']!=0){
                             $sql1="insert into acc_invoice_type (
-                            invoice_id,description,quantity,unit_price,amount
+                            invoice_id,product_code,description,quantity,unit_price,amount
                           ) value (
-                           :invoice_id,:description,:quantity,:unit_price,:amount
+                           :invoice_id,:product_code,:description,:quantity,:unit_price,:amount
                           )";
                             $command=$connection->createCommand($sql1);
                             if (strpos($sql,':invoice_id')!==false)
                                 $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':product_code')!==false)
+                                $command->bindParam(':product_code',$line['product_code4'],PDO::PARAM_STR);
                             if (strpos($sql,':description')!==false)
                                 $command->bindParam(':description',$line['product_name4'],PDO::PARAM_STR);
                             if (strpos($sql,':quantity')!==false)
@@ -307,13 +316,15 @@ class InvoiceForm extends CFormModel
                         }
                         if(isset($line['unit_price5'])&&$line['unit_price5']!=0){
                             $sql1="insert into acc_invoice_type (
-                            invoice_id,description,quantity,unit_price,amount
+                            invoice_id,product_code,description,quantity,unit_price,amount
                           ) value (
-                           :invoice_id,:description,:quantity,:unit_price,:amount
+                           :invoice_id,:product_code,:description,:quantity,:unit_price,:amount
                           )";
                             $command=$connection->createCommand($sql1);
                             if (strpos($sql,':invoice_id')!==false)
                                 $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':product_code')!==false)
+                                $command->bindParam(':product_code',$line['product_code5'],PDO::PARAM_STR);
                             if (strpos($sql,':description')!==false)
                                 $command->bindParam(':description',$line['product_name5'],PDO::PARAM_STR);
                             if (strpos($sql,':quantity')!==false)
@@ -327,13 +338,15 @@ class InvoiceForm extends CFormModel
                         }
                         if(isset($line['unit_price6'])&&$line['unit_price6']!=0){
                             $sql1="insert into acc_invoice_type (
-                            invoice_id,description,quantity,unit_price,amount
+                            invoice_id,product_code,description,quantity,unit_price,amount
                           ) value (
-                           :invoice_id,:description,:quantity,:unit_price,:amount
+                           :invoice_id,:product_code,:description,:quantity,:unit_price,:amount
                           )";
                             $command=$connection->createCommand($sql1);
                             if (strpos($sql,':invoice_id')!==false)
                                 $command->bindParam(':invoice_id',$id,PDO::PARAM_STR);
+                            if (strpos($sql,':product_code')!==false)
+                                $command->bindParam(':product_code',$line['product_code6'],PDO::PARAM_STR);
                             if (strpos($sql,':description')!==false)
                                 $command->bindParam(':description',$line['product_name6'],PDO::PARAM_STR);
                             if (strpos($sql,':quantity')!==false)
@@ -548,14 +561,16 @@ class InvoiceForm extends CFormModel
             </table>           
              <table  cellspacing="0" cellpadding="0" style="width: 570px;line-height: 20px;text-align: center;">
                   <tr ><td></td></tr>
-                  <tr ><td width="30px;" border="1">No</td><td width="320px;" border="1">Stock Code/Description</td><td width="75px;" border="1">Quantity</td><td width="75px;" border="1">Unit Price</td><td width="70px;" border="1">Amount</td></tr>   
+                  <tr ><td width="30px;" border="1">No</td><td width="70px;" border="1">Product Code</td><td width="290px;" border="1">Stock Code/Description</td><td width="55px;" border="1">Quantity</td><td width="55px;" border="1">Unit Price</td><td width="70px;" border="1">Amount</td></tr>   
 EOD;
+        $model['product_code']='';
         $model['description']='';
         $model['quantity']='';
         $model['unit_price']='';
         $model['amount']='';
         $a='';
         foreach ($model->type as $value){
+            $model['product_code'].=$value['product_code']."<br/>";
             $model['description'].=$value['description']."<br/>";
             $model['quantity'].=$value['quantity']."<br/>";
             $model['unit_price'].=$value['unit_price']."<br/>";
@@ -567,7 +582,7 @@ EOD;
             $a.=$disc."<br/>";
         }
         $tbl.=<<<EOD
-        <tr ><td  rowspan="9" height="260px;" border="1"></td><td rowspan="9" height="260px;" border="1">$model->description</td><td rowspan="9" height="260px;" border="1">$model->quantity</td><td rowspan="9" height="260px;" border="1">$model->unit_price</td><td rowspan="9" height="260px;" border="1">$model->amount</td></tr>   
+        <tr ><td  rowspan="9" height="260px;" border="1"></td><td rowspan="9" height="260px;" border="1">$model->product_code</td><td rowspan="9" height="260px;" border="1">$model->description</td><td rowspan="9" height="260px;" border="1">$model->quantity</td><td rowspan="9" height="260px;" border="1">$model->unit_price</td><td rowspan="9" height="260px;" border="1">$model->amount</td></tr>   
 EOD;
 
         //$logo_path =  dirname(__FILE__).'/../../images/footer.png';

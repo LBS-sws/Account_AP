@@ -42,6 +42,14 @@ $this->pageTitle=Yii::app()->name . ' - Invoice';
         }
         ?>
 	</div>
+	<div class="btn-group pull-right" role="group">
+		<?php
+			echo TbHtml::button('<span class="fa fa-file-o"></span> '.Yii::t('invoice','Export'), array(
+				'id'=>'btnExportData',
+				'submit'=>Yii::app()->createUrl('invoice/export'),
+			));
+		?>
+	</div>
 	</div></div>
 	<?php 
 		$search = array(
