@@ -172,11 +172,12 @@ class InvoiceController extends Controller
 			$model->setCriteria($criteria);
 		}
         $model->retrieveExportData();
-		var_dump(1);die();
+		
 		$objData = new RptInvoiceList;
 		$objData->data = $model->attr;
 		$objExport = new Export;
 		$objExport->dataModel = $objData;
+		var_dump(2);die();
 		
 		$filename = 'invoice.xlsx';
 		$objExport->exportExcel($filename);
