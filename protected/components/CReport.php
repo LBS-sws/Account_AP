@@ -66,10 +66,11 @@ class CReport {
 	}
 	
 	protected function printHeader() {
-		var_dump(1);die();
+		var_dump(1);
 		$title = empty($this->title) ? '' : $this->title;
 		$subtitle = empty($this->subtitle) ? '' : $this->subtitle;
-
+		var_dump(2);
+		die();
 		$fields = $this->fields();
 		var_dump(fields);die();
 		
