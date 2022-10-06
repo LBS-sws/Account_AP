@@ -68,6 +68,7 @@ class CReport {
 	protected function printHeader() {
 		$title = empty($this->title) ? '' : $this->title;
 		$subtitle = empty($this->subtitle) ? '' : $this->subtitle;
+		ini_set("display_errors",true);
 		$fields = $this->fields();
 var_dump($fields);die();
 		if ($this->show_report_title) $this->excel->writeReportTitle($title, $subtitle);
