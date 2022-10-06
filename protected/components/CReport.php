@@ -1,13 +1,15 @@
 <?php
 class CReport {
 	public $criteria;
-	
+
 	public $data = array();
-	
+
 	public $excel;
 	public $title;
 	public $subtitle;
-	
+
+	public $show_report_title = true;
+
 	public function genReport() {
 		return true;
 	}
@@ -43,41 +45,36 @@ class CReport {
 			$command->bindParam(':message',$record['message'],PDO::PARAM_STR);
 		$command->execute();
 	}
-	
+
 	protected function fields() {
 		return array();
 	}
-	
+
 	protected function exportExcel() {
 		$this->excel = new ExcelTool();
 		$this->excel->start();
-		
+
 		$this->excel->newFile();
-		//if (!empty($this->sheetname)) $this->excel->getActiveSheet()->setTitle($this->sheetname);
-		//$this->excel->setReportDefaultFormat();
+//		if (!empty($this->sheetname)) $this->excel->getActiveSheet()->setTitle($this->sheetname);
+		$this->excel->setReportDefaultFormat();
 		$this->printHeader();
-		var_dump(59);die();
 		$this->printDetail();
 		$outstring = $this->excel->getOutput();
-		
-		var_dump(62);die();
+
 		$this->excel->end();
 		return $outstring;
 	}
-	
+
 	protected function printHeader() {
-		var_dump(1);
 		$title = empty($this->title) ? '' : $this->title;
 		$subtitle = empty($this->subtitle) ? '' : $this->subtitle;
-		var_dump(2);
-		die();
+
 		$fields = $this->fields();
-		var_dump(fields);die();
-		
-		$this->excel->writeReportTitle($title, $subtitle);
-		if (!empty($fields)) {		
+
+		if ($this->show_report_title) $this->excel->writeReportTitle($title, $subtitle);
+		if (!empty($fields)) {
 			$j = 0; // column
-			$row = 3;
+			$row = $this->show_report_title ? 3 : 1;
 			foreach ($fields as $id=>$items) {
 				$this->excel->writeCell($j, $row, $items['label']);
 				$this->excel->setColWidth($j, $items['width']);
@@ -89,13 +86,13 @@ class CReport {
 			$this->excel->setRangeStyle($range,true,false,'C','C','allborders',true);
 		}
 	}
-	
+
 	protected function printDetail() {
 		$fields = $this->fields();
-		if (!empty($fields) && !empty($this->data)) {		
+		if (!empty($fields) && !empty($this->data)) {
 			$itemcnt = count($this->data);
 			// Print Detail
-			$y = 4;
+			$y = $this->show_report_title ? 4 : 2;
 			foreach ($this->data as $row) {
 				$x = 0;
 				foreach ($fields as $key=>$items) {

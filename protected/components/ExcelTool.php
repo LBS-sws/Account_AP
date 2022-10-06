@@ -12,19 +12,19 @@ class ExcelTool {
 		$cacheSettings = array( ' memoryCacheSize ' => '8MB');
 		PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 	}
-	
+
 	public function end() {
 		spl_autoload_register(array('YiiBase','autoload'));
 	}
-	
+
 	public function newFile() {
 		$this->objPHPExcel = new PHPExcel();
 	}
-	
+
 	public function readFile($fname) {
 		$this->objPHPExcel = file_exists($fname) ? $this->loadFile($fname) : null;
 	}
-	
+
 	public function readFileByType($fname, $type) {
 		$this->objPHPExcel = file_exists($fname) ? PHPExcel_IOFactory::createReader($type)->load($fname) : null;
 	}
@@ -32,12 +32,12 @@ class ExcelTool {
 	protected function loadFile($fname) {
 		return PHPExcel_IOFactory::createReaderForFile($fname)->load($fname);
 	}
-	
+
 	public function getColumn($index){
 		$index++;
 		$mod = $index % 26;
 		$quo = ($index-$mod) / 26;
-	
+
 		if ($quo == 0) return chr($mod+64);
 		if (($quo == 1) && ($mod == 0)) return 'Z';
 		if (($quo > 1) && ($mod == 0)) return chr($quo+63).'Z';
@@ -47,15 +47,15 @@ class ExcelTool {
 	public function createSheet() {
 		$this->objPHPExcel->createSheet();
 	}
-	
+
 	public function setActiveSheet($index) {
 		$this->objPHPExcel->setActiveSheetIndex($index);
 	}
-	
+
 	public function getActiveSheet() {
 		return $this->objPHPExcel->getActiveSheet();
 	}
-	
+
 	public function setCellValue($col, $row, $value) {
 		$loc = $col.$row;
 		$this->objPHPExcel->getActiveSheet()->setCellValue($loc, $value);
@@ -65,7 +65,7 @@ class ExcelTool {
 		$loc = $col.$row;
 		return $this->objPHPExcel->getActiveSheet()->getCell($loc)->getValue();
 	}
-	
+
 	public function setReportDefaultFormat() {
 		$this->objPHPExcel->getDefaultStyle()->getFont()
 			->setSize(10);
@@ -74,20 +74,22 @@ class ExcelTool {
 		$this->objPHPExcel->getActiveSheet()->getDefaultRowDimension()
 			->setRowHeight(-1);
 	}
-	
-	public function getOutput() {
-		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: inline;filename="01simple.xlsx"');
-		header('Cache-Control: max-age=0');
-	
+
+	public function getOutput($header=false) {
+		if ($header) {
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: inline;filename="01simple.xlsx"');
+			header('Cache-Control: max-age=0');
+		}
+
 		$objWriter = PHPExcel_IOFactory::createWriter($this->objPHPExcel, 'Excel2007');
 		ob_start();
 		$objWriter->save('php://output');
 		$output = ob_get_clean();
-		
+
 		return $output;
 	}
-	
+
 	public function generateOutput($data, $sheetid) {
 		if ($sheetid > 0) {
 			$this->objPHPExcel->createSheet();
@@ -100,7 +102,7 @@ class ExcelTool {
 		$this->outHeader($sheetid);
 		$this->outDetail($data);
 	}
-	
+
 	public function writeReportTitle($title='', $subtitle='') {
 		$this->objPHPExcel->getActiveSheet()
             ->setCellValueByColumnAndRow(0,1, $title)
@@ -109,13 +111,13 @@ class ExcelTool {
 			->setSize(14)
 			->setBold(true);
 		$this->objPHPExcel->getActiveSheet()->getStyleByColumnAndRow(0,1)->getAlignment()
-			->setWrapText(false);		
+			->setWrapText(false);
 		$this->objPHPExcel->getActiveSheet()->getStyleByColumnAndRow(0,2)->getFont()
 			->setSize(12)
 			->setBold(true)
 			->setItalic(true);
 		$this->objPHPExcel->getActiveSheet()->getStyleByColumnAndRow(0,2)->getAlignment()
-			->setWrapText(false);		
+			->setWrapText(false);
 	}
 
 	public function setCellFont($col, $row, $definition=array()) {
@@ -125,14 +127,14 @@ class ExcelTool {
 			$this->objPHPExcel->getActiveSheet()->getStyleByColumnAndRow($col,$row)->getFont()->setItalic($definition['italic']);
 		if (isset($definition['bold']) && is_bool($definition['bold']))
 			$this->objPHPExcel->getActiveSheet()->getStyleByColumnAndRow($col,$row)->getFont()->setItalic($definition['bold']);
-			
+
 	}
-	
+
 	public function setColWidth($col, $width) {
 		if ($width > 0)
 			$this->objPHPExcel->getActiveSheet()->getColumnDimensionByColumn($col)->setWidth($width);
 	}
-	
+
 	public function setRangeStyle($cells,$bold,$italic,$halign,$valign,$border,$fill) {
 		$styleArray = array(
 			'font'=>array(
@@ -140,7 +142,7 @@ class ExcelTool {
 				'italic'=>$italic,
 			),
 			'alignment'=>array(
-				'horizontal'=>($halign=='C' 
+				'horizontal'=>($halign=='C'
 								? PHPExcel_Style_Alignment::HORIZONTAL_CENTER
 								: ($halign=='R'
 									? PHPExcel_Style_Alignment::HORIZONTAL_RIGHT
@@ -182,7 +184,7 @@ class ExcelTool {
 		$this->objPHPExcel->getActiveSheet()->getStyle($cells)
 			->applyFromArray($styleArray);
 	}
-	
+
 	public function setCellStyle($col, $row, $definition=array()) {
 		if (!empty($definition)) {
 			if (isset($definition['numberformat'])) {
@@ -192,28 +194,28 @@ class ExcelTool {
 			}
 		}
 	}
-	
+
 	public function writeCell($col, $row, $text, $definition=array()) {
 		if (empty($definition)) {
 			$align = PHPExcel_Style_Alignment::HORIZONTAL_LEFT;
 			$valign = PHPExcel_Style_Alignment::VERTICAL_TOP;
 			$wraptext = true;
 		} else {
-			$align = isset($definition['align']) 
-					? ($definition['align']=='C' 
-						? PHPExcel_Style_Alignment::HORIZONTAL_CENTER 
+			$align = isset($definition['align'])
+					? ($definition['align']=='C'
+						? PHPExcel_Style_Alignment::HORIZONTAL_CENTER
 						: ($definition['align']=='R' ? PHPExcel_Style_Alignment::HORIZONTAL_RIGHT : PHPExcel_Style_Alignment::HORIZONTAL_LEFT)
 						)
 					: PHPExcel_Style_Alignment::HORIZONTAL_LEFT;
-			$valign = isset($definition['valign']) 
-					? ($definition['valign']=='C' 
-						? PHPExcel_Style_Alignment::VERTICAL_CENTER 
+			$valign = isset($definition['valign'])
+					? ($definition['valign']=='C'
+						? PHPExcel_Style_Alignment::VERTICAL_CENTER
 						: ($definition['align']=='B' ? PHPExcel_Style_Alignment::VERTICAL_BOTTOM : PHPExcel_Style_Alignment::VERTICAL_TOP)
 						)
 					: PHPExcel_Style_Alignment::VERTICAL_TOP;
-			$wraptext = isset($definition['wraptext']) && is_bool($definition['wraptext']) ? $definition['wraptext'] : true; 
+			$wraptext = isset($definition['wraptext']) && is_bool($definition['wraptext']) ? $definition['wraptext'] : true;
 		}
-		
+
 		$this->objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $text);
 		$this->objPHPExcel->getActiveSheet()->getStyleByColumnAndRow($col, $row)->getAlignment()
 			->setHorizontal($align)
