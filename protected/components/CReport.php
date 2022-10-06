@@ -50,6 +50,7 @@ class CReport {
 	
 	protected function exportExcel() {
 		$this->excel = new ExcelTool();
+		var_dump(1);die();
 		$this->excel->start();
 		
 		$this->excel->newFile();
