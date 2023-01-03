@@ -122,6 +122,8 @@ class InvoiceForm extends CFormModel
                 $this->delivery_company = $row['delivery_company'];
                 $this->delivery_address = $row['delivery_address'];
                 $this->delivery_tel = $row['delivery_tel'];
+				$row['disc']=strtotime($row['disc'])>=strtotime("2023/01/01")?0.08:$row['disc'];//2023年01月01日稅率改為8%
+                $row['disc']=$row['disc']*100;
                 $disc=$row['disc']*100;
 				$this->disc = $disc."%";
                 $arr=array_sum(array_map(create_function('$val', 'return $val["amount"];'), $type));
@@ -167,7 +169,9 @@ class InvoiceForm extends CFormModel
      */
     public function saveU(&$connection, $arr){
 	    foreach ($arr['data'] as $a){
-            $invoice_dt = General::toMyDate($a['invoice_dt']);
+			$this->disc=strtotime($a['invoice_dt'])>=strtotime("2023/01/01")?0.08:0.07;//2023年01月01日稅率改為8%
+            
+			$invoice_dt = General::toMyDate($a['invoice_dt']);
             $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."'";
             if(strstr($a['invoice_no'],"INV")!==false){ //INV服務不需要合併
                 $sql_s.=" and invoice_no = '{$a['invoice_no']}'";
