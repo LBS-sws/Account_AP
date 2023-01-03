@@ -122,7 +122,7 @@ class InvoiceForm extends CFormModel
                 $this->delivery_company = $row['delivery_company'];
                 $this->delivery_address = $row['delivery_address'];
                 $this->delivery_tel = $row['delivery_tel'];
-				$row['disc']=strtotime($row['disc'])>=strtotime("2023/01/01")?0.08:$row['disc'];//2023年01月01日稅率改為8%
+				$row['disc']=strtotime($row['dates'])>=strtotime("2023/01/01")?0.08:$row['disc'];//2023年01月01日稅率改為8%
                 $disc=$row['disc']*100;
 				$this->disc = $disc."%";
                 $arr=array_sum(array_map(create_function('$val', 'return $val["amount"];'), $type));
