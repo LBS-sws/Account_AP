@@ -1045,5 +1045,9 @@ class WorkflowPayment extends WorkflowDMS {
 		$row = $this->connection->createCommand($sql)->queryRow();
 		return ($row!==false);
 	}
+
+	public function getProcessVersionId($code, $date) {
+		return $this->getProcessId($code, $date);
+	}
 }
 ?>
