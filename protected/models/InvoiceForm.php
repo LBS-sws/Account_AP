@@ -562,7 +562,7 @@ class InvoiceForm extends CFormModel
             </table>
          
             <table  style="width: 570px;line-height: 20px;">
-                 <tr><td colspan="13" rowspan="4" width="320px;" height="100px"  border="1" cellspacing="0" cellpadding="0">Invoice To:<br/> $model->invoice_company<br/> $model->invoice_address<br/> $model->invoice_tel</td><td width="20px;"> </td><td height="25px;" width="100px;">Number:</td><td  width="130px;">$model->number</td></tr>
+                 <tr><td colspan="13" rowspan="5" width="320px;" height="100px"  border="1" cellspacing="0" cellpadding="0">Invoice To:<br/> $model->invoice_company<br/> $model->invoice_address<br/> $model->invoice_tel</td><td width="20px;"> </td><td height="25px;" width="100px;">Number:</td><td  width="130px;">$model->number</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Date:</td><td>$model->dates</td></tr> 
                  <tr><td width="20px;"> </td><td height="20px;">Payment Term:</td><td>$model->payment_term</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Payment Method:</td><td>$model->payment_method</td></tr>
