@@ -34,7 +34,7 @@ class InvoiceController extends Controller
 				'expression'=>array('InvoiceController','allowReadWrite'),
 			),
 			array('allow', 
-				'actions'=>array('index','view','export'),
+				'actions'=>array('index','view','export','test'),
 				'expression'=>array('InvoiceController','allowReadOnly'),
 			),
 			array('deny',  // deny all users
@@ -160,6 +160,21 @@ class InvoiceController extends Controller
         $model = new InvoiceForm;
         $model->retrieveData($index);
         $model->allDowns($model,"I");
+        Yii::app()->end();
+    }
+
+//測試同步的數據
+    public function actionTest($city="",$start="",$end="")
+    {
+		$city = empty($city)?Yii::app()->user->city():$city;
+		$start = empty($start)?date("Y/m/01"):$start;
+		$end = empty($end)?date("Y/m/d"):$end;
+		each "start:<br/>";
+		each "city:{$city}   start:{$start}   end:{$end}";
+		each "<br/><br/>";
+        $model=new Invoice;
+        $arr=$model->getData($city,$start,$end);
+		var_dump($arr);
         Yii::app()->end();
     }
 	

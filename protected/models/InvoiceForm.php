@@ -12,6 +12,7 @@ class InvoiceForm extends CFormModel
 	public $number;////账单编号
 	public $dates;//账单日期
 	public $payment_term;//付款方式
+	public $payment_method;//付款周期
 	public $customer_po_no;//客户订单编号
 	public $customer_account;//客户编号
 	public $salesperson;//销售
@@ -50,6 +51,7 @@ class InvoiceForm extends CFormModel
 			'number'=>Yii::t('invoice','Number'),
 			'dates'=>Yii::t('invoice','Date'),
 			'payment_term'=>Yii::t('invoice','Payment Term'),
+			'payment_method'=>Yii::t('invoice','Payment Method'),
 			'customer_po_no'=>Yii::t('invoice','Customer Po No'),
 			'customer_account'=>Yii::t('invoice','Customer Account'),
 			'salesperson'=>Yii::t('invoice','Salesperson'),
@@ -77,7 +79,7 @@ class InvoiceForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			array('id,number,type,dates,payment_term,customer_po_no,customer_account,salesperson,sales_order_no,sales_order_date,
+			array('id,number,type,dates,payment_term,payment_method,customer_po_no,customer_account,salesperson,sales_order_no,sales_order_date,
 			ship_via,invoice_company,invoice_address,invoice_tel,delivery_company,delivery_address,delivery_tel,
 			disc,sub_total,gst,total_amount,city,generated_by,','safe'),
 			array('','required'),
@@ -110,6 +112,7 @@ class InvoiceForm extends CFormModel
 				$this->number = $number;
                 $this->dates = General::toDate($row['dates']);
 				$this->payment_term = $row['payment_term'];
+				$this->payment_method = isset($row['payment_method'])?$row['payment_method']:"";
 				$this->customer_po_no = $row['customer_po_no'];
 				$this->customer_account =$row['customer_account'];
 				$this->salesperson = $row['salesperson'];
@@ -181,9 +184,9 @@ class InvoiceForm extends CFormModel
             $records = Yii::app()->db->createCommand($sql_s)->queryAll();
             if(empty($records)){ //這個if是判斷數據庫是否已經錄入過該賬單了
                 $sql="insert into acc_invoice (
-                    dates,payment_term,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc,delivery_company,delivery_address,delivery_tel,invoice_no
+                    dates,payment_term,payment_method,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc,delivery_company,delivery_address,delivery_tel,invoice_no
                   ) value (
-                   :dates,:payment_term,:customer_account,:salesperson,:sales_order_date,:invoice_company,:invoice_address,:invoice_tel,:lcu,:luu,:city,:disc,:delivery_company,:delivery_address,:delivery_tel,:invoice_no
+                   :dates,:payment_term,:payment_method,:customer_account,:salesperson,:sales_order_date,:invoice_company,:invoice_address,:invoice_tel,:lcu,:luu,:city,:disc,:delivery_company,:delivery_address,:delivery_tel,:invoice_no
                   )";
 
 //        $sql="insert into acc_invoice (dates,payment_term,customer_po_no,customer_account,salesperson,sales_order_no,sales_order_date,ship_via,invoice_company,invoice_address,invoice_tel,delivery_company,delivery_address,delivery_tel,description,quantity,unit_price,disc,amount,sub_total,gst,total_amount,generated_by,lcu,luu) value ()";
@@ -194,6 +197,10 @@ class InvoiceForm extends CFormModel
                 $command->bindParam(':dates',$invoice_dt,PDO::PARAM_STR);
                 if (strpos($sql,':payment_term')!==false)
                     $command->bindParam(':payment_term',$a['payment_term'],PDO::PARAM_STR);
+                if (strpos($sql,':payment_method')!==false){
+					$payment_method = isset($a['payment_method'])?$a['payment_method']:"";
+                    $command->bindParam(':payment_method',$a['payment_method'],PDO::PARAM_STR);
+				}
                 if (strpos($sql,':customer_account')!==false)
                     $command->bindParam(':customer_account',$a['customer_code'],PDO::PARAM_STR);
                 if (strpos($sql,':salesperson')!==false)
@@ -392,6 +399,7 @@ class InvoiceForm extends CFormModel
 			case 'edit':
 				$sql = "update acc_invoice set
                             payment_term=:payment_term,
+                            payment_method=:payment_method,
                             customer_po_no=:customer_po_no,
                             sales_order_no=:sales_order_no,
                             sales_order_date=:sales_order_date,
@@ -417,6 +425,8 @@ class InvoiceForm extends CFormModel
 		$command=$connection->createCommand($sql);
 		if (strpos($sql,':payment_term')!==false)
 			$command->bindParam(':payment_term',$this->payment_term,PDO::PARAM_STR);
+		if (strpos($sql,':payment_method')!==false)
+			$command->bindParam(':payment_method',$this->payment_method,PDO::PARAM_STR);
 		if (strpos($sql,':customer_po_no')!==false)
 			$command->bindParam(':customer_po_no',$this->customer_po_no,PDO::PARAM_STR);
 		//print_r($this->sales_order_no);exit();
@@ -553,9 +563,10 @@ class InvoiceForm extends CFormModel
          
             <table  style="width: 570px;line-height: 20px;">
                  <tr><td colspan="13" rowspan="4" width="320px;" height="100px"  border="1" cellspacing="0" cellpadding="0">Invoice To:<br/> $model->invoice_company<br/> $model->invoice_address<br/> $model->invoice_tel</td><td width="20px;"> </td><td height="25px;" width="100px;">Number:</td><td  width="130px;">$model->number</td></tr>
-                 <tr><td width="20px;"> </td><td height="25px;">Date:</td><td>$model->dates</td></tr> 
-                 <tr><td width="20px;"> </td><td height="25px;">Payment Term:</td><td>$model->payment_term</td></tr>
-                 <tr><td width="20px;"> </td><td height="25px;">Customer PO NO:</td><td>$model->customer_po_no</td></tr>
+                 <tr><td width="20px;"> </td><td height="20px;">Date:</td><td>$model->dates</td></tr> 
+                 <tr><td width="20px;"> </td><td height="20px;">Payment Term:</td><td>$model->payment_term</td></tr>
+                 <tr><td width="20px;"> </td><td height="20px;">Payment Method:</td><td>$model->payment_method</td></tr>
+                 <tr><td width="20px;"> </td><td height="20px;">Customer PO NO:</td><td>$model->customer_po_no</td></tr>
                  <tr><td colspan="13" rowspan="5" width="320px;" height="100px"  border="1" cellspacing="0" cellpadding="0">Deliver To: <br/> $model->delivery_company<br/> $model->delivery_address<br/> $model->delivery_tel</td><td width="20px;"> </td><td height="20px;">Customer Account:</td><td>$model->customer_account</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Salesperson:</td><td>$model->salesperson</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Sales Order No:</td><td>$model->sales_order_no</td></tr>

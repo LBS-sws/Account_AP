@@ -4,6 +4,7 @@ return array(
     'Date' => '發票日期',
     'Customer Account' => ' 客戶編號',
     'Payment Term' => '付款方式',
+    'Payment Method' => '付款週期',
     'Customer Po No' => '客戶訂單編號',
     'Salesperson' => '銷售',
     'Sales Order No' => '客戶訂貨訂單編號',

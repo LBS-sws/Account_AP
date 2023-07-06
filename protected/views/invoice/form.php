@@ -81,6 +81,12 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
                         array('size'=>40,'maxlength'=>250,'readonly'=>'')
                     ); ?>
                 </div>
+                <?php echo $form->labelEx($model,'payment_method',array('class'=>"col-sm-1 control-label")); ?>
+                <div class="col-sm-2">
+                    <?php echo $form->textField($model, 'payment_method',
+                        array('size'=>40,'maxlength'=>250,'readonly'=>'')
+                    ); ?>
+                </div>
             </div>
 
 
