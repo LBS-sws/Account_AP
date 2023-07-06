@@ -166,12 +166,12 @@ class InvoiceController extends Controller
 //測試同步的數據
     public function actionTest($city="",$start="",$end="")
     {
-		$city = empty($city)?Yii::app()->user->city():$city;
-		$start = empty($start)?date("Y/m/01"):$start;
-		$end = empty($end)?date("Y/m/d"):$end;
-		each "start:<br/>";
-		each "city:{$city}   start:{$start}   end:{$end}";
-		each "<br/><br/>";
+        $city = empty($city)?Yii::app()->user->city():$city;
+        $start = empty($start)?date("Y/m/01"):$start;
+        $end = empty($end)?date("Y/m/d"):$end;
+        echo "start:<br/>";
+        echo "city:{$city}   start:{$start}   end:{$end}";
+        echo "<br/><br/>";
         $model=new Invoice;
         $arr=$model->getData($city,$start,$end);
 		var_dump($arr);
