@@ -42,7 +42,7 @@ class InvoiceList extends CListPageModel
 		if (!empty($this->orderField)) {
 			switch ($this->searchField) {
 				case 'number':
-					$order .= " order by a.dates ";
+					$order .= " order by a.number_no ";
 					break;
 				case 'dates':
 					$order .= " order by a.dates ";
@@ -77,7 +77,7 @@ class InvoiceList extends CListPageModel
                 $number=($number*10000000)+$record['id'];
 				$this->attr[] = array(
 					'id'=>$record['id'],
-					'number'=>$number,
+					'number'=>$record['number_no'],
 					'dates'=>$dates,
 					'customer_account'=>$record['customer_account'],
 					'invoice_company'=>$record['invoice_company'],
@@ -93,6 +93,7 @@ class InvoiceList extends CListPageModel
         $search = array(
             'dates'=>"date_format(a.dates,'%Y/%m/%d')",
             'customer_account'=>"a.customer_account",
+            'number'=>"a.number_no",
             'invoice_company'=>"a.invoice_company",
 
         );
@@ -144,7 +145,7 @@ class InvoiceList extends CListPageModel
                 $number=date('ym',$timestrap);
                 $number=($number*10000000)+$record['id'];
 				$this->attr[] = array(
-					'number'=>$number,
+					'number'=>$record['number_no'],
 					'dates'=>date('Y/m/d',strtotime($record['dates'])),
 					'payment_term'=>$record['payment_term'],
 					'customer_po_no'=>$record['customer_po_no'],

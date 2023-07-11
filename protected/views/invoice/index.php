@@ -53,6 +53,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice';
 	</div></div>
 	<?php 
 		$search = array(
+						'number',
 						'dates',
 						'customer_account',
 						'invoice_company',

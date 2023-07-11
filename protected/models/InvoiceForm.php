@@ -109,7 +109,7 @@ class InvoiceForm extends CFormModel
                 $number=($number*10000000)+$row['id'];
                 $this->type = $type;
                 $this->id = $row['id'];
-				$this->number = $number;
+				$this->number = $row['number_no'];
                 $this->dates = General::toDate($row['dates']);
 				$this->payment_term = $row['payment_term'];
 				$this->payment_method = isset($row['payment_method'])?$row['payment_method']:"";
@@ -165,6 +165,30 @@ class InvoiceForm extends CFormModel
 
     }
 
+    //由於舊數據沒有編號，需要添加編號
+    public static function resetOldData(){
+	    $sql ="UPDATE acc_invoice SET
+          number_no=(DATE_FORMAT(dates,'%y%m')*10000000+id) 
+          WHERE number_no is NULL";
+        $row = Yii::app()->db->createCommand($sql)->execute();
+    }
+
+    public function getMaxNumberNo($pre,$date){
+	    $yearStr = date("ym",strtotime($date));
+        $yearStr*=10000000;
+        $yearStr++;
+        $row = Yii::app()->db->createCommand()->select("number_no,substring(number_no,6) as num")
+            ->from("acc_invoice")->where("number_no like '{$pre}%'")
+            ->order("num desc")->queryRow();
+        if($row){
+            $num = intval($row["num"]);
+            $yearStr+=$num;
+            return $pre.$yearStr;
+        }else{
+            return $pre.$yearStr;
+        }
+    }
+
     /**
      * @param $connection
      * @param $arr
@@ -176,17 +200,20 @@ class InvoiceForm extends CFormModel
 			$invoice_dt = General::toMyDate($a['invoice_dt']);
             $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."'";
             if(strstr($a['invoice_no'],"INV")!==false){ //INV服務不需要合併
+                $number_no = "P";//產品的編號前綴
                 $sql_s.=" and invoice_no = '{$a['invoice_no']}'";
             }else{ //其它服務因為合併所以invoice_no不能確定是不是唯一值
                 $sql_s.=" and invoice_no not like '%INV%'";
+                $number_no = "S";//服務的編號前綴
             }
+            $number_no = $this->getMaxNumberNo($number_no,$a["invoice_dt"]);
 //	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
             $records = Yii::app()->db->createCommand($sql_s)->queryAll();
             if(empty($records)){ //這個if是判斷數據庫是否已經錄入過該賬單了
                 $sql="insert into acc_invoice (
-                    dates,payment_term,payment_method,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc,delivery_company,delivery_address,delivery_tel,invoice_no
+                    dates,number_no,payment_term,payment_method,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc,delivery_company,delivery_address,delivery_tel,invoice_no
                   ) value (
-                   :dates,:payment_term,:payment_method,:customer_account,:salesperson,:sales_order_date,:invoice_company,:invoice_address,:invoice_tel,:lcu,:luu,:city,:disc,:delivery_company,:delivery_address,:delivery_tel,:invoice_no
+                   :dates,:number_no,:payment_term,:payment_method,:customer_account,:salesperson,:sales_order_date,:invoice_company,:invoice_address,:invoice_tel,:lcu,:luu,:city,:disc,:delivery_company,:delivery_address,:delivery_tel,:invoice_no
                   )";
 
 //        $sql="insert into acc_invoice (dates,payment_term,customer_po_no,customer_account,salesperson,sales_order_no,sales_order_date,ship_via,invoice_company,invoice_address,invoice_tel,delivery_company,delivery_address,delivery_tel,description,quantity,unit_price,disc,amount,sub_total,gst,total_amount,generated_by,lcu,luu) value ()";
@@ -195,12 +222,13 @@ class InvoiceForm extends CFormModel
                 if (strpos($sql,':dates')!==false)
                     $invoice_dt = General::toMyDate($a['invoice_dt']);
                 $command->bindParam(':dates',$invoice_dt,PDO::PARAM_STR);
-                if (strpos($sql,':payment_term')!==false)
-                    $command->bindParam(':payment_term',$a['payment_term'],PDO::PARAM_STR);
-                if (strpos($sql,':payment_method')!==false){
-					$payment_method = isset($a['payment_method'])?$a['payment_method']:"";
-                    $command->bindParam(':payment_method',$a['payment_method'],PDO::PARAM_STR);
+                if (strpos($sql,':payment_term')!==false) //由於U系統的翻譯有問題，所以需要調換
+                    $command->bindParam(':payment_term',$a['payment_method'],PDO::PARAM_STR);
+                if (strpos($sql,':payment_method')!==false){ //由於U系統的翻譯有問題，所以需要調換
+                    $command->bindParam(':payment_method',$a['payment_term'],PDO::PARAM_STR);
 				}
+                if (strpos($sql,':number_no')!==false)
+                    $command->bindParam(':number_no',$number_no,PDO::PARAM_STR);
                 if (strpos($sql,':customer_account')!==false)
                     $command->bindParam(':customer_account',$a['customer_code'],PDO::PARAM_STR);
                 if (strpos($sql,':salesperson')!==false)

@@ -34,7 +34,7 @@ class InvoiceController extends Controller
 				'expression'=>array('InvoiceController','allowReadWrite'),
 			),
 			array('allow', 
-				'actions'=>array('index','view','export','test'),
+				'actions'=>array('index','view','export','test','reset'),
 				'expression'=>array('InvoiceController','allowReadOnly'),
 			),
 			array('deny',  // deny all users
@@ -175,6 +175,15 @@ class InvoiceController extends Controller
         $model=new Invoice;
         $arr=$model->getData($city,$start,$end);
 		var_dump($arr);
+        Yii::app()->end();
+    }
+
+//重置舊數據的發票編號
+    public function actionReset()
+    {
+        echo "start:<br/>";
+        InvoiceForm::resetOldData();
+        echo "end:<br/>";
         Yii::app()->end();
     }
 	
