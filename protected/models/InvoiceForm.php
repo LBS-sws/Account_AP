@@ -222,10 +222,10 @@ class InvoiceForm extends CFormModel
                 if (strpos($sql,':dates')!==false)
                     $invoice_dt = General::toMyDate($a['invoice_dt']);
                 $command->bindParam(':dates',$invoice_dt,PDO::PARAM_STR);
-                if (strpos($sql,':payment_term')!==false) //由於U系統的翻譯有問題，所以需要調換
-                    $command->bindParam(':payment_term',$a['payment_method'],PDO::PARAM_STR);
-                if (strpos($sql,':payment_method')!==false){ //由於U系統的翻譯有問題，所以需要調換
-                    $command->bindParam(':payment_method',$a['payment_term'],PDO::PARAM_STR);
+                if (strpos($sql,':payment_term')!==false) //
+                    $command->bindParam(':payment_term',$a['payment_term'],PDO::PARAM_STR);
+                if (strpos($sql,':payment_method')!==false){ //
+                    $command->bindParam(':payment_method',$a['payment_method'],PDO::PARAM_STR);
 				}
                 if (strpos($sql,':number_no')!==false)
                     $command->bindParam(':number_no',$number_no,PDO::PARAM_STR);
