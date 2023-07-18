@@ -259,11 +259,10 @@ class InvoiceForm extends CFormModel
                 $command->execute();
                 $id = Yii::app()->db->getLastInsertID();
                 $number_no = 10000000+$id;//修改发票编号
-                $number_no = $number_no>10000000?substr($number_no,1):$number_no;
-                $number_no = date("Ym",strtotime($invoice_dt))."/".$number_no;
+                $number_no = $number_no>10000000?substr(strval($number_no),1):$number_no;
+                $number_no = date("ym",strtotime($invoice_dt))."/".$number_no;
                 Yii::app()->db->createCommand()->update("acc_invoice",
-                    array("number_no"=>$number_no),
-                    "id=:id",array(":id"=>$this->id));
+                    array("number_no"=>$number_no),"id=:id",array(":id"=>$id));
                 if(!empty($id)){
                     foreach ($a['line'] as $line){
                         $sql="insert into acc_invoice_type (
