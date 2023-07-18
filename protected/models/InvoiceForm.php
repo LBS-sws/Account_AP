@@ -200,20 +200,20 @@ class InvoiceForm extends CFormModel
 			$invoice_dt = General::toMyDate($a['invoice_dt']);
             $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."'";
             if(strstr($a['invoice_no'],"INV")!==false){ //INV服務不需要合併
-                $number_no = "P";//產品的編號前綴
+                //$number_no = "P";//產品的編號前綴(弃用)
                 $sql_s.=" and invoice_no = '{$a['invoice_no']}'";
             }else{ //其它服務因為合併所以invoice_no不能確定是不是唯一值
                 $sql_s.=" and invoice_no not like '%INV%'";
-                $number_no = "S";//服務的編號前綴
+                //$number_no = "S";//服務的編號前綴(弃用)
             }
-            $number_no = $this->getMaxNumberNo($number_no,$a["invoice_dt"]);
+            //$number_no = $this->getMaxNumberNo($number_no,$a["invoice_dt"]);//(弃用)
 //	        $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."' and invoice_no='".$a['invoice_no']."'";
             $records = Yii::app()->db->createCommand($sql_s)->queryAll();
             if(empty($records)){ //這個if是判斷數據庫是否已經錄入過該賬單了
                 $sql="insert into acc_invoice (
-                    dates,number_no,payment_term,payment_method,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc,delivery_company,delivery_address,delivery_tel,invoice_no
+                    dates,payment_term,payment_method,customer_account,salesperson,sales_order_date,invoice_company,invoice_address,invoice_tel,lcu,luu,city,disc,delivery_company,delivery_address,delivery_tel,invoice_no
                   ) value (
-                   :dates,:number_no,:payment_term,:payment_method,:customer_account,:salesperson,:sales_order_date,:invoice_company,:invoice_address,:invoice_tel,:lcu,:luu,:city,:disc,:delivery_company,:delivery_address,:delivery_tel,:invoice_no
+                   :dates,:payment_term,:payment_method,:customer_account,:salesperson,:sales_order_date,:invoice_company,:invoice_address,:invoice_tel,:lcu,:luu,:city,:disc,:delivery_company,:delivery_address,:delivery_tel,:invoice_no
                   )";
 
 //        $sql="insert into acc_invoice (dates,payment_term,customer_po_no,customer_account,salesperson,sales_order_no,sales_order_date,ship_via,invoice_company,invoice_address,invoice_tel,delivery_company,delivery_address,delivery_tel,description,quantity,unit_price,disc,amount,sub_total,gst,total_amount,generated_by,lcu,luu) value ()";
@@ -227,8 +227,6 @@ class InvoiceForm extends CFormModel
                 if (strpos($sql,':payment_method')!==false){ //
                     $command->bindParam(':payment_method',$a['payment_method'],PDO::PARAM_STR);
 				}
-                if (strpos($sql,':number_no')!==false)
-                    $command->bindParam(':number_no',$number_no,PDO::PARAM_STR);
                 if (strpos($sql,':customer_account')!==false)
                     $command->bindParam(':customer_account',$a['customer_code'],PDO::PARAM_STR);
                 if (strpos($sql,':salesperson')!==false)
@@ -260,6 +258,12 @@ class InvoiceForm extends CFormModel
                     $command->bindParam(':luu',$uid,PDO::PARAM_STR);
                 $command->execute();
                 $id = Yii::app()->db->getLastInsertID();
+                $number_no = 10000000+$id;//修改发票编号
+                $number_no = $number_no>10000000?substr($number_no,1):$number_no;
+                $number_no = date("Ym",strtotime($invoice_dt))."/".$number_no;
+                Yii::app()->db->createCommand()->update("acc_invoice",
+                    array("number_no"=>$number_no),
+                    "id=:id",array(":id"=>$this->id));
                 if(!empty($id)){
                     foreach ($a['line'] as $line){
                         $sql="insert into acc_invoice_type (
@@ -592,14 +596,13 @@ class InvoiceForm extends CFormModel
             <table  style="width: 570px;line-height: 20px;">
                  <tr><td colspan="13" rowspan="5" width="320px;" height="100px"  border="1" cellspacing="0" cellpadding="0">Invoice To:<br/> $model->invoice_company<br/> $model->invoice_address<br/> $model->invoice_tel</td><td width="20px;"> </td><td height="25px;" width="100px;">Number:</td><td  width="130px;">$model->number</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Date:</td><td>$model->dates</td></tr> 
-                 <tr><td width="20px;"> </td><td height="20px;">Payment Term:</td><td>$model->payment_term</td></tr>
+                 <tr><td width="20px;"> </td><td height="20px;">Credit Term:</td><td>$model->payment_term</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Payment Method:</td><td>$model->payment_method</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Customer PO NO:</td><td>$model->customer_po_no</td></tr>
-                 <tr><td colspan="13" rowspan="5" width="320px;" height="100px"  border="1" cellspacing="0" cellpadding="0">Deliver To: <br/> $model->delivery_company<br/> $model->delivery_address<br/> $model->delivery_tel</td><td width="20px;"> </td><td height="20px;">Customer Account:</td><td>$model->customer_account</td></tr>
+                 <tr><td colspan="13" rowspan="4" width="320px;" height="100px"  border="1" cellspacing="0" cellpadding="0">Deliver To: <br/> $model->delivery_company<br/> $model->delivery_address<br/> $model->delivery_tel</td><td width="20px;"> </td><td height="20px;">Customer Account:</td><td>$model->customer_account</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Salesperson:</td><td>$model->salesperson</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Sales Order No:</td><td>$model->sales_order_no</td></tr>
                  <tr><td width="20px;"> </td><td height="20px;">Sales Order Date:</td><td>$model->sales_order_date</td></tr>
-                 <tr><td width="20px;"> </td><td height="20px;">Ship Via:</td><td>$model->ship_via</td></tr>
             </table>           
              <table  cellspacing="0" cellpadding="0" style="width: 570px;line-height: 20px;text-align: center;">
                   <tr ><td></td></tr>

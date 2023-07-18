@@ -40,7 +40,7 @@ class InvoiceList extends CListPageModel
 
 		$order = "";
 		if (!empty($this->orderField)) {
-			switch ($this->searchField) {
+			switch ($this->orderField) {
 				case 'number':
 					$order .= " order by a.number_no ";
 					break;
