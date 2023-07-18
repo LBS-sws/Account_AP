@@ -50,7 +50,7 @@ class InvoiceForm extends CFormModel
 			'id'=>Yii::t('invoice','Record ID'),
 			'number'=>Yii::t('invoice','Number'),
 			'dates'=>Yii::t('invoice','Date'),
-			'payment_term'=>Yii::t('invoice','Payment Term'),
+			'payment_term'=>Yii::t('invoice','Credit Term'),
 			'payment_method'=>Yii::t('invoice','Payment Method'),
 			'customer_po_no'=>Yii::t('invoice','Customer Po No'),
 			'customer_account'=>Yii::t('invoice','Customer Account'),

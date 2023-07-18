@@ -3,7 +3,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice';
 ?>
 
 <?php $form=$this->beginWidget('TbActiveForm', array(
-'id'=>'Invoice-list',
+'id'=>'invoice-list',
 'enableClientValidation'=>true,
 'clientOptions'=>array('validateOnSubmit'=>true,),
 'layout'=>TbHtml::FORM_LAYOUT_INLINE,

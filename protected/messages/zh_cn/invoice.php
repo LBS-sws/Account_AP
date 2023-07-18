@@ -3,6 +3,7 @@ return array(
 	'Number' => '发票编号',
     'Date' => '发票日期',
     'Customer Account' => ' 客户编号',
+    'Credit Term' => '付款周期',
     'Payment Term' => '付款周期',
     'Payment Method' => '付款方式',
     'Customer Po No' => '客户订单编号',

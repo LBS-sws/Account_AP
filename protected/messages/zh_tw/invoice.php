@@ -3,6 +3,7 @@ return array(
 	'Number' => '發票編號',
     'Date' => '發票日期',
     'Customer Account' => ' 客戶編號',
+    'Credit Term' => '付款週期',
     'Payment Term' => '付款週期',
     'Payment Method' => '付款方式',
     'Customer Po No' => '客戶訂單編號',
