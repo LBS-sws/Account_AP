@@ -125,7 +125,8 @@ class InvoiceForm extends CFormModel
                 $this->delivery_company = $row['delivery_company'];
                 $this->delivery_address = $row['delivery_address'];
                 $this->delivery_tel = $row['delivery_tel'];
-				$row['disc']=strtotime($row['dates'])>=strtotime("2023/01/01")?0.08:$row['disc'];//2023年01月01日稅率改為8%
+				//$row['disc']=strtotime($row['dates'])>=strtotime("2023/01/01")?0.08:$row['disc'];//2023年01月01日稅率改為8%
+				$row['disc']=self::getNowDiscForData($row['dates'],$row['disc']);
                 $disc=$row['disc']*100;
 				$this->disc = $disc."%";
                 $arr=array_sum(array_map(create_function('$val', 'return $val["amount"];'), $type));
@@ -140,6 +141,17 @@ class InvoiceForm extends CFormModel
 		}
 		return true;
 	}
+
+	//根据发票时间获取税率
+	public static function getNowDiscForData($date,$disc=0){
+        if(strtotime($date)>=strtotime("2024/01/01")){//2024年01月01日稅率改為9%
+            return 0.09;
+        }elseif (strtotime($date)>=strtotime("2023/01/01")){//2023年01月01日稅率改為8%
+            return 0.08;
+        }else{
+            return empty($disc)?0.07:$disc;
+        }
+    }
 
 	public function newData($date){
         $this->city = Yii::app()->user->city();
@@ -195,8 +207,8 @@ class InvoiceForm extends CFormModel
      */
     public function saveU(&$connection, $arr){
 	    foreach ($arr['data'] as $a){
-			$this->disc=strtotime($a['invoice_dt'])>=strtotime("2023/01/01")?0.08:0.07;//2023年01月01日稅率改為8%
-            
+			//$this->disc=strtotime($a['invoice_dt'])>=strtotime("2023/01/01")?0.08:0.07;//2023年01月01日稅率改為8%
+            $this->disc = self::getNowDiscForData($a['invoice_dt']);
 			$invoice_dt = General::toMyDate($a['invoice_dt']);
             $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."'";
             if(strstr($a['invoice_no'],"INV")!==false){ //INV服務不需要合併
