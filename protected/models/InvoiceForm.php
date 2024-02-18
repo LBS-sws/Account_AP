@@ -130,8 +130,10 @@ class InvoiceForm extends CFormModel
                 $disc=$row['disc']*100;
 				$this->disc = $disc."%";
                 $arr=array_sum(array_map(create_function('$val', 'return $val["amount"];'), $type));
+				$arr = round($arr,2);
 				$this->sub_total = sprintf("%.2f",$arr);
-				$this->gst = sprintf("%.2f",($arr*$row['disc']));
+				$gst = round($arr*$row['disc'],2);
+				$this->gst = sprintf("%.2f",$gst);
                 $total_amount=($arr*$row['disc'])+$arr;
 				$this->total_amount = round($total_amount,2);//sprintf("%.2f",$total_amount)
 				$this->city = $row['city'];
