@@ -147,9 +147,9 @@ class InvoiceForm extends CFormModel
 				$this->city = $row['city'];
 				$this->generated_by = $this->getNames($row['lcu']);
 				$this->lcu = $row['lcu'];
-				$this->lcd = $row['lcd'];
+				$this->lcd = isset($row['lcd'])?$row['lcd']:"";
 				$this->luu = $row['luu'];
-				$this->lud = $row['lud'];
+				$this->lud = isset($row['lud'])?$row['lud']:"";
 				break;
 			}
 		}
