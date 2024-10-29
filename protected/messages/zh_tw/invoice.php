@@ -30,5 +30,9 @@ return array(
     'Amount' => '總價',
     'Batch deletion of invoices'=>'發票批量刪除',
     'Export'=>'匯出',
+    'apply user'=>'录入账号',
+    'apply date'=>'录入时间',
+    'update user'=>'修改账号',
+    'update date'=>'修改时间',
 );
 ?>

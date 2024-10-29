@@ -263,6 +263,35 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
                     ); ?>
                 </div>
             </div>
+
+            <div class="form-group">
+                <?php echo $form->labelEx($model,'lcu',array('class'=>"col-sm-2 control-label")); ?>
+                <div class="col-sm-3">
+                    <?php echo $form->textField($model, 'lcu',
+                        array('readonly'=>'readonly')
+                    ); ?>
+                </div>
+                <?php echo $form->labelEx($model,'lcd',array('class'=>"col-sm-2 control-label")); ?>
+                <div class="col-sm-3">
+                    <?php echo $form->textField($model, 'lcd',
+                        array('readonly'=>'readonly')
+                    ); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <?php echo $form->labelEx($model,'luu',array('class'=>"col-sm-2 control-label")); ?>
+                <div class="col-sm-3">
+                    <?php echo $form->textField($model, 'luu',
+                        array('readonly'=>'readonly')
+                    ); ?>
+                </div>
+                <?php echo $form->labelEx($model,'lud',array('class'=>"col-sm-2 control-label")); ?>
+                <div class="col-sm-3">
+                    <?php echo $form->textField($model, 'lud',
+                        array('readonly'=>'readonly')
+                    ); ?>
+                </div>
+            </div>
 		</div>
 	</div>
 </section>
