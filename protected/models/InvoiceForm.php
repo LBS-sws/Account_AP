@@ -125,7 +125,7 @@ class InvoiceForm extends CFormModel
             $total_amount = round($total_amount,2);
             $maxNum = round($total_amount+0.01,2);
             $minNum = round($total_amount-0.01,2);
-            if($this->total_amount<=$maxNum&&$this->total_amount=$minNum){
+            if($this->total_amount<=$maxNum&&$this->total_amount>=$minNum){
             }else{
                 $this->addError($attribute, "合计金额只能在{$minNum} ~ {$maxNum}之间");
             }
