@@ -110,8 +110,8 @@ class InvoiceForm extends CFormModel
             $sub_total = 0;
             if(!empty($this->type)){
                 foreach ($this->type as $key=>$type){
-                    $unit_price = isset($type["unit_price"])&&is_numeric($type["unit_price"])?isset($type["unit_price"]):0;
-                    $quantity = isset($type["quantity"])&&is_numeric($type["quantity"])?isset($type["quantity"]):0;
+                    $unit_price = isset($type["unit_price"])&&is_numeric($type["unit_price"])?floatval($type["unit_price"]):0;
+                    $quantity = isset($type["quantity"])&&is_numeric($type["quantity"])?floatval($type["quantity"]):0;
                     $amount = $quantity*$unit_price;
                     $this->type[$key]["amount"] = $amount;
                     $sub_total+=$amount;
