@@ -7,25 +7,25 @@
  */
 class InvoiceForm extends CFormModel
 {
-	/* User Fields */
-	public $id;
-	public $number;////账单编号
-	public $dates;//账单日期
-	public $payment_term;//付款方式
-	public $payment_method;//付款周期
-	public $customer_po_no;//客户订单编号
-	public $customer_account;//客户编号
-	public $salesperson;//销售
-	public $sales_order_no;//客户订货订单编号
-	public $sales_order_date;//送货日期
-	public $ship_via;//运输方式
-	public $invoice_company;//服务公司
-	public $invoice_address;//服务地址
-	public $invoice_tel;//服务电话
+    /* User Fields */
+    public $id;
+    public $number;////账单编号
+    public $dates;//账单日期
+    public $payment_term;//付款方式
+    public $payment_method;//付款周期
+    public $customer_po_no;//客户订单编号
+    public $customer_account;//客户编号
+    public $salesperson;//销售
+    public $sales_order_no;//客户订货订单编号
+    public $sales_order_date;//送货日期
+    public $ship_via;//运输方式
+    public $invoice_company;//服务公司
+    public $invoice_address;//服务地址
+    public $invoice_tel;//服务电话
     public $delivery_company;//发票公司
     public $delivery_address;//发票地址
     public $delivery_tel;//联系电话
-	public $disc=0.07;//税率
+    public $disc=0.07;//税率
     public $sub_total;//小计
     public $gst;//税
     public $total_amount;//合计
@@ -43,32 +43,32 @@ class InvoiceForm extends CFormModel
     public $lud;
 
 
-	/**
-	 * Declares customized attribute labels.
-	 * If not declared here, an attribute would have a label that is
-	 * the same as its name with the first letter in upper case.
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id'=>Yii::t('invoice','Record ID'),
-			'number'=>Yii::t('invoice','Number'),
-			'dates'=>Yii::t('invoice','Date'),
-			'payment_term'=>Yii::t('invoice','Credit Term'),
-			'payment_method'=>Yii::t('invoice','Payment Method'),
-			'customer_po_no'=>Yii::t('invoice','Customer Po No'),
-			'customer_account'=>Yii::t('invoice','Customer Account'),
-			'salesperson'=>Yii::t('invoice','Salesperson'),
-			'sales_order_no'=>Yii::t('invoice','Sales Order No'),
-			'sales_order_date'=>Yii::t('invoice','Sales Order Date'),
-			'ship_via'=>Yii::t('invoice','Ship Via'),
-			'invoice_company'=>Yii::t('invoice','Invoice Company'),
-			'invoice_address'=>Yii::t('invoice','Invoice Address'),
-			'invoice_tel'=>Yii::t('invoice','Invoice Tel'),
+    /**
+     * Declares customized attribute labels.
+     * If not declared here, an attribute would have a label that is
+     * the same as its name with the first letter in upper case.
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id'=>Yii::t('invoice','Record ID'),
+            'number'=>Yii::t('invoice','Number'),
+            'dates'=>Yii::t('invoice','Date'),
+            'payment_term'=>Yii::t('invoice','Credit Term'),
+            'payment_method'=>Yii::t('invoice','Payment Method'),
+            'customer_po_no'=>Yii::t('invoice','Customer Po No'),
+            'customer_account'=>Yii::t('invoice','Customer Account'),
+            'salesperson'=>Yii::t('invoice','Salesperson'),
+            'sales_order_no'=>Yii::t('invoice','Sales Order No'),
+            'sales_order_date'=>Yii::t('invoice','Sales Order Date'),
+            'ship_via'=>Yii::t('invoice','Ship Via'),
+            'invoice_company'=>Yii::t('invoice','Invoice Company'),
+            'invoice_address'=>Yii::t('invoice','Invoice Address'),
+            'invoice_tel'=>Yii::t('invoice','Invoice Tel'),
             'delivery_company'=>Yii::t('invoice','Delivery Company'),
             'delivery_address'=>Yii::t('invoice','Delivery Address'),
             'delivery_tel'=>Yii::t('invoice','Delivery Tel'),
-			'disc'=>Yii::t('invoice','Disc'),
+            'disc'=>Yii::t('invoice','Disc'),
             'sub_total'=>Yii::t('invoice','Sub Total'),
             'gst'=>Yii::t('invoice','Gst'),
             'total_amount'=>Yii::t('invoice','Total Amount'),
@@ -78,36 +78,73 @@ class InvoiceForm extends CFormModel
             'luu'=>Yii::t('invoice','update user'),
             'lcd'=>Yii::t('invoice','apply date'),
             'lud'=>Yii::t('invoice','update date'),
-		);
-	}
+        );
+    }
 
-	/**
-	 * Declares the validation rules.
-	 */
-	public function rules()
-	{
-		return array(
-			array('id,number,type,dates,payment_term,payment_method,customer_po_no,customer_account,salesperson,sales_order_no,sales_order_date,
+    /**
+     * Declares the validation rules.
+     */
+    public function rules()
+    {
+        return array(
+            array('id,number,type,dates,payment_term,payment_method,customer_po_no,customer_account,salesperson,sales_order_no,sales_order_date,
 			ship_via,invoice_company,invoice_address,invoice_tel,delivery_company,delivery_address,delivery_tel,
 			disc,sub_total,gst,total_amount,city,generated_by,','safe'),
-			array('','required'),
-			//array('code','validateCode'),
+            array('','required'),
+            array('total_amount','validateAmount'),
+            //array('code','validateCode'),
 //			array('code','safe','on'=>'edit'),
 
-		);
-	}
+        );
+    }
 
-	public function retrieveData($index)
-	{
+    public function validateAmount($attribute, $params) {
+        $this->id = empty($this->id)||!is_numeric($this->id)?0:$this->id;
+        $city = Yii::app()->user->city_allow();
+        $sql = "select * from acc_invoice where id=".$this->id." and city in ($city)";
+        $row = Yii::app()->db->createCommand($sql)->queryRow();
+        if($row){
+            $row['disc']=self::getNowDiscForData($row['dates'],$row['disc']);
+            $disc=$row['disc']*100;
+            $this->disc = $disc."%";
+            $sub_total = 0;
+            if(!empty($this->type)){
+                foreach ($this->type as $key=>$type){
+                    $unit_price = isset($type["unit_price"])&&is_numeric($type["unit_price"])?isset($type["unit_price"]):0;
+                    $quantity = isset($type["quantity"])&&is_numeric($type["quantity"])?isset($type["quantity"]):0;
+                    $amount = $quantity*$unit_price;
+                    $this->type[$key]["amount"] = $amount;
+                    $sub_total+=$amount;
+                }
+            }
+            $sub_total = is_numeric($this->sub_total)?$this->sub_total:0;
+            $this->sub_total = sprintf("%.2f",$sub_total);
+            $gst = round($sub_total*$row['disc'],2);
+            $this->gst = sprintf("%.2f",$gst);
+            $total_amount=$sub_total*$row['disc']+$sub_total;
+            $total_amount = round($total_amount,2);
+            $maxNum = round($total_amount+0.01,2);
+            $minNum = round($total_amount-0.01,2);
+            if($this->total_amount<=$maxNum&&$this->total_amount=$minNum){
+            }else{
+                $this->addError($attribute, "合计金额只能在{$minNum} ~ {$maxNum}之间");
+            }
+        }else{
+            $this->addError($attribute, "数据异常，请刷新重试");
+        }
+    }
+
+    public function retrieveData($index)
+    {
         $suffix = Yii::app()->params['envSuffix'];
-		$city = Yii::app()->user->city_allow();
-		$sql = "select * from acc_invoice where id=$index and city in ($city)";
-		$rows = Yii::app()->db->createCommand($sql)->queryAll();
-		if (count($rows) > 0)
-		{
-			foreach ($rows as $row)
-			{
-			    $sql1="select * from acc_invoice_type where invoice_id='".$row['id']."'";
+        $city = Yii::app()->user->city_allow();
+        $sql = "select * from acc_invoice where id=$index and city in ($city)";
+        $rows = Yii::app()->db->createCommand($sql)->queryAll();
+        if (count($rows) > 0)
+        {
+            foreach ($rows as $row)
+            {
+                $sql1="select * from acc_invoice_type where invoice_id='".$row['id']."'";
                 $type = Yii::app()->db->createCommand($sql1)->queryAll();
 //                $sql2="select * from swoper$suffix.swo_company where code='".$row['customer_account']."'";
 //                $delivery = Yii::app()->db->createCommand($sql2)->queryRow();
@@ -117,47 +154,51 @@ class InvoiceForm extends CFormModel
                 $number=($number*10000000)+$row['id'];
                 $this->type = $type;
                 $this->id = $row['id'];
-				$this->number = $row['number_no'];
+                $this->number = $row['number_no'];
                 $this->dates = General::toDate($row['dates']);
-				$this->payment_term = $row['payment_term'];
-				$this->payment_method = isset($row['payment_method'])?$row['payment_method']:"";
-				$this->customer_po_no = $row['customer_po_no'];
-				$this->customer_account =$row['customer_account'];
-				$this->salesperson = $row['salesperson'];
-				$this->sales_order_no = $row['sales_order_no'];
-				$this->sales_order_date = General::toDate($row['sales_order_date']);
-				$this->ship_via = $row['ship_via'];
-				$this->invoice_company = $row['invoice_company'];
-				$this->invoice_address = $row['invoice_address'];
-				$this->invoice_tel = $row['invoice_tel'];
+                $this->payment_term = $row['payment_term'];
+                $this->payment_method = isset($row['payment_method'])?$row['payment_method']:"";
+                $this->customer_po_no = $row['customer_po_no'];
+                $this->customer_account =$row['customer_account'];
+                $this->salesperson = $row['salesperson'];
+                $this->sales_order_no = $row['sales_order_no'];
+                $this->sales_order_date = General::toDate($row['sales_order_date']);
+                $this->ship_via = $row['ship_via'];
+                $this->invoice_company = $row['invoice_company'];
+                $this->invoice_address = $row['invoice_address'];
+                $this->invoice_tel = $row['invoice_tel'];
                 $this->delivery_company = $row['delivery_company'];
                 $this->delivery_address = $row['delivery_address'];
                 $this->delivery_tel = $row['delivery_tel'];
-				//$row['disc']=strtotime($row['dates'])>=strtotime("2023/01/01")?0.08:$row['disc'];//2023年01月01日稅率改為8%
-				$row['disc']=self::getNowDiscForData($row['dates'],$row['disc']);
+                //$row['disc']=strtotime($row['dates'])>=strtotime("2023/01/01")?0.08:$row['disc'];//2023年01月01日稅率改為8%
+                $row['disc']=self::getNowDiscForData($row['dates'],$row['disc']);
                 $disc=$row['disc']*100;
-				$this->disc = $disc."%";
+                $this->disc = $disc."%";
                 $arr=array_sum(array_map(create_function('$val', 'return $val["amount"];'), $type));
-				$arr = round($arr,2);
-				$this->sub_total = sprintf("%.2f",$arr);
-				$gst = round($arr*$row['disc'],2);
-				$this->gst = sprintf("%.2f",$gst);
+                $arr = round($arr,2);
+                $this->sub_total = sprintf("%.2f",$arr);
+                $gst = round($arr*$row['disc'],2);
+                $this->gst = sprintf("%.2f",$gst);
                 $total_amount=($arr*$row['disc'])+$arr;
-				$this->total_amount = in_array($row['id'],array('16428','16429'))?"220.00":round($total_amount,2);//sprintf("%.2f",$total_amount)
-				$this->city = $row['city'];
-				$this->generated_by = $this->getNames($row['lcu']);
-				$this->lcu = $row['lcu'];
-				$this->lcd = isset($row['lcd'])?$row['lcd']:"";
-				$this->luu = $row['luu'];
-				$this->lud = isset($row['lud'])?$row['lud']:"";
-				break;
-			}
-		}
-		return true;
-	}
+                $total_amount = round($total_amount,2);
+                $maxNum = round($total_amount+0.01,2);
+                $minNum = round($total_amount-0.01,2);
+                $row['total_amount'] = $row['total_amount']<=$maxNum&&$row['total_amount']>=$minNum?$row['total_amount']:$total_amount;
+                $this->total_amount = sprintf("%.2f",$row['total_amount']);//sprintf("%.2f",$total_amount)
+                $this->city = $row['city'];
+                $this->generated_by = $this->getNames($row['lcu']);
+                $this->lcu = $row['lcu'];
+                $this->lcd = isset($row['lcd'])?$row['lcd']:"";
+                $this->luu = $row['luu'];
+                $this->lud = isset($row['lud'])?$row['lud']:"";
+                break;
+            }
+        }
+        return true;
+    }
 
-	//根据发票时间获取税率
-	public static function getNowDiscForData($date,$disc=0){
+    //根据发票时间获取税率
+    public static function getNowDiscForData($date,$disc=0){
         if(strtotime($date)>=strtotime("2024/01/01")){//2024年01月01日稅率改為9%
             return 0.09;
         }elseif (strtotime($date)>=strtotime("2023/01/01")){//2023年01月01日稅率改為8%
@@ -167,7 +208,7 @@ class InvoiceForm extends CFormModel
         }
     }
 
-	public function newData($date){
+    public function newData($date){
         $this->city = Yii::app()->user->city();
 //        $this->city='SG';
         $start=$date['start'];
@@ -193,14 +234,14 @@ class InvoiceForm extends CFormModel
 
     //由於舊數據沒有編號，需要添加編號
     public static function resetOldData(){
-	    $sql ="UPDATE acc_invoice SET
+        $sql ="UPDATE acc_invoice SET
           number_no=(DATE_FORMAT(dates,'%y%m')*10000000+id) 
           WHERE number_no is NULL";
         $row = Yii::app()->db->createCommand($sql)->execute();
     }
 
     public function getMaxNumberNo($pre,$date){
-	    $yearStr = date("ym",strtotime($date));
+        $yearStr = date("ym",strtotime($date));
         $yearStr*=10000000;
         $yearStr++;
         $row = Yii::app()->db->createCommand()->select("number_no,substring(number_no,6) as num")
@@ -220,10 +261,10 @@ class InvoiceForm extends CFormModel
      * @param $arr
      */
     public function saveU(&$connection, $arr){
-	    foreach ($arr['data'] as $a){
-			//$this->disc=strtotime($a['invoice_dt'])>=strtotime("2023/01/01")?0.08:0.07;//2023年01月01日稅率改為8%
+        foreach ($arr['data'] as $a){
+            //$this->disc=strtotime($a['invoice_dt'])>=strtotime("2023/01/01")?0.08:0.07;//2023年01月01日稅率改為8%
             $this->disc = self::getNowDiscForData($a['invoice_dt']);
-			$invoice_dt = General::toMyDate($a['invoice_dt']);
+            $invoice_dt = General::toMyDate($a['invoice_dt']);
             $sql_s="select id from acc_invoice where dates='".$invoice_dt."' and customer_account='".$a['customer_code']."'";
             if(strstr($a['invoice_no'],"INV")!==false){ //INV服務不需要合併
                 //$number_no = "P";//產品的編號前綴(弃用)
@@ -252,7 +293,7 @@ class InvoiceForm extends CFormModel
                     $command->bindParam(':payment_term',$a['payment_term'],PDO::PARAM_STR);
                 if (strpos($sql,':payment_method')!==false){ //
                     $command->bindParam(':payment_method',$a['payment_method'],PDO::PARAM_STR);
-				}
+                }
                 if (strpos($sql,':customer_account')!==false)
                     $command->bindParam(':customer_account',$a['customer_code'],PDO::PARAM_STR);
                 if (strpos($sql,':salesperson')!==false)
@@ -268,8 +309,8 @@ class InvoiceForm extends CFormModel
                     $command->bindParam(':invoice_tel',$a['invoice_to_tel'],PDO::PARAM_STR);
                 if (strpos($sql,':delivery_company')!==false)
                     $command->bindParam(':delivery_company',$a['name_zh'],PDO::PARAM_STR);
-                  if (strpos($sql,':invoice_no')!==false)
-                      $command->bindParam(':invoice_no',$a['invoice_no'],PDO::PARAM_STR);
+                if (strpos($sql,':invoice_no')!==false)
+                    $command->bindParam(':invoice_no',$a['invoice_no'],PDO::PARAM_STR);
                 if (strpos($sql,':delivery_address')!==false)
                     $command->bindParam(':delivery_address',$a['addr'],PDO::PARAM_STR);
                 if (strpos($sql,':delivery_tel')!==false)
@@ -313,7 +354,7 @@ class InvoiceForm extends CFormModel
                             }else{
                                 $amount=$line['unit_price']*$line['qty'];
                             }
-                            $command->bindParam(':amount',$amount,PDO::PARAM_STR);
+                        $command->bindParam(':amount',$amount,PDO::PARAM_STR);
                         $command->execute();
                         if(isset($line['unit_price2'])&&$line['unit_price2']!=0){
                             $sql1="insert into acc_invoice_type (
@@ -430,31 +471,31 @@ class InvoiceForm extends CFormModel
             }
         }
     }
-	
-	public function saveData()
-	{
 
-		$connection = Yii::app()->db;
-		$transaction=$connection->beginTransaction();
-		try {
-			$this->saveInvoice($connection);
-			$transaction->commit();
-		}
-		catch(Exception $e) {
-			$transaction->rollback();
-			throw new CHttpException(404,'Cannot update.'.$e->getMessage());
-		}
-	}
+    public function saveData()
+    {
 
-	protected function saveInvoice(&$connection)
-	{
-		$sql = '';
-		switch ($this->scenario) {
-			case 'delete':
-				$sql = "delete from acc_invoice where id = :id and city = :city";
-				break;
-			case 'edit':
-				$sql = "update acc_invoice set
+        $connection = Yii::app()->db;
+        $transaction=$connection->beginTransaction();
+        try {
+            $this->saveInvoice($connection);
+            $transaction->commit();
+        }
+        catch(Exception $e) {
+            $transaction->rollback();
+            throw new CHttpException(404,'Cannot update.'.$e->getMessage());
+        }
+    }
+
+    protected function saveInvoice(&$connection)
+    {
+        $sql = '';
+        switch ($this->scenario) {
+            case 'delete':
+                $sql = "delete from acc_invoice where id = :id and city = :city";
+                break;
+            case 'edit':
+                $sql = "update acc_invoice set
                             payment_term=:payment_term,
                             payment_method=:payment_method,
                             customer_po_no=:customer_po_no,
@@ -474,35 +515,35 @@ class InvoiceForm extends CFormModel
                             luu=:luu
 						where id = :id and city = :city
 						";
-				break;
-		}
+                break;
+        }
 
-		$city = Yii::app()->user->city();
-		$uid = Yii::app()->user->id;
-		$command=$connection->createCommand($sql);
-		if (strpos($sql,':payment_term')!==false)
-			$command->bindParam(':payment_term',$this->payment_term,PDO::PARAM_STR);
-		if (strpos($sql,':payment_method')!==false)
-			$command->bindParam(':payment_method',$this->payment_method,PDO::PARAM_STR);
-		if (strpos($sql,':customer_po_no')!==false)
-			$command->bindParam(':customer_po_no',$this->customer_po_no,PDO::PARAM_STR);
-		//print_r($this->sales_order_no);exit();
+        $city = Yii::app()->user->city();
+        $uid = Yii::app()->user->id;
+        $command=$connection->createCommand($sql);
+        if (strpos($sql,':payment_term')!==false)
+            $command->bindParam(':payment_term',$this->payment_term,PDO::PARAM_STR);
+        if (strpos($sql,':payment_method')!==false)
+            $command->bindParam(':payment_method',$this->payment_method,PDO::PARAM_STR);
+        if (strpos($sql,':customer_po_no')!==false)
+            $command->bindParam(':customer_po_no',$this->customer_po_no,PDO::PARAM_STR);
+        //print_r($this->sales_order_no);exit();
         if (strpos($sql,':sales_order_no')!==false)
-			$command->bindParam(':sales_order_no',$this->sales_order_no,PDO::PARAM_STR);
-		if (strpos($sql,':sales_order_date')!==false) {
-			$sales_order_date = General::toMyDate($this->sales_order_date);
-			$command->bindParam(':sales_order_date',$sales_order_date,PDO::PARAM_STR);
-		}
-		if (strpos($sql,':ship_via')!==false)
-			$command->bindParam(':ship_via',$this->ship_via,PDO::PARAM_STR);
-		if (strpos($sql,':salesperson')!==false)
-			$command->bindParam(':salesperson',$this->salesperson,PDO::PARAM_STR);
-		if (strpos($sql,':invoice_company')!==false)
-			$command->bindParam(':invoice_company',$this->invoice_company,PDO::PARAM_STR);
-		if (strpos($sql,':invoice_address')!==false)
-			$command->bindParam(':invoice_address',$this->invoice_address,PDO::PARAM_STR);
-		if (strpos($sql,':invoice_tel')!==false)
-			$command->bindParam(':invoice_tel',$this->invoice_tel,PDO::PARAM_STR);
+            $command->bindParam(':sales_order_no',$this->sales_order_no,PDO::PARAM_STR);
+        if (strpos($sql,':sales_order_date')!==false) {
+            $sales_order_date = General::toMyDate($this->sales_order_date);
+            $command->bindParam(':sales_order_date',$sales_order_date,PDO::PARAM_STR);
+        }
+        if (strpos($sql,':ship_via')!==false)
+            $command->bindParam(':ship_via',$this->ship_via,PDO::PARAM_STR);
+        if (strpos($sql,':salesperson')!==false)
+            $command->bindParam(':salesperson',$this->salesperson,PDO::PARAM_STR);
+        if (strpos($sql,':invoice_company')!==false)
+            $command->bindParam(':invoice_company',$this->invoice_company,PDO::PARAM_STR);
+        if (strpos($sql,':invoice_address')!==false)
+            $command->bindParam(':invoice_address',$this->invoice_address,PDO::PARAM_STR);
+        if (strpos($sql,':invoice_tel')!==false)
+            $command->bindParam(':invoice_tel',$this->invoice_tel,PDO::PARAM_STR);
         if (strpos($sql,':delivery_company')!==false)
             $command->bindParam(':delivery_company',$this->delivery_company,PDO::PARAM_STR);
         if (strpos($sql,':delivery_address')!==false)
@@ -517,14 +558,14 @@ class InvoiceForm extends CFormModel
             $command->bindParam(':gst',$this->gst,PDO::PARAM_STR);
         if (strpos($sql,':total_amount')!==false)
             $command->bindParam(':total_amount',$this->total_amount,PDO::PARAM_STR);
-		if (strpos($sql,':luu')!==false)
-			$command->bindParam(':luu',$uid,PDO::PARAM_STR);
+        if (strpos($sql,':luu')!==false)
+            $command->bindParam(':luu',$uid,PDO::PARAM_STR);
         if (strpos($sql,':city')!==false)
             $command->bindParam(':city',$city,PDO::PARAM_STR);
         if (strpos($sql,':id')!==false)
             $command->bindParam(':id',$this->id,PDO::PARAM_INT);
-		$command->execute();
-		foreach ($this['type'] as $arr){
+        $command->execute();
+        foreach ($this['type'] as $arr){
             switch ($this->scenario) {
                 case 'delete':
                     $sql1 = "delete from acc_invoice_type where id = :id ";
@@ -554,8 +595,8 @@ class InvoiceForm extends CFormModel
             //print_r('<pre>');print_r($this);exit();
         }
 
-		return true;
-	}
+        return true;
+    }
 
 
     public function isReadOnly() {
