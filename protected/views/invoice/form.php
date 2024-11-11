@@ -213,7 +213,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
                    </div>
                    <label class="col-sm-2 control-label" for="InvoiceForm_disc"><?php echo Yii::t('invoice','Amount');?></label>
                    <div class="col-sm-2">
-                       <input min="0" name="InvoiceForm[type][<?php echo $i;?>][amount]" id="InvoiceForm_amount<?php echo $i;?>" class="input-40 form-control" type="number" value="<?php echo $value['amount'];?>">
+                       <input min="0" name="InvoiceForm[type][<?php echo $i;?>][amount]" id="InvoiceForm_amount<?php echo $i;?>" class="input-40 form-control" type="number" readonly="readonly" value="<?php echo $value['amount'];?>">
                    </div>
                </div>
                <input min="0" name="InvoiceForm[type][<?php echo $i;?>][id]" id="InvoiceForm_amount" class="input-40 form-control" type="number" style="display:none" value="<?php echo $value['id'];?>">
@@ -232,7 +232,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
                 <?php echo $form->labelEx($model,'sub_total',array('class'=>"col-sm-2 control-label")); ?>
                 <div class="col-sm-3">
                     <?php echo $form->numberField($model, 'sub_total',
-                        array('size'=>40,'min'=>0,'readonly'=>'')
+                        array('size'=>40,'min'=>0,'readonly'=>'readonly')
                     ); ?>
                 </div>
             </div>
@@ -250,7 +250,7 @@ $this->pageTitle=Yii::app()->name . ' - Invoice Form';
                 <?php echo $form->labelEx($model,'total_amount',array('class'=>"col-sm-2 control-label")); ?>
                 <div class="col-sm-3">
                     <?php echo $form->numberField($model, 'total_amount',
-                        array('size'=>40,'min'=>0,'readonly'=>'readonly')
+                        array('size'=>40,'min'=>0,'readonly'=>'')
                     ); ?>
                 </div>
             </div>
