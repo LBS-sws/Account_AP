@@ -117,7 +117,6 @@ class InvoiceForm extends CFormModel
                     $sub_total+=$amount;
                 }
             }
-            $sub_total = is_numeric($this->sub_total)?$this->sub_total:0;
             $this->sub_total = sprintf("%.2f",$sub_total);
             $gst = round($sub_total*$row['disc'],2);
             $this->gst = sprintf("%.2f",$gst);
