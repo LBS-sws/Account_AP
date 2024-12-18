@@ -642,7 +642,7 @@ class InvoiceForm extends CFormModel
                     <td colspan="10" width="180px;">LBS SERVICES (SINGAPORE) PTE LTD</td><td width="100px;"></td><td width="100px;"></td><td width="20px;"></td><td width="30px;"></td><td width="140px;" rowspan="4" ><img  src="images/biao.png" ></td>
                 </tr>
                 <tr>
-                    <td colspan="12" width="200px;">61 Ubi Ave 1#06-09 UB Point Singapore 408941</td><td></td><td></td>
+                    <td colspan="12" width="200px;">62 UBI ROAD 1 #03-22 OXLEY BIZHUB 2  SINGAPORE 408734</td><td></td><td></td>
                 </tr>
                 <tr>
                     <td colspan="10" width="180px;">Tel (65) 6513 3289, (65) 6513 3668</td><td> </td><td></td><td></td><td></td>
@@ -712,7 +712,7 @@ EOD;
     <tr><td align="left">&nbsp;Customer's Copy</td><td></td></tr>
     <tr><td colspan="2" rowspan="3" align="left"><span>&nbsp;</span><img width="86px" height="86px" src="images/invoice_ap_pay.png" /></td><td></td><td>     Authorised Signature  &nbsp; &nbsp; &nbsp; &nbsp;<b>End</b></td></tr>
     <tr><td height="20px">&nbsp;</td></tr>
-    <tr><td></td><td style="text-align: right;"><img width="86px" height="40px" src="images/biao2.png" /></td></tr>
+    <tr><td></td><td style="text-align: right;"><img width="56px" height="40px" src="images/footer_1.jpg" /><img width="97px" height="40px" src="images/footer_2.jpg" /></td></tr>
 </table>
 EOD;
 
