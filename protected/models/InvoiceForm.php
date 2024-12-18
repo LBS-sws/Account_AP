@@ -712,7 +712,7 @@ EOD;
     <tr><td align="left">&nbsp;Customer's Copy</td><td></td></tr>
     <tr><td colspan="2" rowspan="3" align="left"><span>&nbsp;</span><img width="86px" height="86px" src="images/invoice_ap_pay.png" /></td><td></td><td>     Authorised Signature  &nbsp; &nbsp; &nbsp; &nbsp;<b>End</b></td></tr>
     <tr><td height="20px">&nbsp;</td></tr>
-    <tr><td></td><td style="text-align: right;"><img width="56px" height="40px" src="images/footer_1.jpg" /><img width="97px" height="40px" src="images/footer_2.jpg" /></td></tr>
+    <tr><td></td><td style="text-align: right;"><img width="56px" height="40px" src="images/footer_1.jpg" /><img width="88px" height="40px" src="images/footer_2.jpg" /></td></tr>
 </table>
 EOD;
 
