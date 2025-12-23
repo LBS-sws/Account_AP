@@ -43,6 +43,7 @@ $this->pageTitle=Yii::app()->name . ' - Balance Adjustment Form';
 		<?php echo $form->hiddenField($model,'remarks'); ?>
 		<?php echo $form->hiddenField($model,'bal_diff'); ?>
 		<?php echo $form->hiddenField($model,'files'); ?>
+		<?php echo $form->hiddenField($model,'city'); ?>
 <?php 
 	foreach ($model->docMasterId as $key=>$value) {
 		$fldname = $modelName.'[docMasterId]['.$key.']';

@@ -55,6 +55,7 @@ $this->pageTitle=Yii::app()->name . ' - T3 Balance Checking Form';
 		<?php echo $form->hiddenField($model, 'req_user'); ?>
 		<?php //echo $form->hiddenField($model, 'audit_user'); ?>
 		<?php echo $form->hiddenField($model, 'bal_diff'); ?>
+		<?php echo $form->hiddenField($model, 'city'); ?>
 
 		<div class="form-group">
 			<?php echo $form->label($model,'audit_year',array('class'=>"col-sm-2 control-label")); ?>

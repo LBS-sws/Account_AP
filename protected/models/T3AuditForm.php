@@ -182,7 +182,7 @@ class T3AuditForm extends CFormModel
 			$this->req_user_name = $row['req_user_name'];
 			$this->audit_user = $row['audit_user'];
 			$this->audit_user_name = $row['audit_user_name'];
-			$this->city = Yii::app()->user->city();
+			$this->city = $row['city'];
 			$this->city_name = Yii::app()->user->city_name();
 			$this->remarks = $row['remarks'];
 			$this->no_of_attm['t3bal'] = $row['t3balcountdoc'];
@@ -269,7 +269,7 @@ class T3AuditForm extends CFormModel
 
 	protected function readAdjust() {
 		$suffix = Yii::app()->params['envSuffix'];
-		$city = Yii::app()->user->city();
+		$city = empty($this->city)?Yii::app()->user->city():$this->city;
 		$citylist = Yii::app()->user->city_allow();
 		$year = $this->audit_year;
 		$month = $this->audit_month;
